@@ -40,7 +40,8 @@
             txtBuscar = new TextBox();
             btnBuscar = new Button();
             panelTop = new Panel();
-            btnCerrar = new Button();
+            btnCerrar = new FontAwesome.Sharp.IconButton();
+            iconButton1 = new FontAwesome.Sharp.IconButton();
             tabControl = new TabControl();
             tbpLista = new TabPage();
             tbpDetalle = new TabPage();
@@ -141,7 +142,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font( "Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0 );
-            label1.Location = new Point( 35, 9 );
+            label1.Location = new Point( 48, 15 );
             label1.Name = "label1";
             label1.Size = new Size( 101, 17 );
             label1.TabIndex = 4;
@@ -163,7 +164,7 @@
             txtBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             txtBuscar.Location = new Point( 8, 31 );
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size( 406, 25 );
+            txtBuscar.Size = new Size( 361, 25 );
             txtBuscar.TabIndex = 6;
             // 
             // btnBuscar
@@ -171,7 +172,7 @@
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.AutoSize = true;
             btnBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnBuscar.Location = new Point( 420, 29 );
+            btnBuscar.Location = new Point( 375, 29 );
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size( 84, 27 );
             btnBuscar.TabIndex = 7;
@@ -181,6 +182,7 @@
             // panelTop
             // 
             panelTop.Controls.Add( btnCerrar );
+            panelTop.Controls.Add( iconButton1 );
             panelTop.Controls.Add( label1 );
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point( 0, 0 );
@@ -191,14 +193,34 @@
             // btnCerrar
             // 
             btnCerrar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCerrar.AutoSize = true;
             btnCerrar.FlatStyle = FlatStyle.Flat;
-            btnCerrar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnCerrar.Location = new Point( 786, 9 );
+            btnCerrar.IconChar = FontAwesome.Sharp.IconChar.Close;
+            btnCerrar.IconColor = Color.Black;
+            btnCerrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnCerrar.IconSize = 28;
+            btnCerrar.Location = new Point( 782, 6 );
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size( 32, 32 );
-            btnCerrar.TabIndex = 5;
-            btnCerrar.Text = "X";
+            btnCerrar.Size = new Size( 36, 36 );
+            btnCerrar.TabIndex = 7;
             btnCerrar.UseVisualStyleBackColor = true;
+            // 
+            // iconButton1
+            // 
+            iconButton1.AutoSize = true;
+            iconButton1.Enabled = false;
+            iconButton1.FlatAppearance.BorderSize = 0;
+            iconButton1.FlatStyle = FlatStyle.Flat;
+            iconButton1.IconChar = FontAwesome.Sharp.IconChar.User;
+            iconButton1.IconColor = Color.Black;
+            iconButton1.IconFont = FontAwesome.Sharp.IconFont.Solid;
+            iconButton1.IconSize = 28;
+            iconButton1.Location = new Point( 12, 4 );
+            iconButton1.Name = "iconButton1";
+            iconButton1.Size = new Size( 40, 40 );
+            iconButton1.TabIndex = 6;
+            iconButton1.TabStop = false;
+            iconButton1.UseVisualStyleBackColor = true;
             // 
             // tabControl
             // 
@@ -447,7 +469,8 @@
         private Label lblProductorID;
         private TextBox txtProductorID;
         private BindingSource productorBindingSource;
-        private Button btnCerrar;
         private BindingSource productorBindingSource1;
+        private FontAwesome.Sharp.IconButton iconButton1;
+        private FontAwesome.Sharp.IconButton btnCerrar;
     }
 }
