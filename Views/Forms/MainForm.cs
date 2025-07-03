@@ -37,5 +37,10 @@ namespace ProyectoBD2.UI.Forms
         {
             OpenChildForm( new ProductoresForm() );
         }
+
+        private void btnFincas_Click( object sender, EventArgs e )
+        {
+            throw new NotImplementedException("Fincas functionality is not implemented yet.");
+        }
     }
 }

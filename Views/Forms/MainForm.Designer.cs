@@ -29,21 +29,59 @@
         private void InitializeComponent()
         {
             panelMenu = new Panel();
+            btnFincas = new FontAwesome.Sharp.IconButton();
+            btnProductores = new FontAwesome.Sharp.IconButton();
             panelLogo = new Panel();
-            btnProductores = new Button();
             panelContainer = new Panel();
             panelMenu.SuspendLayout();
             SuspendLayout();
             // 
             // panelMenu
             // 
-            panelMenu.Controls.Add( panelLogo );
+            panelMenu.Controls.Add( btnFincas );
             panelMenu.Controls.Add( btnProductores );
+            panelMenu.Controls.Add( panelLogo );
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point( 0, 0 );
             panelMenu.Name = "panelMenu";
             panelMenu.Size = new Size( 170, 605 );
             panelMenu.TabIndex = 2;
+            // 
+            // btnFincas
+            // 
+            btnFincas.FlatStyle = FlatStyle.Flat;
+            btnFincas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnFincas.IconChar = FontAwesome.Sharp.IconChar.Tractor;
+            btnFincas.IconColor = Color.Black;
+            btnFincas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnFincas.IconSize = 32;
+            btnFincas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnFincas.Location = new Point( 0, 127 );
+            btnFincas.Name = "btnFincas";
+            btnFincas.Padding = new Padding( 5, 0, 0, 0 );
+            btnFincas.Size = new Size( 170, 40 );
+            btnFincas.TabIndex = 3;
+            btnFincas.Text = "Fincas";
+            btnFincas.UseVisualStyleBackColor = true;
+            btnFincas.Click += btnFincas_Click;
+            // 
+            // btnProductores
+            // 
+            btnProductores.FlatStyle = FlatStyle.Flat;
+            btnProductores.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnProductores.IconChar = FontAwesome.Sharp.IconChar.UserLarge;
+            btnProductores.IconColor = Color.Black;
+            btnProductores.IconFont = FontAwesome.Sharp.IconFont.Solid;
+            btnProductores.IconSize = 32;
+            btnProductores.ImageAlign = ContentAlignment.MiddleLeft;
+            btnProductores.Location = new Point( 0, 81 );
+            btnProductores.Name = "btnProductores";
+            btnProductores.Padding = new Padding( 5, 0, 0, 0 );
+            btnProductores.Size = new Size( 170, 40 );
+            btnProductores.TabIndex = 2;
+            btnProductores.Text = "Productores";
+            btnProductores.UseVisualStyleBackColor = true;
+            btnProductores.Click += btnProductores_Click;
             // 
             // panelLogo
             // 
@@ -52,17 +90,6 @@
             panelLogo.Name = "panelLogo";
             panelLogo.Size = new Size( 170, 75 );
             panelLogo.TabIndex = 1;
-            // 
-            // btnProductores
-            // 
-            btnProductores.FlatStyle = FlatStyle.Flat;
-            btnProductores.Location = new Point( 0, 81 );
-            btnProductores.Name = "btnProductores";
-            btnProductores.Size = new Size( 170, 30 );
-            btnProductores.TabIndex = 0;
-            btnProductores.Text = "Productores";
-            btnProductores.UseVisualStyleBackColor = true;
-            btnProductores.Click += btnProductores_Click;
             // 
             // panelContainer
             // 
@@ -89,7 +116,8 @@
         #endregion
         private Panel panelMenu;
         private Panel panelContainer;
-        private Button btnProductores;
+        private FontAwesome.Sharp.IconButton btnProductores;
         private Panel panelLogo;
+        private FontAwesome.Sharp.IconButton btnFincas;
     }
 }
