@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoBD2.Config;
-using ProyectoBD2.Entities;
-using System.Diagnostics;
+using ProyectoBD2.Models;
 
 namespace ProyectoBD2.Data
 {
