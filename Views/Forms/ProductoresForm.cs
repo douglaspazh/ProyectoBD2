@@ -21,11 +21,8 @@ namespace ProyectoBD2.UI.Forms
 
             _presenter = new ProductorPresenter(this, new ProductoresRepository());
 
-            dgvProductores.DataBindingComplete += ( s, e ) =>
-            {
-                if ( dgvProductores.Columns.Contains( "ProductorID" ) )                
-                    dgvProductores.Columns["ProductorID"].Visible = false;
-            };
+            if ( dgvProductores.Columns.Contains( "ProductorID" ) )
+                dgvProductores.Columns["ProductorID"].Visible = false;
 
             btnCerrar.Click += ( s, e ) => this.Close();
         }

@@ -31,12 +31,6 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvProductores = new DataGridView();
-            productorIDDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            nombreDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            telefonoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            estadoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            fechaRegistroDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             productorBindingSource = new BindingSource( components );
             btnAgregar = new Button();
             btnEditar = new Button();
@@ -81,7 +75,6 @@
             dgvProductores.AllowUserToResizeColumns = false;
             dgvProductores.AllowUserToResizeRows = false;
             dgvProductores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvProductores.AutoGenerateColumns = false;
             dgvProductores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvProductores.BorderStyle = BorderStyle.None;
             dgvProductores.CellBorderStyle = DataGridViewCellBorderStyle.None;
@@ -95,8 +88,6 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvProductores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvProductores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProductores.Columns.AddRange( new DataGridViewColumn[] { productorIDDataGridViewTextBoxColumn, nombreDataGridViewTextBoxColumn, telefonoDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, estadoDataGridViewTextBoxColumn, fechaRegistroDataGridViewTextBoxColumn } );
-            dgvProductores.DataSource = productorBindingSource;
             dgvProductores.EnableHeadersVisualStyles = false;
             dgvProductores.Location = new Point( 8, 67 );
             dgvProductores.MultiSelect = false;
@@ -108,49 +99,6 @@
             dgvProductores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProductores.Size = new Size( 692, 419 );
             dgvProductores.TabIndex = 0;
-            // 
-            // productorIDDataGridViewTextBoxColumn
-            // 
-            productorIDDataGridViewTextBoxColumn.DataPropertyName = "ProductorID";
-            productorIDDataGridViewTextBoxColumn.HeaderText = "ProductorID";
-            productorIDDataGridViewTextBoxColumn.Name = "productorIDDataGridViewTextBoxColumn";
-            productorIDDataGridViewTextBoxColumn.ReadOnly = true;
-            productorIDDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // nombreDataGridViewTextBoxColumn
-            // 
-            nombreDataGridViewTextBoxColumn.DataPropertyName = "Nombre";
-            nombreDataGridViewTextBoxColumn.HeaderText = "Nombre";
-            nombreDataGridViewTextBoxColumn.Name = "nombreDataGridViewTextBoxColumn";
-            nombreDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // telefonoDataGridViewTextBoxColumn
-            // 
-            telefonoDataGridViewTextBoxColumn.DataPropertyName = "Telefono";
-            telefonoDataGridViewTextBoxColumn.HeaderText = "Telefono";
-            telefonoDataGridViewTextBoxColumn.Name = "telefonoDataGridViewTextBoxColumn";
-            telefonoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
-            emailDataGridViewTextBoxColumn.HeaderText = "Email";
-            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            emailDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // estadoDataGridViewTextBoxColumn
-            // 
-            estadoDataGridViewTextBoxColumn.DataPropertyName = "Estado";
-            estadoDataGridViewTextBoxColumn.HeaderText = "Estado";
-            estadoDataGridViewTextBoxColumn.Name = "estadoDataGridViewTextBoxColumn";
-            estadoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // fechaRegistroDataGridViewTextBoxColumn
-            // 
-            fechaRegistroDataGridViewTextBoxColumn.DataPropertyName = "FechaRegistro";
-            fechaRegistroDataGridViewTextBoxColumn.HeaderText = "FechaRegistro";
-            fechaRegistroDataGridViewTextBoxColumn.Name = "fechaRegistroDataGridViewTextBoxColumn";
-            fechaRegistroDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // productorBindingSource
             // 
@@ -499,12 +447,7 @@
         private Label lblProductorID;
         private TextBox txtProductorID;
         private BindingSource productorBindingSource;
-        private DataGridViewTextBoxColumn productorIDDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nombreDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn telefonoDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn estadoDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn fechaRegistroDataGridViewTextBoxColumn;
         private Button btnCerrar;
+        private BindingSource productorBindingSource1;
     }
 }
