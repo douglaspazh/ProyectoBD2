@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ProyectoBD2.UI.Forms
+namespace ProyectoBD2.Views.Forms
 {
     public partial class MainForm : Form
     {
@@ -40,7 +40,8 @@ namespace ProyectoBD2.UI.Forms
 
         private void btnFincas_Click( object sender, EventArgs e )
         {
-            throw new NotImplementedException("Fincas functionality is not implemented yet.");
+            //OpenChildForm( new FincasForm() );
+            throw new NotImplementedException( "FincasForm is not implemented yet." );
         }
     }
 }

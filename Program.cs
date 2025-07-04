@@ -1,4 +1,4 @@
-using ProyectoBD2.UI.Forms;
+using ProyectoBD2.Views.Forms;
 
 namespace ProyectoBD2
 {

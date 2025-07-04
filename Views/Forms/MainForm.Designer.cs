@@ -1,4 +1,4 @@
-﻿namespace ProyectoBD2.UI.Forms
+﻿namespace ProyectoBD2.Views.Forms
 {
     partial class MainForm
     {

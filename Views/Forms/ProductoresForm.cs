@@ -2,7 +2,7 @@
 using ProyectoBD2.Repositories.Implementations;
 using ProyectoBD2.Views.Interfaces;
 
-namespace ProyectoBD2.UI.Forms
+namespace ProyectoBD2.Views.Forms
 {
     public partial class ProductoresForm : Form, IProductorView
     {
