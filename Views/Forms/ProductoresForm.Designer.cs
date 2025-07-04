@@ -44,6 +44,13 @@
             iconButton1 = new FontAwesome.Sharp.IconButton();
             tabControl = new TabControl();
             tbpLista = new TabPage();
+            lblRecordsPerPage = new Label();
+            cmbRecordsPerPage = new ComboBox();
+            label6 = new Label();
+            btnSiguiente = new Button();
+            btnAnterior = new Button();
+            lblPaginas = new Label();
+            lblTotalRegistros = new Label();
             tbpDetalle = new TabPage();
             txtProductorID = new TextBox();
             lblProductorID = new Label();
@@ -98,7 +105,7 @@
             dgvProductores.RowHeadersWidth = 25;
             dgvProductores.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvProductores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProductores.Size = new Size( 692, 419 );
+            dgvProductores.Size = new Size( 705, 422 );
             dgvProductores.TabIndex = 0;
             // 
             // productorBindingSource
@@ -109,7 +116,7 @@
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAgregar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnAgregar.Location = new Point( 706, 67 );
+            btnAgregar.Location = new Point( 719, 67 );
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size( 95, 30 );
             btnAgregar.TabIndex = 1;
@@ -120,7 +127,7 @@
             // 
             btnEditar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEditar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEditar.Location = new Point( 706, 103 );
+            btnEditar.Location = new Point( 719, 103 );
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size( 95, 30 );
             btnEditar.TabIndex = 2;
@@ -131,7 +138,7 @@
             // 
             btnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEliminar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEliminar.Location = new Point( 706, 139 );
+            btnEliminar.Location = new Point( 719, 139 );
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size( 95, 30 );
             btnEliminar.TabIndex = 3;
@@ -230,11 +237,18 @@
             tabControl.Location = new Point( 0, 50 );
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size( 830, 531 );
+            tabControl.Size = new Size( 830, 554 );
             tabControl.TabIndex = 9;
             // 
             // tbpLista
             // 
+            tbpLista.Controls.Add( lblRecordsPerPage );
+            tbpLista.Controls.Add( cmbRecordsPerPage );
+            tbpLista.Controls.Add( label6 );
+            tbpLista.Controls.Add( btnSiguiente );
+            tbpLista.Controls.Add( btnAnterior );
+            tbpLista.Controls.Add( lblPaginas );
+            tbpLista.Controls.Add( lblTotalRegistros );
             tbpLista.Controls.Add( label2 );
             tbpLista.Controls.Add( txtBuscar );
             tbpLista.Controls.Add( btnEliminar );
@@ -245,10 +259,86 @@
             tbpLista.Location = new Point( 4, 24 );
             tbpLista.Name = "tbpLista";
             tbpLista.Padding = new Padding( 3 );
-            tbpLista.Size = new Size( 822, 503 );
+            tbpLista.Size = new Size( 822, 526 );
             tbpLista.TabIndex = 0;
             tbpLista.Text = "Lista de productores";
             tbpLista.UseVisualStyleBackColor = true;
+            // 
+            // lblRecordsPerPage
+            // 
+            lblRecordsPerPage.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblRecordsPerPage.AutoSize = true;
+            lblRecordsPerPage.Location = new Point( 273, 499 );
+            lblRecordsPerPage.Name = "lblRecordsPerPage";
+            lblRecordsPerPage.Size = new Size( 150, 15 );
+            lblRecordsPerPage.TabIndex = 14;
+            lblRecordsPerPage.Text = "({}) Productores por página";
+            // 
+            // cmbRecordsPerPage
+            // 
+            cmbRecordsPerPage.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            cmbRecordsPerPage.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbRecordsPerPage.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            cmbRecordsPerPage.FormattingEnabled = true;
+            cmbRecordsPerPage.Items.AddRange( new object[] { "Auto", "10", "20", "30", "40", "50", "100" } );
+            cmbRecordsPerPage.Location = new Point( 205, 494 );
+            cmbRecordsPerPage.Name = "cmbRecordsPerPage";
+            cmbRecordsPerPage.Size = new Size( 65, 25 );
+            cmbRecordsPerPage.TabIndex = 13;
+            // 
+            // label6
+            // 
+            label6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label6.AutoSize = true;
+            label6.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label6.Location = new Point( 148, 497 );
+            label6.Name = "label6";
+            label6.Size = new Size( 55, 17 );
+            label6.TabIndex = 12;
+            label6.Text = "Mostrar";
+            // 
+            // btnSiguiente
+            // 
+            btnSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSiguiente.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnSiguiente.Location = new Point( 618, 490 );
+            btnSiguiente.Name = "btnSiguiente";
+            btnSiguiente.Size = new Size( 95, 30 );
+            btnSiguiente.TabIndex = 11;
+            btnSiguiente.Text = "Siguiente";
+            btnSiguiente.UseVisualStyleBackColor = true;
+            // 
+            // btnAnterior
+            // 
+            btnAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAnterior.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnAnterior.Location = new Point( 517, 490 );
+            btnAnterior.Name = "btnAnterior";
+            btnAnterior.Size = new Size( 95, 30 );
+            btnAnterior.TabIndex = 10;
+            btnAnterior.Text = "Anterior";
+            btnAnterior.UseVisualStyleBackColor = true;
+            // 
+            // lblPaginas
+            // 
+            lblPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblPaginas.AutoSize = true;
+            lblPaginas.Location = new Point( 429, 499 );
+            lblPaginas.Name = "lblPaginas";
+            lblPaginas.Size = new Size( 81, 15 );
+            lblPaginas.TabIndex = 9;
+            lblPaginas.Text = "Página {} de {}";
+            // 
+            // lblTotalRegistros
+            // 
+            lblTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblTotalRegistros.AutoSize = true;
+            lblTotalRegistros.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            lblTotalRegistros.Location = new Point( 8, 497 );
+            lblTotalRegistros.Name = "lblTotalRegistros";
+            lblTotalRegistros.Size = new Size( 127, 17 );
+            lblTotalRegistros.TabIndex = 8;
+            lblTotalRegistros.Text = "Total: {} productores";
             // 
             // tbpDetalle
             // 
@@ -270,7 +360,7 @@
             tbpDetalle.Location = new Point( 4, 24 );
             tbpDetalle.Name = "tbpDetalle";
             tbpDetalle.Padding = new Padding( 3 );
-            tbpDetalle.Size = new Size( 822, 503 );
+            tbpDetalle.Size = new Size( 822, 526 );
             tbpDetalle.TabIndex = 1;
             tbpDetalle.Text = "Detalle de productor";
             tbpDetalle.UseVisualStyleBackColor = true;
@@ -300,7 +390,7 @@
             txtFechaRegistro.Location = new Point( 556, 245 );
             txtFechaRegistro.Name = "txtFechaRegistro";
             txtFechaRegistro.ReadOnly = true;
-            txtFechaRegistro.Size = new Size( 144, 25 );
+            txtFechaRegistro.Size = new Size( 134, 25 );
             txtFechaRegistro.TabIndex = 23;
             // 
             // lblFechaRegistro
@@ -325,7 +415,7 @@
             // btnCancelar
             // 
             btnCancelar.Font = new Font( "Segoe UI", 9.75F );
-            btnCancelar.Location = new Point( 285, 295 );
+            btnCancelar.Location = new Point( 285, 306 );
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size( 100, 30 );
             btnCancelar.TabIndex = 20;
@@ -335,7 +425,7 @@
             // btnGuardar
             // 
             btnGuardar.Font = new Font( "Segoe UI", 9.75F );
-            btnGuardar.Location = new Point( 179, 295 );
+            btnGuardar.Location = new Point( 179, 306 );
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size( 100, 30 );
             btnGuardar.TabIndex = 19;
@@ -344,6 +434,7 @@
             // 
             // cmbEstado
             // 
+            cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEstado.Font = new Font( "Segoe UI", 9.75F );
             cmbEstado.FormattingEnabled = true;
             cmbEstado.Items.AddRange( new object[] { "Activo", "Inactivo" } );
@@ -420,7 +511,7 @@
             // 
             AutoScaleDimensions = new SizeF( 7F, 15F );
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size( 830, 581 );
+            ClientSize = new Size( 830, 604 );
             Controls.Add( tabControl );
             Controls.Add( panelTop );
             FormBorderStyle = FormBorderStyle.None;
@@ -472,5 +563,12 @@
         private BindingSource productorBindingSource1;
         private FontAwesome.Sharp.IconButton iconButton1;
         private FontAwesome.Sharp.IconButton btnCerrar;
+        private Label lblTotalRegistros;
+        private Label lblPaginas;
+        private Button btnSiguiente;
+        private Button btnAnterior;
+        private ComboBox cmbRecordsPerPage;
+        private Label label6;
+        private Label lblRecordsPerPage;
     }
 }

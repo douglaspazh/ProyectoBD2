@@ -10,6 +10,9 @@ namespace ProyectoBD2.Repositories.Interfaces
 
         IEnumerable<Productor> GetAllProductores();
         IEnumerable<Productor> GetByValue(string value);
+        // IEnumerable<Productor> GetByEstado(string estado); // Uncomment if needed
+
+        
 
     }
 }

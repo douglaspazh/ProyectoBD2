@@ -24,6 +24,9 @@ namespace ProyectoBD2.Views.Forms
             if ( dgvProductores.Columns.Contains( "ProductorID" ) )
                 dgvProductores.Columns["ProductorID"].Visible = false;
 
+            cmbRecordsPerPage.SelectedIndex = 0;
+            cmbEstado.SelectedIndex = 0;
+
             btnCerrar.Click += ( s, e ) => this.Close();
         }
 
@@ -31,6 +34,8 @@ namespace ProyectoBD2.Views.Forms
         private void AssociatedAndRaiseEvents()
         {
             btnBuscar.Click += ( s, e ) => SearchEvent?.Invoke( this, EventArgs.Empty );
+            btnSiguiente.Click += ( s, e ) => NextPageEvent?.Invoke( this, EventArgs.Empty );
+            btnAnterior.Click += ( s, e ) => PrevPageEvent?.Invoke( this, EventArgs.Empty );
             txtBuscar.KeyDown += ( s, e ) =>
             {
                 if ( e.KeyCode == Keys.Enter )
@@ -42,12 +47,6 @@ namespace ProyectoBD2.Views.Forms
 
             btnAgregar.Click += delegate
             {
-                // Hacer invisibles los campos de ID y Fecha de Registro
-                lblProductorID.Visible = false;
-                txtProductorID.Visible = false;
-                lblFechaRegistro.Visible = false;
-                txtFechaRegistro.Visible = false;
-
                 AddNewEvent?.Invoke( this, EventArgs.Empty );
                 tabControl.TabPages.Remove( tbpLista );
                 tabControl.TabPages.Add( tbpDetalle );
@@ -57,12 +56,6 @@ namespace ProyectoBD2.Views.Forms
 
             btnEditar.Click += delegate
             {
-                // Hacer visibles los campos de ID y Fecha de Registro
-                lblProductorID.Visible = true;
-                txtProductorID.Visible = true;
-                lblFechaRegistro.Visible = true;
-                txtFechaRegistro.Visible = true;
-
                 EditEvent?.Invoke( this, EventArgs.Empty );
                 tabControl.TabPages.Remove(tbpLista);
                 tabControl.TabPages.Add(tbpDetalle);
@@ -81,6 +74,7 @@ namespace ProyectoBD2.Views.Forms
                     MessageBox.Show( Message );
                 }
             };
+            
             btnGuardar.Click += delegate
             {
                 SaveEvent?.Invoke( this, EventArgs.Empty );
@@ -96,8 +90,8 @@ namespace ProyectoBD2.Views.Forms
             btnCancelar.Click += delegate
             {
                 CancelEvent?.Invoke( this, EventArgs.Empty );
-                tabControl.TabPages.Remove(tbpDetalle);
-                tabControl.TabPages.Add(tbpLista);
+                tabControl.TabPages.Remove( tbpDetalle );
+                tabControl.TabPages.Add( tbpLista );
                 tabControl.SelectedTab = tbpLista;
             };
         }
@@ -108,6 +102,21 @@ namespace ProyectoBD2.Views.Forms
         public event EventHandler DeleteEvent;
         public event EventHandler SaveEvent;
         public event EventHandler CancelEvent;
+        public event EventHandler NextPageEvent;
+        public event EventHandler PrevPageEvent;
+
+        public void SetListBindingSource( BindingSource productores )
+        {
+            dgvProductores.DataSource = productores;
+        }
+
+        public void DisplayPageRange( int currentPage, int totalPages, int totalRecords )
+        {
+            lblTotalRegistros.Text = $"Total: {totalRecords} productores";
+            lblPaginas.Text = $"Página {currentPage} de {totalPages}";
+            btnSiguiente.Enabled = currentPage < totalPages;
+            btnAnterior.Enabled = currentPage > 1;
+        }
 
         public int ProductorID 
         {
@@ -145,7 +154,15 @@ namespace ProyectoBD2.Views.Forms
         public bool IsEditing 
         {
             get => isEditing;
-            set => isEditing = value;
+            set
+            {
+                isEditing = value;
+                lblProductorID.Visible = value;
+                txtProductorID.Visible = value;
+                lblFechaRegistro.Visible = value;
+                txtFechaRegistro.Visible = value;
+                btnGuardar.Text = value ? "Actualizar" : "Guardar";
+            }
         }
         public bool IsSuccessful
         {
@@ -156,11 +173,6 @@ namespace ProyectoBD2.Views.Forms
         {
             get => message;
             set => message = value;
-        }
-
-        public void SetListBindingSource( BindingSource productores )
-        {
-            dgvProductores.DataSource = productores;
         }
     }
 }

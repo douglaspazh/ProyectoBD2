@@ -22,9 +22,12 @@
         event EventHandler DeleteEvent;
         event EventHandler SaveEvent;
         event EventHandler CancelEvent;
+        event EventHandler NextPageEvent;
+        event EventHandler PrevPageEvent;
 
         // Methods
-        void SetListBindingSource(BindingSource productores);
+        void SetListBindingSource( BindingSource productores );
+        void DisplayPageRange( int currentPage, int totalPages, int totalRecords );
         void Show();
     }
 }
