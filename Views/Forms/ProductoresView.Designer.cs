@@ -1,6 +1,6 @@
 ﻿namespace ProyectoBD2.Views.Forms
 {
-    partial class ProductoresForm
+    partial class ProductoresView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvProductores = new DataGridView();
-            productorBindingSource = new BindingSource( components );
             btnAgregar = new Button();
             btnEditar = new Button();
             btnEliminar = new Button();
@@ -68,7 +66,6 @@
             txtNombre = new TextBox();
             lblNombre = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvProductores).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)productorBindingSource).BeginInit();
             panelTop.SuspendLayout();
             tabControl.SuspendLayout();
             tbpLista.SuspendLayout();
@@ -107,10 +104,6 @@
             dgvProductores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProductores.Size = new Size( 705, 422 );
             dgvProductores.TabIndex = 0;
-            // 
-            // productorBindingSource
-            // 
-            productorBindingSource.DataSource = typeof( Models.Productor );
             // 
             // btnAgregar
             // 
@@ -373,6 +366,7 @@
             txtProductorID.ReadOnly = true;
             txtProductorID.Size = new Size( 100, 25 );
             txtProductorID.TabIndex = 25;
+            txtProductorID.TabStop = false;
             // 
             // lblProductorID
             // 
@@ -392,6 +386,7 @@
             txtFechaRegistro.ReadOnly = true;
             txtFechaRegistro.Size = new Size( 134, 25 );
             txtFechaRegistro.TabIndex = 23;
+            txtFechaRegistro.TabStop = false;
             // 
             // lblFechaRegistro
             // 
@@ -415,7 +410,7 @@
             // btnCancelar
             // 
             btnCancelar.Font = new Font( "Segoe UI", 9.75F );
-            btnCancelar.Location = new Point( 285, 306 );
+            btnCancelar.Location = new Point( 285, 315 );
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size( 100, 30 );
             btnCancelar.TabIndex = 20;
@@ -425,7 +420,7 @@
             // btnGuardar
             // 
             btnGuardar.Font = new Font( "Segoe UI", 9.75F );
-            btnGuardar.Location = new Point( 179, 306 );
+            btnGuardar.Location = new Point( 179, 315 );
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size( 100, 30 );
             btnGuardar.TabIndex = 19;
@@ -437,8 +432,7 @@
             cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEstado.Font = new Font( "Segoe UI", 9.75F );
             cmbEstado.FormattingEnabled = true;
-            cmbEstado.Items.AddRange( new object[] { "Activo", "Inactivo" } );
-            cmbEstado.Location = new Point( 180, 245 );
+            cmbEstado.Location = new Point( 180, 254 );
             cmbEstado.Name = "cmbEstado";
             cmbEstado.Size = new Size( 121, 25 );
             cmbEstado.TabIndex = 18;
@@ -447,7 +441,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font( "Segoe UI", 9.75F );
-            label4.Location = new Point( 180, 225 );
+            label4.Location = new Point( 180, 234 );
             label4.Name = "label4";
             label4.Size = new Size( 51, 17 );
             label4.TabIndex = 17;
@@ -507,7 +501,7 @@
             lblNombre.TabIndex = 11;
             lblNombre.Text = "Nombre:";
             // 
-            // ProductoresForm
+            // ProductoresView
             // 
             AutoScaleDimensions = new SizeF( 7F, 15F );
             AutoScaleMode = AutoScaleMode.Font;
@@ -515,10 +509,9 @@
             Controls.Add( tabControl );
             Controls.Add( panelTop );
             FormBorderStyle = FormBorderStyle.None;
-            Name = "ProductoresForm";
+            Name = "ProductoresView";
             Text = "ProductoresForm";
             ((System.ComponentModel.ISupportInitialize)dgvProductores).EndInit();
-            ((System.ComponentModel.ISupportInitialize)productorBindingSource).EndInit();
             panelTop.ResumeLayout( false );
             panelTop.PerformLayout();
             tabControl.ResumeLayout( false );
@@ -559,7 +552,6 @@
         private Label lblFechaRegistro;
         private Label lblProductorID;
         private TextBox txtProductorID;
-        private BindingSource productorBindingSource;
         private BindingSource productorBindingSource1;
         private FontAwesome.Sharp.IconButton iconButton1;
         private FontAwesome.Sharp.IconButton btnCerrar;

@@ -1,4 +1,6 @@
-﻿namespace ProyectoBD2.Views.Interfaces
+﻿using ProyectoBD2.Models;
+
+namespace ProyectoBD2.Views.Interfaces
 {
     public interface IProductorView
     {
@@ -6,8 +8,8 @@
         int ProductorID { get; set; }
         string Nombre { get; set; }
         string Telefono { get; set; }
-        string Email { get; set; }
-        string Estado { get; set; }
+        string Correo { get; set; }
+        int EstadoID { get; set; }
         string FechaRegistro { get; set; }
 
         string SearchTerm { get; set; }
@@ -28,6 +30,6 @@
         // Methods
         void SetListBindingSource( BindingSource productores );
         void DisplayPageRange( int currentPage, int totalPages, int totalRecords );
-        void Show();
+        void CargarEstados(IEnumerable<Estado> estados);
     }
 }

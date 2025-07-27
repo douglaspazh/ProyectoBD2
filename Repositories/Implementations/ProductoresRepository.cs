@@ -1,6 +1,8 @@
 ﻿using ProyectoBD2.Repositories.Interfaces;
 using ProyectoBD2.Models;
 using ProyectoBD2.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace ProyectoBD2.Repositories.Implementations
 {
@@ -12,22 +14,32 @@ namespace ProyectoBD2.Repositories.Implementations
             _context = new AppDbContext();
         }
 
-        public IEnumerable<Productor> GetAllProductores()
+        public IEnumerable<ProductorDto> GetAllProductores()
         {
-            return _context.Productores.ToList();
+            return _context.ProductoresDto
+                .FromSqlRaw( "EXEC dbo.spGetAllProductores" )
+                .ToList();
         }
 
-        public IEnumerable<Productor> GetByValue( string value )
+        public IEnumerable<ProductorDto> GetByValue( string value )
         {
-            return _context.Productores
-                          .Where( p => p.Nombre.Contains( value ) || p.Email.Contains( value ) )
-                          .ToList();
+            return _context.ProductoresDto
+                .FromSql( $"EXEC dbo.spGetProductorByValue @Value = {value}" )
+                .ToList();
+        }
+
+        public IEnumerable<ProductorDto> GetByEstado( int estadoId )
+        {
+            return _context.ProductoresDto
+                .FromSql( $"EXEC dbo.spGetProductorByEstado @EstadoID={estadoId}" )
+                .ToList();
         }
 
         public void AddProductor( Productor productor )
         {
-            _context.Productores.Add( productor );
-            _context.SaveChanges();
+            _context.Database.ExecuteSqlInterpolated(
+                $"EXEC dbo.spInsertProductor @Nombre={productor.Nombre}, @Telefono={productor.Telefono}, @Correo={productor.Correo}, @EstadoID={productor.EstadoID}" 
+            );
         }
 
         public void DeleteProductor( int productorId )
@@ -35,8 +47,9 @@ namespace ProyectoBD2.Repositories.Implementations
             var productor = _context.Productores.Find( productorId );
             if ( productor != null )
             {
-                _context.Productores.Remove( productor );
-                _context.SaveChanges();
+                _context.Database.ExecuteSqlInterpolated(
+                    $"EXEC dbo.spDeleteProductor @ID={productorId}"
+                );
             }
             else
             {
@@ -49,14 +62,22 @@ namespace ProyectoBD2.Repositories.Implementations
             var existingProductor = _context.Productores.Find( productor.ProductorID );
             if ( existingProductor != null )
             {
-                _context.ChangeTracker.Clear();
-                _context.Productores.Update( productor );
-                _context.SaveChanges();
+
+                _context.Database.ExecuteSqlInterpolated(
+                    $"EXEC dbo.spUpdateProductor @ID={productor.ProductorID}, @Nombre={productor.Nombre}, @Telefono={productor.Telefono}, @Correo={productor.Correo}, @EstadoID={productor.EstadoID}"
+                );
             }
             else
             {
                 throw new KeyNotFoundException( $"Productor with ID {productor.ProductorID} not found." );
             }
+        }
+
+        public IEnumerable<Estado> GetAllEstados()
+        {
+            return _context.Estados
+                .FromSqlRaw( "EXEC dbo.spGetAllEstados" )
+                .ToList();
         }
     }
 }

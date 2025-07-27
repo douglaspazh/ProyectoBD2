@@ -8,24 +8,25 @@ namespace ProyectoBD2.Models
     [PrimaryKey("ProductorID")]
     public class Productor
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ProductorID { get; set; }
+        public int? ProductorID { get; set; }
 
         [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
-        [StringLength(100)]
+        [StringLength(50)]
         public required string Nombre { get; set; }
 
         [Required(ErrorMessage = "El campo Telefono es obligatorio.")]
+        [StringLength(8)]
         public required string Telefono { get; set; }
 
-        [Required(ErrorMessage = "El campo Email es obligatorio.")]
-        [EmailAddress(ErrorMessage = "El formato del Email es inválido.")]
-        [StringLength(100, ErrorMessage = "El Email no puede exceder los 100 caracteres.")]
-        public required string Email { get; set; }
+        [StringLength(50)]
+        public string? Correo { get; set; }
 
-        [Required(ErrorMessage = "El campo Estado es obligatorio.")]
-        public required string Estado { get; set; }
+        [ForeignKey("Estado")]
+        public int? EstadoID { get; set; }
+        public Estado? Estado { get; set; }
 
         public DateOnly FechaRegistro { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+
+        //public ICollection<Finca>? Fincas { get; set; }
     }
 }

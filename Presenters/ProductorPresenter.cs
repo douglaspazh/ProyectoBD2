@@ -1,6 +1,7 @@
 ﻿using ProyectoBD2.Models;
 using ProyectoBD2.Repositories.Interfaces;
 using ProyectoBD2.Views.Interfaces;
+using System.Diagnostics;
 
 namespace ProyectoBD2.Presenters
 {
@@ -10,7 +11,7 @@ namespace ProyectoBD2.Presenters
         private readonly IProductorView _view;
         private readonly IProductorRepository _repository;
         private readonly BindingSource _bindingSource;
-        private IEnumerable<Productor> _productoresList;
+        private IEnumerable<ProductorDto> _productoresList;
 
         private const string DefaultDateFormat = "dd/MM/yyyy";
         private int _actualPage = 1;
@@ -36,17 +37,12 @@ namespace ProyectoBD2.Presenters
 
             this._view.SetListBindingSource( _bindingSource );
             this._view.DisplayPageRange( _actualPage, _totalPages, _totalRecords );
-            
+            this._view.CargarEstados( _repository.GetAllEstados() );
+
             LoadProductoresByPage( _actualPage );
         }
 
         // Methods
-        private void LoadAllProductores()
-        {
-            _productoresList = _repository.GetAllProductores();
-            _bindingSource.DataSource = _productoresList;
-        }
-
         private void LoadProductoresByPage( int pageNumber )
         {
             _actualPage = pageNumber;
@@ -58,12 +54,13 @@ namespace ProyectoBD2.Presenters
             UpdatePageInfo();
         }
 
+        // Event Handlers
         private void OnSearchEvent( object? sender, EventArgs e )
         {
-            bool emptySearch = string.IsNullOrWhiteSpace(_view.SearchTerm);
+            bool emptySearch = string.IsNullOrWhiteSpace( _view.SearchTerm );
             if (!emptySearch)
             {
-                _productoresList = _repository.GetByValue(_view.SearchTerm);
+                _productoresList = _repository.GetByValue( _view.SearchTerm );
             }
             else
             {
@@ -79,15 +76,16 @@ namespace ProyectoBD2.Presenters
 
         private void LoadSelectedProductorToEdit( object? sender, EventArgs e )
         {
-            var selectedProductor = _bindingSource.Current as Productor;
+            var selectedProductor = _bindingSource.Current as ProductorDto;
+            
             if ( selectedProductor != null )
             {
                 _view.IsEditing = true;
-                _view.ProductorID = selectedProductor!.ProductorID;
+                _view.ProductorID = selectedProductor.ProductorID!;
                 _view.Nombre = selectedProductor.Nombre;
                 _view.Telefono = selectedProductor.Telefono;
-                _view.Email = selectedProductor.Email;
-                _view.Estado = selectedProductor.Estado;
+                _view.Correo = selectedProductor.Correo;
+                _view.EstadoID = selectedProductor.EstadoID;
                 _view.FechaRegistro = selectedProductor.FechaRegistro.ToString( DefaultDateFormat );
             }
         }
@@ -96,13 +94,15 @@ namespace ProyectoBD2.Presenters
         {
             try
             {
-                var selectedProductor = _bindingSource.Current as Productor;
+                var selectedProductor = _bindingSource.Current as ProductorDto;
+
                 if ( selectedProductor != null )
                 {
-                    _repository.DeleteProductor( selectedProductor!.ProductorID );
+                    _repository.DeleteProductor( (int)selectedProductor.ProductorID! );
                     _view.IsSuccessful = true;
                     _view.Message = "Productor eliminado exitosamente.";
-                    LoadAllProductores();
+                    
+                    LoadProductoresByPage( _actualPage );
                 }
                 else
                 {
@@ -126,9 +126,8 @@ namespace ProyectoBD2.Presenters
                     ProductorID = _view.ProductorID,
                     Nombre = _view.Nombre,
                     Telefono = _view.Telefono,
-                    Email = _view.Email,
-                    Estado = _view.Estado,
-                    FechaRegistro = DateOnly.ParseExact( _view.FechaRegistro, DefaultDateFormat )
+                    Correo = _view.Correo,
+                    EstadoID = _view.EstadoID
                 };
 
                 if ( _view.IsEditing )
@@ -143,13 +142,13 @@ namespace ProyectoBD2.Presenters
                 }
 
                 _view.IsSuccessful = true;
-                LoadAllProductores();
                 CleanViewFields();
+                LoadProductoresByPage( _actualPage );
             }
             catch (Exception ex)
             {
                 _view.IsSuccessful = false;
-                _view.Message = $"Error saving productor: {ex.Source}";
+                _view.Message = $"Error saving productor: {ex.Message}";
             }
         }
 
@@ -163,8 +162,8 @@ namespace ProyectoBD2.Presenters
             _view.ProductorID = 0;
             _view.Nombre = string.Empty;
             _view.Telefono = string.Empty;
-            _view.Email = string.Empty;
-            _view.Estado = string.Empty;
+            _view.Correo = string.Empty;
+            _view.EstadoID = 0;
             _view.FechaRegistro = DateOnly.FromDateTime(DateTime.Now).ToString(DefaultDateFormat);
         }
 

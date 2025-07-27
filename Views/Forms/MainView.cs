@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ProyectoBD2.Views.Forms
 {
-    public partial class MainForm : Form
+    public partial class MainView : Form
     {
-        public MainForm()
+        public MainView()
         {
             InitializeComponent();
         }
@@ -26,22 +26,20 @@ namespace ProyectoBD2.Views.Forms
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
 
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add( childForm );
-            panelContainer.Tag = childForm;
+            splitContainer.Panel2.Controls.Clear();
+            splitContainer.Panel2.Controls.Add( childForm );
             childForm.BringToFront();
             childForm.Show();
         }
 
         private void btnProductores_Click( object sender, EventArgs e )
         {
-            OpenChildForm( new ProductoresForm() );
+            OpenChildForm( new ProductoresView() );
         }
 
         private void btnFincas_Click( object sender, EventArgs e )
         {
-            //OpenChildForm( new FincasForm() );
-            throw new NotImplementedException( "FincasForm is not implemented yet." );
+            OpenChildForm( new FincasView() );
         }
     }
 }

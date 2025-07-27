@@ -1,10 +1,12 @@
-﻿using ProyectoBD2.Presenters;
+﻿using ProyectoBD2.Models;
+using ProyectoBD2.Presenters;
 using ProyectoBD2.Repositories.Implementations;
 using ProyectoBD2.Views.Interfaces;
+using System.Diagnostics;
 
 namespace ProyectoBD2.Views.Forms
 {
-    public partial class ProductoresForm : Form, IProductorView
+    public partial class ProductoresView : Form, IProductorView
     {
         // Fields
         private readonly ProductorPresenter _presenter;
@@ -13,7 +15,7 @@ namespace ProyectoBD2.Views.Forms
         private string message;
 
         // Constructor
-        public ProductoresForm()
+        public ProductoresView()
         {
             InitializeComponent();
             AssociatedAndRaiseEvents();
@@ -23,12 +25,17 @@ namespace ProyectoBD2.Views.Forms
 
             if ( dgvProductores.Columns.Contains( "ProductorID" ) )
                 dgvProductores.Columns["ProductorID"].Visible = false;
+            if ( dgvProductores.Columns.Contains( "FechaRegistro" ) )
+                dgvProductores.Columns["FechaRegistro"].Visible = false;
+            if ( dgvProductores.Columns.Contains( "EstadoID" ) )
+                dgvProductores.Columns["EstadoID"].Visible = false;
 
             cmbRecordsPerPage.SelectedIndex = 0;
-            cmbEstado.SelectedIndex = 0;
+            cmbEstado.SelectedIndex = -1;
 
             btnCerrar.Click += ( s, e ) => this.Close();
         }
+
 
         // Method to associate events with their handlers
         private void AssociatedAndRaiseEvents()
@@ -118,9 +125,22 @@ namespace ProyectoBD2.Views.Forms
             btnAnterior.Enabled = currentPage > 1;
         }
 
-        public int ProductorID 
+        public void CargarEstados(IEnumerable<Estado> estados)
         {
-            get => int.Parse(txtProductorID.Text.Trim());
+            cmbEstado.DataSource ??= estados.ToList();
+            cmbEstado.DisplayMember = "Nombre";
+            cmbEstado.ValueMember = "EstadoID";
+        }
+
+        public int EstadoID
+        {
+            get => cmbEstado.SelectedValue != null ? Convert.ToInt32(cmbEstado.SelectedValue) : 0;
+            set => cmbEstado.SelectedValue = value;
+        }
+
+        public int ProductorID
+        {
+            get => int.TryParse( txtProductorID.Text.Trim(), out int id ) ? id : 0;
             set => txtProductorID.Text = value.ToString();
         }
         public string Nombre 
@@ -133,15 +153,12 @@ namespace ProyectoBD2.Views.Forms
             get => txtTelefono.Text.Trim();
             set => txtTelefono.Text = value;
         }
-        public string Email 
+        public string Correo 
         {
             get => txtEmail.Text.Trim();
             set => txtEmail.Text = value;
         }
-        public string Estado {
-            get => cmbEstado.SelectedItem?.ToString() ?? string.Empty;
-            set => cmbEstado.SelectedItem = value;
-        }
+
         public string FechaRegistro 
         {
             get => txtFechaRegistro.Text;
