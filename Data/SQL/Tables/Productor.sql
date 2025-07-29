@@ -8,7 +8,7 @@ CREATE TABLE Productor(
 )
 
 ALTER TABLE Productor
-    ADD CONSTRAINT PK_Productor PRIMARY KEY (ProductorID)
+    ADD CONSTRAINT PK_Productor PRIMARY KEY (ProductorID);
 ALTER TABLE Productor
 	ADD CONSTRAINT FK_Productor_Estado FOREIGN KEY (EstadoID) REFERENCES Estado(EstadoID);
 

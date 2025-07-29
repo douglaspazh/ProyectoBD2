@@ -18,12 +18,12 @@ namespace ProyectoBD2.Models
         [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
         public required string Nombre { get; set; }
 
-        public string? Direccion { get; set; }
+        public required string Direccion { get; set; }
 
         [Required(ErrorMessage = "El campo ExtensionTotal es obligatorio.")]
         [Range(0, double.MaxValue, ErrorMessage = "La extensión total debe ser un número positivo.")]
         [Precision(10, 2)]
-        public decimal ExtensionTotal { get; set; }
+        public required decimal ExtensionTotal { get; set; }
 
         public DateOnly FechaRegistro { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     }
