@@ -1,9 +1,10 @@
 use GrupoNo1
 --Codigos de error
 --50001 el campo esta vacio
---50002 tamaño incorrecto del varchar
---50003 correo valido
+--50002 tamaño incorrecto del campo
+--50003 correo invalido
 --50050 registro duplicado
+--50051 registro inexistente
 create or alter procedure spValidarCorreo
 @correo varchar(50)
 as
@@ -16,6 +17,19 @@ as
     END
 go
 
+create or alter procedure spValidarDecimal
+@nombre varchar(20),
+@campo varchar(20)
+as
+	declare @aux DECIMAL(10,2)
+	set @aux = TRY_CONVERT(DECIMAL(10,2), @campo)
+	if @aux is null
+	begin
+		declare @mensajeError varchar(200)
+		SET @mensajeError = 'El Campo ' + @nombre + ' debe ser un número válido entre 0 y 99,999,999.99.';
+		THROW 50002, @mensajeError, 1;
+	end
+go
 create or alter procedure spValidarCampoVarchar 
 @nombre varchar(50), 
 @campo varchar(50), 
@@ -57,17 +71,42 @@ as
 		exec spValidarCampoVarchar 'Documento', @Documento, 0, 13;
 		if @RTN != null
 			exec spValidarCampoVarchar 'RTN', @Correo, 0, 20;
-		if (select COUNT(*) from productor where Documento = @Documento) > 1
+		if (select COUNT(Documento) from productor where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
 		BEGIN TRANSACTION
-			DECLARE @ID INT;
-			SELECT @ID = ISNULL(MAX(ProductorID), 0) + 1 FROM Productor
+			declare @ID INT;
+			select @ID = ISNULL(MAX(ProductorID), 0) + 1 from Productor
 			insert into Productor (ProductorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN) values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN)
 			
 		COMMIT TRANSACTION
 
 	end try
 	begin catch
+		IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION; 
+		SELECT ERROR_NUMBER() as Estado,ERROR_MESSAGE() AS Mensaje;
+	end catch
+go
+--Nota: Los campos decimal, se tomaran como un varchar inicialmente para facilitar su validacion
+create or alter procedure spCrearFinca
+@PId int,
+@Nombre varchar(51), 
+@ExtencionTotal varchar(20)
+as
+	begin try
+		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 50;
+		exec spValidarDecimal 'Extension Total',@ExtencionTotal;
+		declare @ext DECIMAL(10,2)
+		set @ext = CONVERT(DECIMAL(10,2), @ExtencionTotal);
+		begin transaction
+			declare @ID INT;
+			select @ID = ISNULL(MAX(FincaID), 0) + 1 from Finca
+			if (select COUNT(ProductorID) from productor where ProductorID = @PId) != 1
+				THROW 50051, 'No existe este registro.', 1;
+			insert into Finca (FincaID, ProductorID,Nombre,ExtencionTotal) values (@ID, @PId,@Nombre,@ext)
+		commit transaction 
+	end try
+	begin catch	
 		IF @@TRANCOUNT > 0
         ROLLBACK TRANSACTION; 
 		SELECT ERROR_NUMBER() as Estado,ERROR_MESSAGE() AS Mensaje;

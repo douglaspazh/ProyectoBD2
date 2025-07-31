@@ -1,5 +1,5 @@
 use GrupoNo1
-
+--Agregar Listo
 create table Productor(
 	ProductorID int,
 	Nombre varchar(50),
@@ -17,6 +17,7 @@ create table Proveedor(
 	EstadoID int,
 	PeriodoDePagoDias int
 )
+
 create table Finca(
 	FincaID int,
 	ProductorID int,
