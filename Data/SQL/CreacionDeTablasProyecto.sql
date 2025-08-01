@@ -1,136 +1,142 @@
 use GrupoNo1
 --Agregar Listo
 create table Productor(
-	ProductorID int,
-	Nombre varchar(50),
-	Direccion varchar(50),
-	Telefono varchar(8),
-	Correo varchar(50),
-	EstadoID int
+	ProductorID int not null,
+	Nombre varchar(25) not null,
+	Apellido varchar(25) not null,
+	Documento varchar(13) not null,
+	RTN varchar(20) not null,
+	Direccion varchar(50) not null,
+	Telefono varchar(8) not null,
+	Correo varchar(50) null,
+	EstadoID int not null
 )
 create table Proveedor(
 	ProveedorID int,
-	Nombre varchar(50),
-	Direccion varchar(50),
-	Telefono varchar(8),
-	Correo varchar(50),
-	EstadoID int,
-	PeriodoDePagoDias int
+	Nombre varchar(25) not null,
+	Apellido varchar(25) not null,
+	Documento varchar(13) not null,
+	RTN varchar(20) not null,
+	Direccion varchar(50) not null,
+	Telefono varchar(8) not null,
+	Correo varchar(50) null,
+	EstadoID int not null,
+	PeriodoDePagoDias int not null
 )
 
 create table Finca(
-	FincaID int,
-	ProductorID int,
-	Nombre varchar(50),
-	ExtencionTotal decimal(10,2)
+	FincaID int not null,
+	ProductorID int not null,
+	Nombre varchar(50) not null,
+	ExtencionTotal decimal(10,2) not null,
+	UnidadMedidaID int null CONSTRAINT Finca_UnidadMedida DEFAULT 1
 )
 
 create table Lote(
-	LoteID int,
-	FincaID int,
-	Extencion decimal(10,2),
-	MaximoCosechas int,
-	TipoSuelo varchar(50),
-	TipoDeRiego varchar(50)
+	LoteID int not null,
+	FincaID int not null,
+	Extencion decimal(10,2) not null,
+	MaximoCosechas int not null,
+	TipoSuelo varchar(50) null,
+	TipoDeRiego varchar(50) null,
+	UnidadMedidaID int null CONSTRAINT Lote_UnidadMedida DEFAULT 1
 )
 
 create table Cosecha(
-	CosechaID int,
-	LoteID int,
-	CultivoID int,
-	FechaInicio date,
-	FechaFinal date,
-	EstadoID int,
-	CantidadCosechas int,
-	Precio decimal(10,2)
+	CosechaID int not null,
+	LoteID int not null,
+	CultivoID int not null,
+	FechaInicio date null,
+	FechaFinal date null,
+	EstadoID int not null,
+	CantidadCosechas int not null,
+	Precio decimal(10,2) not null
 )
 
 create table Cultivo(
-	CultivoID int,
-	Nombre varchar(50),
-	Observaciones varchar(150)
+	CultivoID int not null,
+	ProductoID int not null,
+	Nombre varchar(50) not null,
+	Observaciones varchar(150) null
 )
 
 create table Estado(
-	EstadoID int,
-	Nombre varchar(25),
-	Observaciones varchar(150)
+	EstadoID int not null,
+	Nombre varchar(25) not null,
+	Observaciones varchar(150) null
 )
 
 --Esta es una tabla a la que realmente deberian tener acceso solo los proveedores, pues 
 --son datos que dependen de que tienen cada uno de ellos realmente. Cosa que nosotros como
 --empresa no lo manejamos realmente, pero por cualquier cosa yo la agrego a manera de registros.
-create table ProveedorInsumo(
-	ProveedorID int,
-	ProductoID int,
-	EstadoID int,
-	Precio decimal(10,2),
-	CantidadDisponible int
-)
+
+--En tentativa de eliminar
+--create table ProveedorInsumo(
+--	ProveedorID int not null,
+--	ProductoID int not null,
+--	EstadoID int not null,
+--	Precio decimal(10,2) not null,
+--	CantidadDisponible int not null
+--)
 
 create table Compra(
-	CompraID int,
-	ProveedorID int,
-	impuesto decimal(10,2),
-	Fecha date
+	CompraID int not null,
+	ProveedorID int not null,
+	impuesto decimal(10,2) null,
+	Fecha date not null
 )
 
 create table CompraDetalle(
-	CompraDetalleID int,
-	CompraID int,
-	ProductoID int,
-	Cantidad int,
-	PrecioUnitario decimal(10,2),
-	BodegaID int, --Al momento de la compra, se asigna tambien la bodega en la que sera ubicada
+	CompraDetalleID int not null,
+	CompraID int not null,
+	ProductoID int not null,
+	Cantidad int not null,
+	PrecioUnitario decimal(10,2) not null,
+	BodegaID int not null, --Al momento de la compra, se asigna tambien la bodega en la que sera ubicada
 )
 
 create table Bodega(
-	BodegaID int,
-	CapacidadAlmacen int,
-	Observaciones varchar(150),
+	BodegaID int not null,
+	CapacidadAlmacen int not null,
+	Observaciones varchar(150) null,
 )
 create table BodegaDetalle(
-	BodegaDetalleID int,
-	BodegaID int,
-	ProductoID int,
-	Cantidad int,
-	FechaEntrada datetime
+	BodegaDetalleID int not null,
+	BodegaID int not null,
+	ProductoID int not null,
+	Cantidad int not null,
+	FechaEntrada datetime not null
 )
 create table TrasladoBodega(
-	TrasladoBodegaID int,
-	BodegaOrigenID int,
-	BodegaDestinoID int,
-	ProductoID int,
-	Cantidad int
+	TrasladoBodegaID int not null,
+	BodegaOrigenID int not null,
+	BodegaDestinoID int not null,
+	ProductoID int not null,
+	Cantidad int not null,
 )
 
 create table EntradaCosecha(
-	EntradaCosechaID int,
-	CosechaID int,
-	ProductoID int,
-	Cantidad int,
-	PrecioUnitario int,
-	FechaIngreso date
-)
---tablas de asignacion del producto a las bodegas,
---se manejara asi para tener mas flexibilidad a la hora de ubicar el producto en las bodegas
-
-create table CosechaBodega(
-	EntradaCosechaID int,
-	BodegaID int,
-	Cantidad int
-)
-
-create table CompraBodega(
-	CompraDetalleID int,
-	BodegaID int,
-	Cantidad int
+	EntradaCosechaID int not null,
+	CosechaID int not null,
+	ProductoID int not null,
+	BodegaID int not null,
+	Cantidad int not null,
+	PrecioUnitario int not null,
+	FechaIngreso date not null,
 )
 
 create table Producto(
-	ProductoID int,
-	Nombre varchar(50),
-	UnidadMedida varchar(10),
-	CategoriaID int
+	ProductoID int not null,
+	Nombre varchar(50) not null,
+	UnidadMedida varchar(10) not null,
+	CategoriaID int not null
 )
 
+create table UnidadMedida(
+	UnidadMedidaID int not null,
+	Nombre varchar(50) not null,
+	Observaciones varchar(150) null,
+)
+
+--Registro de unidad hectareas
+insert into UnidadMedida (UnidadMedidaID, Nombre, Observaciones) values (1,'Hectarea','Campo por defecto de las extenciones de finca')
