@@ -22,7 +22,7 @@ create table Proveedor(
 	Correo varchar(50) null,
 	EstadoID int not null,
 	PeriodoDePagoDias int not null,
-	TasaInteres decimal(10,2)
+	TasaInteres decimal(10,2) not null
 )
 
 create table Finca(
@@ -42,7 +42,6 @@ create table Lote(
 	TipoDeRiego varchar(50) null,
 	UnidadMedidaID int null CONSTRAINT Lote_UnidadMedida DEFAULT 1
 )
-
 create table Cosecha(
 	CosechaID int not null,
 	LoteID int not null,
@@ -56,7 +55,7 @@ create table Cosecha(
 
 create table Cultivo(
 	CultivoID int not null,
-	ProductoID int not null,
+	ProductoID varchar(12) not null,
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null
 )
@@ -66,52 +65,50 @@ create table Estado(
 	Nombre varchar(25) not null,
 	Observaciones varchar(150) null
 )
-
 --Esta es una tabla a la que realmente deberian tener acceso solo los proveedores, pues 
 --son datos que dependen de que tienen cada uno de ellos realmente. Cosa que nosotros como
 --empresa no lo manejamos realmente, pero por cualquier cosa yo la agrego a manera de registros.
 
---En tentativa de eliminar
---create table ProveedorInsumo(
---	ProveedorID int not null,
---	ProductoID int not null,
---	EstadoID int not null,
---	Precio decimal(10,2) not null,
---	CantidadDisponible int not null
---)
 
+create table ProveedorInsumo(
+	ProveedorID int not null,
+	ProductoID varchar(12) not null,
+	EstadoID int not null,--(Disponible, agotado)
+	Precio decimal(10,2) not null,
+)
 create table Compra(
 	CompraID int not null,
 	ProveedorID int not null,
-	impuesto decimal(10,2) null,
-	Fecha date not null
+	Impuesto decimal(10,2) null,
+	Descuento decimal(10,2) null,
+	Fecha date not null,
+	EstadoID int null CONSTRAINT Compra_sin_abono DEFAULT 30001
 )
 
 create table CompraDetalle(
 	CompraDetalleID int not null,
 	CompraID int not null,
-	ProductoID int not null,
+	ProductoID varchar(12) not null,
 	Cantidad int not null,
 	PrecioUnitario decimal(10,2) not null,
-	BodegaID int not null, --Al momento de la compra, se asigna tambien la bodega en la que sera ubicada
+	BodegaID varchar(2) not null, --Al momento de la compra, se asigna tambien la bodega en la que sera ubicada
 )
 
 create table Bodega(
-	BodegaID int not null,
-	CapacidadAlmacen int not null,
+	BodegaID varchar(2) not null,
 	Observaciones varchar(150) null,
 )
 create table BodegaDetalle(
 	BodegaDetalleID int not null,
-	BodegaID int not null,
-	ProductoID int not null,
+	BodegaID varchar(2) not null,
+	ProductoID varchar(12) not null,
 	Cantidad int not null,
 	FechaEntrada datetime not null
 )
 create table TrasladoBodega(
 	TrasladoBodegaID int not null,
-	BodegaOrigenID int not null,
-	BodegaDestinoID int not null,
+	BodegaOrigenID varchar(2) not null,
+	BodegaDestinoID varchar(2) not null,
 	ProductoID int not null,
 	Cantidad int not null,
 )
@@ -119,7 +116,7 @@ create table TrasladoBodega(
 create table EntradaCosecha(
 	EntradaCosechaID int not null,
 	CosechaID int not null,
-	ProductoID int not null,
+	ProductoID varchar(12) not null,
 	BodegaID int not null,
 	Cantidad int not null,
 	PrecioUnitario int not null,
@@ -143,7 +140,6 @@ create table Categoria(
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null
 )
-
 create table Cliente(
 
 	ClienteID	int			not null,
