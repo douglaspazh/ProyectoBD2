@@ -202,7 +202,7 @@ as
 		--Evaluacion del terreno disponible
 		declare @ext DECIMAL(10,2),@extotal DECIMAL(10,2),@sumext DECIMAL(10,2)
 
-		set @ext = CONVERT(DECIMAL(10,2), @Extencion);
+		set @ext = convert(decimal(10,2), @Extencion);
 
 		select @extotal = ExtencionTotal from Finca where FincaID = @FincaID
 		
@@ -235,6 +235,80 @@ as
 		SELECT ERROR_NUMBER() as Estado,ERROR_MESSAGE() AS Mensaje;
 	end catch
 go
+--Procedimiento para crear un cultivo
+create or alter procedure spCrearCultivo 
+@ProductoID int, 
+@Nombre	varchar(51), 
+@Observaciones varchar(151) = null
+as
+	begin try
+		if (select count(ProductoID) from Producto where ProductoID = @ProductoID) = 0
+			THROW 50051, 'No existe el producto referenciado', 1;	
+		exec spValidarCampoVarchar 'Nombre', @Nombre, 1, 50;
+		if exists(select ProductoID from Cultivo where ProductoID = @ProductoID)
+			THROW 50050, 'El cultivo ya existe para ese producto', 1;
+		if @Observaciones != null
+			exec spValidarCampoVarchar 'Observaciones', @Observaciones, 0, 150;
+		BEGIN TRANSACTION
+			declare @ID int;
+			select @ID = ISNULL(MAX(CultivoID), 0) + 1 from Cultivo
+			insert into Cultivo (CultivoID, ProductoID, Nombre, Observaciones) Values (@ID, @ProductoID, @Nombre, @Observaciones)
+		COMMIT TRANSACTION
+	end try
+	begin catch
+		if @@TRANCOUNT > 0
+		rollback transaction
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+	end catch
+go
+--Procedimiento para crear una cosecha
+Create or alter procedure spCrearCosecha 
+@LoteID	int,
+@CultivoID int,
+@FechaInicio date = null,
+@FechaFinal date = null,
+@CantidadCosechas int,	--Voy a tratar CantidadCosechas como ciclos de cosecha esperados de una cosecha :P
+@Precio	varchar(20)
+as
+	begin try
+		if not exists(select LoteID from Lote where LoteID = @LoteID)
+			THROW 50051, 'No existe el lote solicitado', 1;
+		
+		if not exists(select CultivoID from Cultivo where CultivoID = @CultivoID)
+			THROW 50051, 'No existe el cultivo solicitado', 1;
+		
+		if @FechaInicio is null and @FechaFinal is not null
+		begin
+			THROW 50004, 'No puede existir fecha final sin una fecha inicial', 1;
+		end
+		if @FechaInicio is not null and @FechaFinal is not null
+		begin
+			if @FechaInicio >= @FechaFinal
+			THROW 50004, 'La fecha final de la cosecha es igual o mas vieja que la fecha de inicio', 1;
+		end
+		
+		exec spValidarDecimal 'Precio', @Precio;
+		declare @p decimal(10,2);
+		set @p = convert(decimal(10,2), @Precio);
+		BEGIN TRANSACTION
+
+		declare @ID int;
+		select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
+		insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
+			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 10001, @CantidadCosechas, @p)
+			--NOTA: en el estadoID, se utilizaran otros campos el 10001 no es uno que deberia ser admitido como tal
+			--Algunos estados podrian ser en curso, finalizada y entregada.
+		COMMIT TRANSACTION
+	end try
+
+	begin catch
+		
+		if @@TRANCOUNT > 0
+		ROLLBACK TRANSACTION
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+	end catch
+go
+
 
 --Ejemplo:
 --exec spCrearLote
