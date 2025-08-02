@@ -1,16 +1,18 @@
 ﻿using ProyectoBD2.Models;
+using System.Data;
 
 namespace ProyectoBD2.Repositories.Interfaces
 {
     public interface IProductorRepository
     {
-        void AddProductor( Productor productor );
-        void UpdateProductor( Productor productor );
+        void AddProductor( Dictionary<string, dynamic> productorData );
+        void UpdateProductor( Dictionary<string, dynamic> productorData );
         void DeleteProductor( int productorId );
 
-        IEnumerable<ProductorDto> GetAllProductores();
-        IEnumerable<ProductorDto> GetByValue( string value );
-        IEnumerable<ProductorDto> GetByEstado( int estadoId );
-        IEnumerable<Estado> GetAllEstados();
+        DataTable GetAllProductores();
+        DataTable GetProductorById( int productorId );
+        DataTable GetByValue( string value );
+        DataTable GetByEstado( int estadoId );
+        DataTable GetAllEstados();
     }
 }
