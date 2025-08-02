@@ -21,7 +21,8 @@ create table Proveedor(
 	Telefono varchar(8) not null,
 	Correo varchar(50) null,
 	EstadoID int not null,
-	PeriodoDePagoDias int not null
+	PeriodoDePagoDias int not null,
+	TasaInteres decimal(10,2)
 )
 
 create table Finca(
@@ -126,10 +127,10 @@ create table EntradaCosecha(
 )
 
 create table Producto(
-	ProductoID int not null,
+	ProductoID varchar(12) not null,
 	Nombre varchar(50) not null,
 	UnidadMedida varchar(10) not null,
-	CategoriaID int not null
+	CategoriaID int null
 )
 
 create table UnidadMedida(
@@ -137,6 +138,11 @@ create table UnidadMedida(
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null,
 )
-
+create table Categoria(
+	CategoriaID int not null,
+	Nombre varchar(50) not null,
+	Observaciones varchar(150) null
+)
+insert into Categoria (CategoriaID,Nombre) values (1,'Legumbres')
 --Registro de unidad hectareas
 insert into UnidadMedida (UnidadMedidaID, Nombre, Observaciones) values (1,'Hectarea','Campo por defecto de las extenciones de finca')

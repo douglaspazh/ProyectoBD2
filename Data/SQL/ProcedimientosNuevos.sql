@@ -86,7 +86,8 @@ create or alter procedure spCrearProveedor
 @Correo varchar(51),
 @Documento varchar(14),
 @RTN varchar(21) = null,
-@PeriodoDePagoDias int
+@PeriodoDePagoDias int,
+@TasaInteres varchar(20)
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
@@ -97,6 +98,9 @@ as
 		exec spValidarCorreo @Correo;
 		exec spValidarCampoVarchar 'Documento', @Documento, 0, 13;
 		exec spValidarCampoInt @PeriodoDePagoDias,'Periodo de pago';
+		exec spValidarDecimal 'Tasa de interes',@TasaInteres;
+		declare @tasaI DECIMAL(10,2)
+		set @tasaI = CONVERT(DECIMAL(10,2), @TasaInteres);
 		if @RTN != null
 			exec spValidarCampoVarchar 'RTN', @RTN, 0, 20;
 		if (select COUNT(Documento) from proveedor where Documento = @Documento) > 1
@@ -104,7 +108,8 @@ as
 		BEGIN TRANSACTION
 			declare @ID INT;
 			select @ID = ISNULL(MAX(ProveedorID), 0) + 1 from proveedor
-			insert into Proveedor (ProveedorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN,PeriodoDePagoDias) values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias)
+			insert into Proveedor (ProveedorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN,PeriodoDePagoDias,TasaInteres)
+			values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias,@tasaI)
 			
 		COMMIT TRANSACTION
 
@@ -238,7 +243,7 @@ as
 go
 --Procedimiento para crear un cultivo
 create or alter procedure spCrearCultivo 
-@ProductoID int, 
+@ProductoID varchar(13), 
 @Nombre	varchar(51), 
 @Observaciones varchar(151) = null
 as
@@ -293,9 +298,9 @@ as
 		set @p = convert(decimal(10,2), @Precio);
 		BEGIN TRANSACTION
 
-		declare @ID int;
-		select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
-		insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
+			declare @ID int;
+			select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
+			insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
 			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 10001, @CantidadCosechas, @p)
 			--NOTA: en el estadoID, se utilizaran otros campos el 10001 no es uno que deberia ser admitido como tal
 			--Algunos estados podrian ser en curso, finalizada y entregada.
@@ -309,8 +314,62 @@ as
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
+--Procedimiento para crear productos
+create or alter procedure spCrearProducto
+@ProductoID varchar(13),
+@Nombre varchar(51),
+@UnidadMedida varchar(11),
+@CategoriaID int = null
+as
+	begin try
+		exec spValidarCampoVarchar 'Codigo de producto', @ProductoID, 12, 12;--Se utiliza a manera de codigo de barras
+		if exists(select ProductoID from producto where ProductoID = @ProductoID)
+				THROW 50050, 'El codigo ingresado ya existe', 1;
+		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 50;
+		exec spValidarCampoVarchar 'Unidad de medida', @UnidadMedida, 0, 10;
 
+		if @CategoriaID is not null
+		begin 
+			if not exists(select CategoriaID from categoria where CategoriaID = @CategoriaID)
+				THROW 50051, 'No existe esta categoria', 1;
+		end
+		BEGIN TRANSACTION
 
+			insert into Producto (ProductoID, Nombre, UnidadMedida, CategoriaID) 
+				values (@ProductoID, @Nombre, @UnidadMedida, @CategoriaID)
+		COMMIT TRANSACTION
+	end try
+	begin catch
+		if @@TRANCOUNT > 0
+		ROLLBACK TRANSACTION
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+	end catch
+go
+--Procedimiento para crear una categoria
+create or alter procedure spCrearCategoria
+@CategoriaID int,
+@Nombre varchar(51),
+@Observaciones varchar(151) = null
+as
+	begin try
+		if exists(select CategoriaID from Categoria where CategoriaID = @CategoriaID)
+				THROW 50050, 'El codigo ingresado ya existe', 1;
+		exec spValidarCampoVarchar 'Nombre Categoria', @Nombre, 0, 50;--Se utiliza a manera de codigo de barras
+		if @Observaciones is not null
+			exec spValidarCampoVarchar 'Observaciones', @Observaciones, 0, 150;
+
+		BEGIN TRANSACTION
+
+			insert into Categoria (CategoriaID, Nombre, Observaciones) 
+				values (@CategoriaID, @Nombre, @Observaciones)
+		COMMIT TRANSACTION
+	end try
+	begin catch
+		if @@TRANCOUNT > 0
+		ROLLBACK TRANSACTION
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+	end catch
+go
 --Ejemplo:
 --exec spCrearLote
 --@fincaid =2,
