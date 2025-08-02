@@ -268,7 +268,7 @@ as
 	end catch
 go
 --Procedimiento para crear una cosecha
-Create or alter procedure spCrearCosecha 
+create or alter procedure spCrearCosecha 
 @LoteID	int,
 @CultivoID int,
 @FechaInicio date = null,
@@ -279,31 +279,38 @@ as
 	begin try
 		if not exists(select LoteID from Lote where LoteID = @LoteID)
 			THROW 50051, 'No existe el lote solicitado', 1;
-		
+
 		if not exists(select CultivoID from Cultivo where CultivoID = @CultivoID)
 			THROW 50051, 'No existe el cultivo solicitado', 1;
 		
 		if @FechaInicio is null and @FechaFinal is not null
-		begin
 			THROW 50004, 'No puede existir fecha final sin una fecha inicial', 1;
-		end
+		
 		if @FechaInicio is not null and @FechaFinal is not null
 		begin
 			if @FechaInicio >= @FechaFinal
 			THROW 50004, 'La fecha final de la cosecha es igual o mas vieja que la fecha de inicio', 1;
 		end
+
+		if @CantidadCosechas = 0
+			THROW 50001, 'La cantidad esperada de cosechas debe ser mayor a 0', 1;
+	
+		if (select EstadoID from Cosecha where LoteID = @LoteID) = 20001
+			THROW 50052, 'El lote seleccionado esta ocupado por un cultivo en crecimiento', 1;
+		
+		if (select EstadoID from Cosecha where LoteID = @LoteID) = 20002
+			THROW 50052, 'El lote seleccionado esta ocupado por un cultivo aun no cosechado y entregado', 1
 		
 		exec spValidarDecimal 'Precio', @Precio;
 		declare @p decimal(10,2);
 		set @p = convert(decimal(10,2), @Precio);
+		
 		BEGIN TRANSACTION
-
-			declare @ID int;
-			select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
-			insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
-			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 10001, @CantidadCosechas, @p)
-			--NOTA: en el estadoID, se utilizaran otros campos el 10001 no es uno que deberia ser admitido como tal
-			--Algunos estados podrian ser en curso, finalizada y entregada.
+		declare @ID int;
+		select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
+		insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
+			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 20001, @CantidadCosechas, @p) 
+			--Se crea el registro asumiendo que el la cosecha esta recien plantada. Quizas mas adelante se puede manejar con un ComboBox en la pantalla pertinente 
 		COMMIT TRANSACTION
 	end try
 
