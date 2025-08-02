@@ -1,8 +1,7 @@
-﻿using ProyectoBD2.Models;
-using ProyectoBD2.Presenters;
+﻿using ProyectoBD2.Presenters;
 using ProyectoBD2.Repositories.Implementations;
 using ProyectoBD2.Views.Interfaces;
-using System.Diagnostics;
+using System.Data;
 
 namespace ProyectoBD2.Views.Forms
 {
@@ -25,8 +24,6 @@ namespace ProyectoBD2.Views.Forms
 
             if ( dgvProductores.Columns.Contains( "ProductorID" ) )
                 dgvProductores.Columns["ProductorID"].Visible = false;
-            if ( dgvProductores.Columns.Contains( "FechaRegistro" ) )
-                dgvProductores.Columns["FechaRegistro"].Visible = false;
             if ( dgvProductores.Columns.Contains( "EstadoID" ) )
                 dgvProductores.Columns["EstadoID"].Visible = false;
 
@@ -125,9 +122,15 @@ namespace ProyectoBD2.Views.Forms
             btnAnterior.Enabled = currentPage > 1;
         }
 
-        public void CargarEstados(IEnumerable<Estado> estados)
+        // Replace the problematic line in the CargarEstados method
+        public void CargarEstados( DataTable estados )
         {
-            cmbEstado.DataSource ??= estados.ToList();
+            cmbEstado.DataSource ??= estados.AsEnumerable().Select( row => new
+            {
+                Nombre = row["Nombre"],
+                EstadoID = row["EstadoID"]
+            } ).ToList();
+
             cmbEstado.DisplayMember = "Nombre";
             cmbEstado.ValueMember = "EstadoID";
         }
@@ -148,6 +151,26 @@ namespace ProyectoBD2.Views.Forms
             get => txtNombre.Text.Trim();
             set => txtNombre.Text = value;
         }
+        public string Apellido 
+        {
+            get => txtApellido.Text.Trim();
+            set => txtApellido.Text = value;
+        }
+        public string Documento 
+        {
+            get => txtDocumento.Text.Trim();
+            set => txtDocumento.Text = value;
+        }
+        public string RTN 
+        {
+            get => txtRTN.Text.Trim();
+            set => txtRTN.Text = value;
+        }
+        public string Direccion 
+        {
+            get => txtDireccion.Text.Trim();
+            set => txtDireccion.Text = value;
+        }
         public string Telefono 
         {
             get => txtTelefono.Text.Trim();
@@ -159,11 +182,6 @@ namespace ProyectoBD2.Views.Forms
             set => txtEmail.Text = value;
         }
 
-        public string FechaRegistro 
-        {
-            get => txtFechaRegistro.Text;
-            set => txtFechaRegistro.Text = value;
-        }
         public string SearchTerm {
             get => txtBuscar.Text.Trim();
             set => txtBuscar.Text = value;
@@ -176,8 +194,6 @@ namespace ProyectoBD2.Views.Forms
                 isEditing = value;
                 lblProductorID.Visible = value;
                 txtProductorID.Visible = value;
-                lblFechaRegistro.Visible = value;
-                txtFechaRegistro.Visible = value;
                 btnGuardar.Text = value ? "Actualizar" : "Guardar";
             }
         }

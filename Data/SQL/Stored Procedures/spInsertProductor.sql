@@ -1,16 +1,39 @@
--- Procedimiento para insertar un nuevo productor
 CREATE OR ALTER PROCEDURE spInsertProductor
-    @Nombre         VARCHAR(100),
-    @Telefono       VARCHAR(20),
-    @Correo         VARCHAR(100),
-    @EstadoID       INT
+    @Nombre     VARCHAR(26), 
+    @Apellido   VARCHAR(26), 
+    @Direccion  VARCHAR(51), 
+    @Telefono   VARCHAR(9), 
+    @Correo     VARCHAR(151),
+    @Documento  VARCHAR(14),
+    @RTN        VARCHAR(21) = NULL
 AS
-    DECLARE @ID INT;
+BEGIN TRY
+    -- Validaciones de campos
+		EXEC spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
+		EXEC spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
+		EXEC spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
+		EXEC spValidarCampoVarchar 'Telefono', @Telefono, 8, 8;
+		EXEC spValidarCampoVarchar 'Correo', @Correo, 0, 50;
+		EXEC spValidarCorreo @Correo;
+		EXEC spValidarCampoVarchar 'Documento', @Documento, 0, 13;
 
-    IF NOT EXISTS(SELECT * FROM Productor WHERE Nombre = @Nombre)
-        BEGIN
-            SELECT @ID = ISNULL(MAX(ProductorID), 0) + 1 FROM Productor;
-            INSERT INTO Productor (ProductorID, Nombre, Telefono, Correo, EstadoID)
-            VALUES (@ID, @Nombre, @Telefono, @Correo, @EstadoID);
-        END
+		IF @RTN != NULL
+			EXEC spValidarCampoVarchar 'RTN', @RTN, 0, 20;
+		
+        IF (SELECT COUNT(Documento) FROM productor WHERE Documento = @Documento) > 0
+			THROW 50050, 'Ya existe este registro.', 1;			
+
+        -- Inserción del nuevo productor
+        BEGIN TRANSACTION
+			DECLARE @ID INT;
+			SELECT @ID = ISNULL(MAX(ProductorID), 0) + 1 FROM Productor
+			INSERT INTO Productor (ProductorID, Nombre, Apellido, Direccion, Telefono, Correo, EstadoID, Documento, RTN) 
+            VALUES (@ID, @Nombre, @Apellido, @Direccion, @Telefono, @Correo, 10001, @Documento, @RTN)
+		COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+		IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION; 
+		SELECT ERROR_NUMBER() AS Estado, ERROR_MESSAGE() AS Mensaje;
+    END CATCH
 GO

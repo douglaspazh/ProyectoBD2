@@ -1,4 +1,5 @@
 ﻿using ProyectoBD2.Models;
+using System.Data;
 
 namespace ProyectoBD2.Views.Interfaces
 {
@@ -7,11 +8,13 @@ namespace ProyectoBD2.Views.Interfaces
         // Properties
         int ProductorID { get; set; }
         string Nombre { get; set; }
+        string Apellido { get; set; }
         string Telefono { get; set; }
+        string Documento { get; set; }
+        string RTN { get; set; }
         string Correo { get; set; }
+        string Direccion { get; set; }
         int EstadoID { get; set; }
-        string FechaRegistro { get; set; }
-
         string SearchTerm { get; set; }
         bool IsEditing { get; set; }
         bool IsSuccessful { get; set; }
@@ -30,6 +33,6 @@ namespace ProyectoBD2.Views.Interfaces
         // Methods
         void SetListBindingSource( BindingSource productores );
         void DisplayPageRange( int currentPage, int totalPages, int totalRecords );
-        void CargarEstados(IEnumerable<Estado> estados);
+        void CargarEstados(DataTable estados);
     }
 }

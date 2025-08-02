@@ -50,10 +50,16 @@
             lblPaginas = new Label();
             lblTotalRegistros = new Label();
             tbpDetalle = new TabPage();
+            txtApellido = new TextBox();
+            label10 = new Label();
+            txtDireccion = new TextBox();
+            label9 = new Label();
+            txtRTN = new TextBox();
+            label8 = new Label();
+            txtDocumento = new TextBox();
+            label7 = new Label();
             txtProductorID = new TextBox();
             lblProductorID = new Label();
-            txtFechaRegistro = new TextBox();
-            lblFechaRegistro = new Label();
             pictureBox = new PictureBox();
             btnCancelar = new Button();
             btnGuardar = new Button();
@@ -164,7 +170,7 @@
             txtBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             txtBuscar.Location = new Point( 8, 31 );
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size( 361, 25 );
+            txtBuscar.Size = new Size( 338, 25 );
             txtBuscar.TabIndex = 6;
             // 
             // btnBuscar
@@ -172,7 +178,7 @@
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.AutoSize = true;
             btnBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnBuscar.Location = new Point( 375, 29 );
+            btnBuscar.Location = new Point( 352, 29 );
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size( 84, 27 );
             btnBuscar.TabIndex = 7;
@@ -335,10 +341,16 @@
             // 
             // tbpDetalle
             // 
+            tbpDetalle.Controls.Add( txtApellido );
+            tbpDetalle.Controls.Add( label10 );
+            tbpDetalle.Controls.Add( txtDireccion );
+            tbpDetalle.Controls.Add( label9 );
+            tbpDetalle.Controls.Add( txtRTN );
+            tbpDetalle.Controls.Add( label8 );
+            tbpDetalle.Controls.Add( txtDocumento );
+            tbpDetalle.Controls.Add( label7 );
             tbpDetalle.Controls.Add( txtProductorID );
             tbpDetalle.Controls.Add( lblProductorID );
-            tbpDetalle.Controls.Add( txtFechaRegistro );
-            tbpDetalle.Controls.Add( lblFechaRegistro );
             tbpDetalle.Controls.Add( pictureBox );
             tbpDetalle.Controls.Add( btnCancelar );
             tbpDetalle.Controls.Add( btnGuardar );
@@ -358,10 +370,83 @@
             tbpDetalle.Text = "Detalle de productor";
             tbpDetalle.UseVisualStyleBackColor = true;
             // 
+            // txtApellido
+            // 
+            txtApellido.Location = new Point( 400, 51 );
+            txtApellido.MaxLength = 25;
+            txtApellido.Name = "txtApellido";
+            txtApellido.Size = new Size( 179, 23 );
+            txtApellido.TabIndex = 33;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label10.Location = new Point( 400, 31 );
+            label10.Name = "label10";
+            label10.Size = new Size( 59, 17 );
+            label10.TabIndex = 32;
+            label10.Text = "Apellido:";
+            // 
+            // txtDireccion
+            // 
+            txtDireccion.Location = new Point( 179, 307 );
+            txtDireccion.MaxLength = 150;
+            txtDireccion.Multiline = true;
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.Size = new Size( 247, 47 );
+            txtDireccion.TabIndex = 31;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label9.Location = new Point( 180, 287 );
+            label9.Name = "label9";
+            label9.Size = new Size( 65, 17 );
+            label9.TabIndex = 30;
+            label9.Text = "Dirección:";
+            // 
+            // txtRTN
+            // 
+            txtRTN.Location = new Point( 400, 115 );
+            txtRTN.MaxLength = 20;
+            txtRTN.Name = "txtRTN";
+            txtRTN.Size = new Size( 154, 23 );
+            txtRTN.TabIndex = 29;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label8.Location = new Point( 400, 95 );
+            label8.Name = "label8";
+            label8.Size = new Size( 35, 17 );
+            label8.TabIndex = 28;
+            label8.Text = "RTN:";
+            // 
+            // txtDocumento
+            // 
+            txtDocumento.Location = new Point( 179, 115 );
+            txtDocumento.MaxLength = 13;
+            txtDocumento.Name = "txtDocumento";
+            txtDocumento.Size = new Size( 154, 23 );
+            txtDocumento.TabIndex = 27;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label7.Location = new Point( 180, 95 );
+            label7.Name = "label7";
+            label7.Size = new Size( 78, 17 );
+            label7.TabIndex = 26;
+            label7.Text = "Documento:";
+            // 
             // txtProductorID
             // 
             txtProductorID.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            txtProductorID.Location = new Point( 556, 49 );
+            txtProductorID.Location = new Point( 637, 49 );
             txtProductorID.Name = "txtProductorID";
             txtProductorID.ReadOnly = true;
             txtProductorID.Size = new Size( 100, 25 );
@@ -372,31 +457,11 @@
             // 
             lblProductorID.AutoSize = true;
             lblProductorID.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            lblProductorID.Location = new Point( 556, 29 );
+            lblProductorID.Location = new Point( 637, 29 );
             lblProductorID.Name = "lblProductorID";
             lblProductorID.Size = new Size( 81, 17 );
             lblProductorID.TabIndex = 24;
             lblProductorID.Text = "ProductorID:";
-            // 
-            // txtFechaRegistro
-            // 
-            txtFechaRegistro.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            txtFechaRegistro.Location = new Point( 556, 245 );
-            txtFechaRegistro.Name = "txtFechaRegistro";
-            txtFechaRegistro.ReadOnly = true;
-            txtFechaRegistro.Size = new Size( 134, 25 );
-            txtFechaRegistro.TabIndex = 23;
-            txtFechaRegistro.TabStop = false;
-            // 
-            // lblFechaRegistro
-            // 
-            lblFechaRegistro.AutoSize = true;
-            lblFechaRegistro.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            lblFechaRegistro.Location = new Point( 556, 225 );
-            lblFechaRegistro.Name = "lblFechaRegistro";
-            lblFechaRegistro.Size = new Size( 116, 17 );
-            lblFechaRegistro.TabIndex = 22;
-            lblFechaRegistro.Text = "Fecha de Registro:";
             // 
             // pictureBox
             // 
@@ -410,7 +475,7 @@
             // btnCancelar
             // 
             btnCancelar.Font = new Font( "Segoe UI", 9.75F );
-            btnCancelar.Location = new Point( 285, 315 );
+            btnCancelar.Location = new Point( 285, 457 );
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size( 100, 30 );
             btnCancelar.TabIndex = 20;
@@ -420,7 +485,7 @@
             // btnGuardar
             // 
             btnGuardar.Font = new Font( "Segoe UI", 9.75F );
-            btnGuardar.Location = new Point( 179, 315 );
+            btnGuardar.Location = new Point( 179, 457 );
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size( 100, 30 );
             btnGuardar.TabIndex = 19;
@@ -432,7 +497,7 @@
             cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEstado.Font = new Font( "Segoe UI", 9.75F );
             cmbEstado.FormattingEnabled = true;
-            cmbEstado.Location = new Point( 180, 254 );
+            cmbEstado.Location = new Point( 180, 396 );
             cmbEstado.Name = "cmbEstado";
             cmbEstado.Size = new Size( 121, 25 );
             cmbEstado.TabIndex = 18;
@@ -441,7 +506,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font( "Segoe UI", 9.75F );
-            label4.Location = new Point( 180, 234 );
+            label4.Location = new Point( 180, 376 );
             label4.Name = "label4";
             label4.Size = new Size( 51, 17 );
             label4.TabIndex = 17;
@@ -450,16 +515,17 @@
             // txtEmail
             // 
             txtEmail.Font = new Font( "Segoe UI", 9.75F );
-            txtEmail.Location = new Point( 179, 179 );
+            txtEmail.Location = new Point( 179, 245 );
+            txtEmail.MaxLength = 50;
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size( 221, 25 );
+            txtEmail.Size = new Size( 217, 25 );
             txtEmail.TabIndex = 16;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font( "Segoe UI", 9.75F );
-            label3.Location = new Point( 179, 159 );
+            label3.Location = new Point( 179, 225 );
             label3.Name = "label3";
             label3.Size = new Size( 52, 17 );
             label3.TabIndex = 15;
@@ -468,7 +534,8 @@
             // txtTelefono
             // 
             txtTelefono.Font = new Font( "Segoe UI", 9.75F );
-            txtTelefono.Location = new Point( 180, 113 );
+            txtTelefono.Location = new Point( 180, 179 );
+            txtTelefono.MaxLength = 8;
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size( 142, 25 );
             txtTelefono.TabIndex = 14;
@@ -477,7 +544,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font( "Segoe UI", 9.75F );
-            label5.Location = new Point( 179, 93 );
+            label5.Location = new Point( 179, 159 );
             label5.Name = "label5";
             label5.Size = new Size( 61, 17 );
             label5.TabIndex = 13;
@@ -487,8 +554,9 @@
             // 
             txtNombre.Font = new Font( "Segoe UI", 9.75F );
             txtNombre.Location = new Point( 179, 49 );
+            txtNombre.MaxLength = 25;
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size( 308, 25 );
+            txtNombre.Size = new Size( 180, 25 );
             txtNombre.TabIndex = 12;
             // 
             // lblNombre
@@ -548,8 +616,6 @@
         private Label label5;
         private TextBox txtNombre;
         private Label lblNombre;
-        private TextBox txtFechaRegistro;
-        private Label lblFechaRegistro;
         private Label lblProductorID;
         private TextBox txtProductorID;
         private BindingSource productorBindingSource1;
@@ -562,5 +628,13 @@
         private ComboBox cmbRecordsPerPage;
         private Label label6;
         private Label lblRecordsPerPage;
+        private TextBox txtRTN;
+        private Label label8;
+        private TextBox txtDocumento;
+        private Label label7;
+        private TextBox txtDireccion;
+        private Label label9;
+        private TextBox txtApellido;
+        private Label label10;
     }
 }
