@@ -143,6 +143,37 @@ create table Categoria(
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null
 )
+
+create table Cliente(
+
+	ClienteID	int			not null,
+	Documento	varchar(13) not null,
+	RTN			varchar(14) null,
+	Telefono	varchar(8)	not null,
+	Correo		varchar(50)	null,
+
+)
+
+create table Factura(
+
+	FacturaID	int			 not null,
+	Fecha		date		 not null,
+	Impuesto	float		 not null,
+	Descripcion varchar(150) null, 
+
+)
+
+create table FacturaDetalle(
+
+	FacturaDetalleID	int		 not null,
+	ProductoID			int		 not null,
+	BodegaID			int		 not null,
+	Precio				float	 not null,
+	Cantidad			int		 not null,
+	Observaciones		varchar(150) null
+
+)
+
 insert into Categoria (CategoriaID,Nombre) values (1,'Legumbres')
 --Registro de unidad hectareas
 insert into UnidadMedida (UnidadMedidaID, Nombre, Observaciones) values (1,'Hectarea','Campo por defecto de las extenciones de finca')
