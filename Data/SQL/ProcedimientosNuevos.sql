@@ -248,8 +248,7 @@ create or alter procedure spCrearCultivo
 @Observaciones varchar(151) = null
 as
 	begin try
-		if (select count(ProductoID) from Producto where ProductoID = @ProductoID) = 0
-			THROW 50051, 'No existe el producto referenciado', 1;	
+		exec spValidarProducto @ProductoID
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 1, 50;
 		if exists(select ProductoID from Cultivo where ProductoID = @ProductoID)
 			THROW 50050, 'El cultivo ya existe para ese producto', 1;

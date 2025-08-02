@@ -114,15 +114,15 @@ create table TrasladoBodega(
 )
 
 create table EntradaCosecha(
-	EntradaCosechaID int not null,
+	EntradaCosechaID int identity(1,1),
 	CosechaID int not null,
 	ProductoID varchar(12) not null,
-	BodegaID int not null,
+	BodegaID varchar(2) not null,
 	Cantidad int not null,
 	PrecioUnitario int not null,
-	FechaIngreso date not null,
+	FechaIngreso date null
+	CONSTRAINT FechaIngreso_cosecha DEFAULT CAST(GETDATE() AS DATE)
 )
-
 create table Producto(
 	ProductoID varchar(12) not null,
 	Nombre varchar(50) not null,
@@ -140,6 +140,20 @@ create table Categoria(
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null
 )
+
+create table Entradas(
+	EntradaID int not null,
+	BodegaID varchar(2) not null,
+	ProductoID varchar(12) not null,
+	Cantidad int not null,
+	FechaEntrada date not null,
+	Tipo varchar(1) not null,
+	 CONSTRAINT CK_TipoValido 
+        CHECK (Tipo IN ('C', 'I')) 
+	--C de cosechas
+	--I de insumos
+)
+
 create table Cliente(
 
 	ClienteID	int			not null,

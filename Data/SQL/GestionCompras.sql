@@ -6,7 +6,12 @@ as
 	if not exists(select ProductoID from Producto where ProductoID = @ProductoID)
 		THROW 50051, 'No existe este producto', 1;
 go
-
+create or alter procedure spValidarBodega
+@BodegaID varchar(3)
+as
+	if not exists(select BodegaID from Bodega where BodegaID = @BodegaID)
+		THROW 50051, 'No existe esta Bodega', 1;
+go
 create or alter procedure spValidarEstadoID
 @EstadoID int,
 @tipo int
@@ -66,22 +71,19 @@ go
 create or alter procedure spComprarInsumos
 @ProveedorID int,
 @Impuesto varchar(20) = null,
-@Descuento varchar(20) = null,
-@EstadoID int = null
+@Descuento varchar(20) = null
 as
 	begin try
 		if (select COUNT(ProveedorID) from Proveedor where ProveedorID = @ProveedorID) != 1
 					THROW 50051, 'No existe este proveedor', 1;
 		exec spValidarDecimal 'Impuesto', @Impuesto;
 		exec spValidarDecimal 'Descuento', @Descuento;
-		if @EstadoID is not null
-			exec spValidarEstadoID @EstadoID, 3
 
 		BEGIN TRANSACTION
 			declare @ID INT;
 			select @ID = ISNULL(MAX(CompraID), 0) + 1 from Compra
 			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha,EstadoID) 
-				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),@EstadoID);
+				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),null);
 		COMMIT TRANSACTION
 		select @ID as CompraID
 	end try
@@ -143,7 +145,35 @@ begin try
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
+create or alter procedure spRecogerCosecha
+@CosechaID int,
+@BodegaID varchar(3)
+as
+	begin try
+		if not exists(select CosechaID from Cosecha where CosechaID = @CosechaID)
+			THROW 50051, 'No existe este cosecha', 1;
+		exec spValidarBodega @BodegaID;
+		declare @productoID varchar(12), @Precio decimal(10,2), @Cantidad int
+		if(select EstadoID from cosecha where CosechaID = @CosechaID) = 20001
+			THROW 50051, 'La cosecha no se puede recojer aun', 1;
+		if(select EstadoID from cosecha where CosechaID = @CosechaID) = 20003
+			THROW 50051, 'La cosecha ya fue entregada', 1;
+		select @productoID= cu.ProductoID,@Cantidad=co.CantidadCosechas,@Precio=co.Precio from cosecha as co inner join cultivo as cu on cu.CultivoID = co.CultivoID 
+		where co.cosechaID = 1
 
+		BEGIN TRANSACTION
+			insert into EntradaCosecha (CosechaID ,ProductoID,BodegaID,Cantidad, PrecioUnitario) 
+				values (@CosechaID, @productoID,@BodegaID,@Cantidad,@Precio)
+		COMMIT TRANSACTION
+	end try
+	begin catch
+		if @@TRANCOUNT > 0
+		ROLLBACK TRANSACTION
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+	end catch
+go
+--Modulo que tendra que ver con los vouchers
+create or alter procedure spAbonarInsumos
 --Insert realizados
 insert into estado (EstadoID, Nombre,Observaciones) values(31001,'Disponible','El proveedor tiene disponible este producto')
 insert into estado (EstadoID, Nombre,Observaciones) values(31002,'Agotado','El proveedor tiene agotado este producto')
@@ -156,3 +186,7 @@ exec spCrearBodega '5B'
 exec spCrearBodega '25'
 spComprarInsumos 3,0.15,0.15
 	spAgregarInsumoCompra 2,'102345123412','5B',5,85.2
+select * from CompraDetalle
+select * from entradas
+select i.BodegaID,i.ProductoID,i.Cantidad,c.Fecha,'I' from inserted i inner join
+	Compra as c on c.CompraID=i.CompraID
