@@ -1,4 +1,5 @@
 --Ver el inventario de todos los productos
+
 create or alter view vStockActual AS
 select ProductoID, BodegaID, sum(Cantidad) as Cantidad from
 (
