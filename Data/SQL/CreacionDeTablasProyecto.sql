@@ -5,7 +5,7 @@ create table Productor(
 	Nombre varchar(25) not null,
 	Apellido varchar(25) not null,
 	Documento varchar(13) not null,
-	RTN varchar(20) null,
+	RTN varchar(14) null,
 	Direccion varchar(150) not null,
 	Telefono varchar(8) not null,
 	Correo varchar(50) null,
@@ -16,7 +16,7 @@ create table Proveedor(
 	Nombre varchar(25) not null,
 	Apellido varchar(25) not null,
 	Documento varchar(13) not null,
-	RTN varchar(20) null,
+	RTN varchar(14) null,
 	Direccion varchar(150) not null,
 	Telefono varchar(8) not null,
 	Correo varchar(50) null,
@@ -155,35 +155,45 @@ create table Entradas(
 )
 
 create table Cliente(
-
-	ClienteID	int			not null,
-	Documento	varchar(13) not null,
-	RTN			varchar(14) null,
-	Telefono	varchar(8)	not null,
-	Correo		varchar(50)	null,
-
+	ClienteID int not null,
+	Nombre varchar(25) not null,
+	Apellido varchar(25) not null,
+	Direccion varchar(150) null,
+	Documento varchar(13) not null,
+	RTN varchar(14) null,
+	Telefono varchar(8) null,
+	Correo varchar(50)null,
 )
 
 create table Factura(
-
-	FacturaID	int			 not null,
-	Fecha		date		 not null,
-	Impuesto	float		 not null,
-	Descripcion varchar(150) null, 
-
+	FacturaID int not null,
+	ClienteID int not null,
+	Fecha date not null,
+	Impuesto decimal(10,2) null,
+	Descuento decimal(10,2) null,
+	Descripcion varchar(150) null 
 )
 
 create table FacturaDetalle(
-
-	FacturaDetalleID	int		 not null,
-	ProductoID			int		 not null,
-	BodegaID			int		 not null,
-	Precio				float	 not null,
-	Cantidad			int		 not null,
-	Observaciones		varchar(150) null
-
+	FacturaDetalleID int not null,
+	FacturaID int not null,
+	BodegaID varchar(2) not null,
+	ProductoID varchar(12) not null,
+	Precio decimal(10,2) not null,
+	Cantidad int not null,
+	Observaciones varchar(150) null
 )
 
+create table Salidas(
+	SalidaID int identity(1,1),
+	BodegaID varchar(2) not null,
+	ProductoID varchar(12) not null,
+	Cantidad int not null,
+	FechaDeSalida date not null
+)
+
+insert into salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida) values ('5B','102345123412', 7,CAST(GETDATE() AS DATE))
+insert into salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida) values ('5A','1', 1,CAST(GETDATE() AS DATE))
 insert into Categoria (CategoriaID,Nombre) values (1,'Legumbres')
 --Registro de unidad hectareas
 insert into UnidadMedida (UnidadMedidaID, Nombre, Observaciones) values (1,'Hectarea','Campo por defecto de las extenciones de finca')
