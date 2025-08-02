@@ -1,4 +1,5 @@
 use GrupoNo1
+
 create or alter procedure spValidarCliente
 @ClienteID int
 as

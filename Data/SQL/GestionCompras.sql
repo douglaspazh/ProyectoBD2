@@ -1,5 +1,6 @@
 use GrupoNo1
 
+
 create or alter procedure spValidarProducto
 @ProductoID varchar(13)
 as

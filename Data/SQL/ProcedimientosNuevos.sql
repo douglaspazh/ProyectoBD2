@@ -1,4 +1,5 @@
 use GrupoNo1
+
 --Codigos de error
 --50001 el campo esta vacio
 --50002 tamaño incorrecto del campo
