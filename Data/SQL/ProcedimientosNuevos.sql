@@ -1,8 +1,10 @@
 use GrupoNo1
+
 --Codigos de error
 --50001 el campo esta vacio
 --50002 tamaño incorrecto del campo
 --50003 correo invalido
+--50004 Fechas incompatibles
 --50050 registro duplicado
 --50051 registro inexistente
 --50052 problemas logisticos
@@ -308,6 +310,90 @@ as
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
+
+
+--Crear cultivo
+create or alter procedure spInsertCultivo 
+@ProductoID		int, 
+@Nombre			varchar(60), 
+@Observaciones	varchar(200) = null
+as
+	begin try
+		
+		if (select count(ProductoID) from Producto where ProductoID = @ProductoID) = 0
+			THROW 50051, 'No existe el producto referenciado', 1;	
+		
+		exec spValidarCampoVarchar 'Nombre', @Nombre, 1, 50;
+		
+		if exists(select 1 from Cultivo where Nombre = @Nombre and ProductoID = @ProductoID)
+			THROW 50050, 'El cultivo ya existe para ese producto', 1;
+		
+		if @Observaciones != null
+			exec spValidarCampoVarchar 'Observaciones', @Observaciones, 0, 150;
+		
+		BEGIN TRANSACTION
+			declare @ID int;
+			select @ID = ISNULL(MAX(CultivoID), 0) + 1 from Cultivo
+			insert into Cultivo (CultivoID, ProductoID, Nombre, Observaciones) Values (@ID, @ProductoID, @Nombre, @Observaciones)
+		COMMIT TRANSACTION
+	
+	end try
+	
+	begin catch
+		
+		if @@TRANCOUNT > 0
+		rollback transaction
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+	
+	end catch
+go
+
+--Crear Cosecha
+Create or alter procedure spInsertCosecha 
+	@LoteID				int,
+	@CultivoID			int,
+	@FechaInicio		date = null,
+	@FechaFinal			date = null,
+	@CantidadCosechas	int,			--Voy a tratar CantidadCosechas como ciclos de cosecha esperados de una cosecha :P
+	@Precio				varchar(20)
+as
+	
+	begin try
+
+		if not exists(select 1 from Lote where LoteID = @LoteID)
+			THROW 50051, 'No existe el lote solicitado', 1;
+		
+		if not exists(select 1 from Cultivo where CultivoID = @CultivoID)
+			THROW 50051, 'No existe el cultivo solicitado', 1;
+		
+		if @FechaInicio is not null and @FechaFinal is not null
+			begin
+			
+			if @FechaInicio >= @FechaFinal
+				THROW 50004, 'La fecha final de la cosecha es igual o mas vieja que la fecha de inicio', 1;
+			end
+		
+		exec spValidarDecimal 'Precio', @Precio
+
+		BEGIN TRANSACTION
+
+		declare @ID int;
+		select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
+		insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
+			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 10001, @CantidadCosechas, @Precio)
+
+		COMMIT TRANSACTION
+	end try
+
+	begin catch
+		
+		if @@TRANCOUNT > 0
+		ROLLBACK TRANSACTION
+		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
+
+	end catch
+go
+
 
 
 --Ejemplo:
