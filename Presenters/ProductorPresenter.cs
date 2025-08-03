@@ -13,7 +13,6 @@ namespace ProyectoBD2.Presenters
         private readonly BindingSource _bindingSource;
         private DataTable _productoresList;
 
-        private const string DefaultDateFormat = "dd/MM/yyyy";
         private int _actualPage = 1;
         private int _pageSize = 25;
         private int _totalPages = 0;
@@ -106,7 +105,7 @@ namespace ProyectoBD2.Presenters
 
                 if ( selectedProductor != null )
                 {
-                    int productorId = Convert.ToInt32( selectedProductor["ID"] );
+                    int productorId = Convert.ToInt32( selectedProductor["ProductorID"] );
                     _repository.DeleteProductor( productorId );
                     _view.IsSuccessful = true;
                     _view.Message = "Productor eliminado exitosamente.";

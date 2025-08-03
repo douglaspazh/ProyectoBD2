@@ -136,7 +136,7 @@ namespace ProyectoBD2.Repositories.Implementations
             {
                 CommandType = CommandType.StoredProcedure
             };
-            command.Parameters.AddWithValue( "@ProductorID", productorId );
+            command.Parameters.AddWithValue( "@ID", productorId );
 
             connection.Open();
             command.ExecuteNonQuery();
