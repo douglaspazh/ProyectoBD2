@@ -35,7 +35,7 @@ as
 			select @ID = ISNULL(MAX(ClienteID), 0) + 1 from Cliente
 			insert into cliente (ClienteID,Nombre,Apellido,Direccion,Telefono,Correo,Documento, RTN) values 
 			(@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,@Documento,@RTN)
-			
+			SELECT '10000' as Estado, 'Se creo correctamente el cliente' AS Mensaje;
 		COMMIT TRANSACTION
 
 	end try
@@ -68,8 +68,9 @@ as
 			select @ID = ISNULL(MAX(FacturaID), 0) + 1 from factura
 			insert into factura (FacturaID,ClienteID,Fecha,Impuesto,Descuento,Descripcion) values 
 			(@ID,@ClienteID, CAST(GETDATE() AS DATE), @Impuesto, @Descuento, @Descuento)
+			select '10000' as Estado, 'Factura creada' as Mensaje, @ID  as FacturaID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
 		COMMIT TRANSACTION
-		select '10000' as Estado, 'Factura creada' as Mensaje, @ID  as FacturaID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
+		
 	end try
 	begin catch
 		IF @@TRANCOUNT > 0
@@ -112,6 +113,7 @@ as
 			select @ID = ISNULL(MAX(FacturaDetalleID), 0) + 1 from FacturaDetalle
 			insert into FacturaDetalle (FacturaDetalleID,FacturaID,BodegaID,ProductoID,Precio,Cantidad,Observaciones) values 
 			(@ID,@FacturaID,@BodegaID,@ProductoID, @Precio, @Cantidad, @Observaciones)
+
 		COMMIT TRANSACTION
 	end try
 	begin catch

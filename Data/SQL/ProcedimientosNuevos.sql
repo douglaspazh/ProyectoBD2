@@ -111,9 +111,9 @@ as
 			select @ID = ISNULL(MAX(ProveedorID), 0) + 1 from proveedor
 			insert into Proveedor (ProveedorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN,PeriodoDePagoDias,TasaInteres)
 			values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias,@tasaI)
-			
+			SELECT '10000' as Estado, 'Se agrego correctamente el proveedor' AS Mensaje;
 		COMMIT TRANSACTION
-
+		
 	end try
 	begin catch
 		IF @@TRANCOUNT > 0
@@ -148,7 +148,7 @@ as
 			declare @ID INT;
 			select @ID = ISNULL(MAX(ProductorID), 0) + 1 from Productor
 			insert into Productor (ProductorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN) values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN)
-			
+			SELECT '10000' as Estado, 'Se agrego correctamente el productor' AS Mensaje;
 		COMMIT TRANSACTION
 
 	end try
@@ -182,6 +182,7 @@ as
 			select @ID = ISNULL(MAX(FincaID), 0) + 1 from Finca
 			
 			insert into Finca (FincaID, ProductorID,Nombre,ExtencionTotal) values (@ID, @PId,@Nombre,@ext)
+			SELECT '10000' as Estado, 'Se creo correctamente la finca' AS Mensaje;
 		commit transaction 
 	end try
 	begin catch	
@@ -234,6 +235,7 @@ as
 			select @ID = ISNULL(MAX(LoteID), 0) + 1 from Lote
 			
 			insert into Lote (LoteID, FincaID,Extencion,MaximoCosechas,TipoSuelo,TipoDeRiego) values (@ID, @FincaID,@ext,@MaximoCosechas,@TipoSuelo,@TipoDeRiego)
+			SELECT '10000' as Estado, 'Se creo correctamente el lote' AS Mensaje;
 		commit transaction 
 	end try
 	begin catch	
@@ -259,6 +261,7 @@ as
 			declare @ID int;
 			select @ID = ISNULL(MAX(CultivoID), 0) + 1 from Cultivo
 			insert into Cultivo (CultivoID, ProductoID, Nombre, Observaciones) Values (@ID, @ProductoID, @Nombre, @Observaciones)
+			SELECT '10000' as Estado, 'Se creo correctamente el cultivo' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -310,6 +313,7 @@ as
 		select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
 		insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
 			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 20001, @CantidadCosechas, @p) 
+			SELECT '10000' as Estado, 'Se creo correctamente la cosecha' AS Mensaje;
 			--Se crea el registro asumiendo que el la cosecha esta recien plantada. Quizas mas adelante se puede manejar con un ComboBox en la pantalla pertinente 
 		COMMIT TRANSACTION
 	end try
@@ -344,6 +348,7 @@ as
 
 			insert into Producto (ProductoID, Nombre, UnidadMedida, CategoriaID) 
 				values (@ProductoID, @Nombre, @UnidadMedida, @CategoriaID)
+				SELECT '10000' as Estado, 'Se creo correctamente el producto' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -369,6 +374,7 @@ as
 
 			insert into Categoria (CategoriaID, Nombre, Observaciones) 
 				values (@CategoriaID, @Nombre, @Observaciones)
+				SELECT '10000' as Estado, 'Se agrego correctamente la categoria' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch

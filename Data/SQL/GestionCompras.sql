@@ -60,6 +60,7 @@ as
 
 			insert into Bodega (BodegaID, Observaciones) 
 				values (@BodegaID, @Observaciones)
+				SELECT '10000' as Estado, 'Se creo correctamente la bodega' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -163,6 +164,7 @@ as
 		BEGIN TRANSACTION
 			insert into EntradaCosecha (CosechaID ,ProductoID,BodegaID,Cantidad, PrecioUnitario) 
 				values (@CosechaID, @productoID,@BodegaID,@Cantidad,@Precio)
+				SELECT '10000' as Estado, 'La cosecha se ha almacenado correctamente' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
