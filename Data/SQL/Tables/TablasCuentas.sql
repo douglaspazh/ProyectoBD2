@@ -1,26 +1,25 @@
 --Tablas Cuentas y Vouchers
 create table CuentaProductor(
-	CuentaProductorID int not null,
+	CuentaProductorID int identity(1,1),
 	CuentaID int not null,
 	ProductorID int not null,
 )
 
 create table CuentaProveedor(
-	CuentaProveedorID int not null,
+	CuentaProveedorID int identity(1,1),
 	CuentaID int not null,
 	ProveedorID int not null,
 )
 
 create table CuentaBancaria(
 	CuentaID int not null,
-	NumeroCuenta varchar(14) not null,
+	NumeroCuenta varchar(20) not null,
 	BancoID int not null,
 )
 
 create table Banco(
 	BancoID int not null,
 	Nombre varchar(50) not null,
-	EstadoID int not null,
 )
 
 create table Voucher(
