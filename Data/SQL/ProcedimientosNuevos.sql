@@ -5,6 +5,7 @@ use GrupoNo1
 --50002 tamaño incorrecto del campo
 --50003 correo invalido
 --50004 Fechas incompatibles
+--50005 Dato incompatible
 --50050 registro duplicado
 --50051 registro inexistente
 --50052 problemas logisticos
