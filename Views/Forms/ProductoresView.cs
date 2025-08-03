@@ -122,7 +122,6 @@ namespace ProyectoBD2.Views.Forms
             btnAnterior.Enabled = currentPage > 1;
         }
 
-        // Replace the problematic line in the CargarEstados method
         public void CargarEstados( DataTable estados )
         {
             cmbEstado.DataSource ??= estados.AsEnumerable().Select( row => new

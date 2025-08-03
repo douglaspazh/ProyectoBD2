@@ -13,7 +13,6 @@ namespace ProyectoBD2.Presenters
         private readonly BindingSource _bindingSource;
         private DataTable _productoresList;
 
-        private const string DefaultDateFormat = "dd/MM/yyyy";
         private int _actualPage = 1;
         private int _pageSize = 25;
         private int _totalPages = 0;
@@ -106,7 +105,7 @@ namespace ProyectoBD2.Presenters
 
                 if ( selectedProductor != null )
                 {
-                    int productorId = Convert.ToInt32( selectedProductor["ID"] );
+                    int productorId = Convert.ToInt32( selectedProductor["ProductorID"] );
                     _repository.DeleteProductor( productorId );
                     _view.IsSuccessful = true;
                     _view.Message = "Productor eliminado exitosamente.";
@@ -143,20 +142,25 @@ namespace ProyectoBD2.Presenters
                     { "EstadoID", _view.EstadoID }
                 };
 
+                var result = new DataTable();
+
                 if ( _view.IsEditing )
+                    result = _repository.UpdateProductor( productor );
+                else
+                    result = _repository.AddProductor( productor );
+
+                if ( (int)result.Rows[0]["Estado"] != 10000 )
                 {
-                    _repository.UpdateProductor( productor );
-                    _view.Message = "Productor actualizado exitosamente.";
+                    _view.IsSuccessful = false;
                 }
                 else
                 {
-                    _repository.AddProductor( productor );
-                    _view.Message = "Productor agregado exitosamente.";
+                    _view.IsSuccessful = true;
+                    CleanViewFields();
+                    LoadProductoresByPage( _actualPage );
                 }
-
-                _view.IsSuccessful = true;
-                CleanViewFields();
-                LoadProductoresByPage( _actualPage );
+                    
+                _view.Message = result.Rows[0]["Mensaje"].ToString()!;
             }
             catch ( Exception ex )
             {

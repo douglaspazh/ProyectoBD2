@@ -1,5 +1,6 @@
 use GrupoNo1
 
+
 create or alter procedure spValidarProducto
 @ProductoID varchar(13)
 as
@@ -59,6 +60,7 @@ as
 
 			insert into Bodega (BodegaID, Observaciones) 
 				values (@BodegaID, @Observaciones)
+				SELECT '10000' as Estado, 'Se creo correctamente la bodega' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -85,7 +87,7 @@ as
 			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha,EstadoID) 
 				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),null);
 		COMMIT TRANSACTION
-		select @ID as CompraID
+		select '10000' as Estado, 'Compra Agregada' as Mensaje, @ID as CompraID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
 	end try
 	begin catch
 		if @@TRANCOUNT > 0
@@ -106,8 +108,7 @@ begin try
 		--Valida la existencia de un registro de esa compra
 		if (select COUNT(CompraID) from Compra where CompraID = @CompraID) != 1
 			THROW 50051, 'No existe esta compra', 1;
-		if (select COUNT(BodegaID) from Bodega where BodegaID = @BodegaID) != 1
-			THROW 50051, 'No existe esta Bodega', 1;
+		exec spValidarBodega @BodegaID
 		exec spValidarCampoInt @Cantidad, 'Cantidad de insumos';
 		--Validar que existe este producto
 		exec spValidarProducto @ProductoID
@@ -137,7 +138,6 @@ begin try
 			insert into CompraDetalle (CompraDetalleID, CompraID,ProductoID,Cantidad,PrecioUnitario,BodegaID) 
 				values (@ID, @CompraID,@ProductoID, @Cantidad, @PrecioUnitario ,@BodegaID)
 		COMMIT TRANSACTION
-		return @ID --Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
 	end try
 	begin catch
 		if @@TRANCOUNT > 0
@@ -145,6 +145,7 @@ begin try
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
+
 create or alter procedure spRecogerCosecha
 @CosechaID int,
 @BodegaID varchar(3)
@@ -164,6 +165,7 @@ as
 		BEGIN TRANSACTION
 			insert into EntradaCosecha (CosechaID ,ProductoID,BodegaID,Cantidad, PrecioUnitario) 
 				values (@CosechaID, @productoID,@BodegaID,@Cantidad,@Precio)
+				SELECT '10000' as Estado, 'La cosecha se ha almacenado correctamente' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -172,6 +174,8 @@ as
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
+
+
 --Modulo que tendra que ver con los vouchers
 create or alter procedure spAbonarInsumos
 --Insert realizados

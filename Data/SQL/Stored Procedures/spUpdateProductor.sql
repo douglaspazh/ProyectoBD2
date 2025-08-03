@@ -9,8 +9,8 @@ CREATE OR ALTER PROCEDURE spUpdateProductor
 	@Estado INT,
 	@RTN VARCHAR(21) = NULL
 AS
-BEGIN TRY
-	-- Validaciones de campos
+    BEGIN TRY
+	    -- Validaciones de campos
 		EXEC spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
 		EXEC spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
 		EXEC spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
@@ -27,16 +27,18 @@ BEGIN TRY
 
 		-- Actualización del productor
 		BEGIN TRANSACTION
-			UPDATE Productor 
-			SET Nombre = @Nombre,
-				Apellido = @Apellido,
-				Direccion = @Direccion,
-				Telefono = @Telefono,
-				Correo = @Correo,
-				Documentos = @Documento,
-				RTN = @RTN,
-				EstadoID = @Estado
-			WHERE ProductorID = @ID
+            UPDATE Productor 
+                SET Nombre = @Nombre,
+                    Apellido = @Apellido,
+                    Direccion = @Direccion,
+                    Telefono = @Telefono,
+                    Correo = @Correo,
+                    Documento = @Documento,
+                    RTN = @RTN,
+                    EstadoID = @Estado
+                WHERE ProductorID = @ID;
+
+            SELECT 10000 as Estado, 'Productor actualizado correctamente' AS Mensaje;
 		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH

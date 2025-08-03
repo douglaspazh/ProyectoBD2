@@ -7,8 +7,8 @@ CREATE OR ALTER PROCEDURE spInsertProductor
     @Documento  VARCHAR(14),
     @RTN        VARCHAR(21) = NULL
 AS
-BEGIN TRY
-    -- Validaciones de campos
+    BEGIN TRY
+        -- Validaciones de campos
 		EXEC spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
 		EXEC spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
 		EXEC spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
@@ -27,8 +27,11 @@ BEGIN TRY
         BEGIN TRANSACTION
 			DECLARE @ID INT;
 			SELECT @ID = ISNULL(MAX(ProductorID), 0) + 1 FROM Productor
+
 			INSERT INTO Productor (ProductorID, Nombre, Apellido, Direccion, Telefono, Correo, EstadoID, Documento, RTN) 
-            VALUES (@ID, @Nombre, @Apellido, @Direccion, @Telefono, @Correo, 10001, @Documento, @RTN)
+            VALUES (@ID, @Nombre, @Apellido, @Direccion, @Telefono, @Correo, 10001, @Documento, @RTN);
+
+            SELECT 10000 as Estado, 'Productor agregado correctamente' AS Mensaje;
 		COMMIT TRANSACTION
     END TRY
     BEGIN CATCH

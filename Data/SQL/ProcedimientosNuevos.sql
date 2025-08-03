@@ -1,9 +1,12 @@
 use GrupoNo1
+-- Transaccion correcta
+--10000 operacion realizada correctamente
 --Codigos de error
 --50001 el campo esta vacio
 --50002 tamaño incorrecto del campo
 --50003 correo invalido
 --50004 Fechas incompatibles
+--50005 Dato incompatible
 --50050 registro duplicado
 --50051 registro inexistente
 --50052 problemas logisticos
@@ -85,7 +88,7 @@ create or alter procedure spCrearProveedor
 @Telefono varchar(9), 
 @Correo varchar(51),
 @Documento varchar(14),
-@RTN varchar(21) = null,
+@RTN varchar(15) = null,
 @PeriodoDePagoDias int,
 @TasaInteres varchar(20)
 as
@@ -102,7 +105,7 @@ as
 		declare @tasaI DECIMAL(10,2)
 		set @tasaI = CONVERT(DECIMAL(10,2), @TasaInteres);
 		if @RTN != null
-			exec spValidarCampoVarchar 'RTN', @RTN, 0, 20;
+			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from proveedor where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
 		BEGIN TRANSACTION
@@ -110,9 +113,9 @@ as
 			select @ID = ISNULL(MAX(ProveedorID), 0) + 1 from proveedor
 			insert into Proveedor (ProveedorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN,PeriodoDePagoDias,TasaInteres)
 			values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias,@tasaI)
-			
+			SELECT '10000' as Estado, 'Se agrego correctamente el proveedor' AS Mensaje;
 		COMMIT TRANSACTION
-
+		
 	end try
 	begin catch
 		IF @@TRANCOUNT > 0
@@ -129,7 +132,7 @@ create or alter procedure spCrearProductor
 @Telefono varchar(9), 
 @Correo varchar(151),
 @Documento varchar(14),
-@RTN varchar(21) = null
+@RTN varchar(15) = null
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
@@ -140,14 +143,14 @@ as
 		exec spValidarCorreo @Correo;
 		exec spValidarCampoVarchar 'Documento', @Documento, 0, 13;
 		if @RTN != null
-			exec spValidarCampoVarchar 'RTN', @RTN, 0, 20;
+			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from productor where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
 		BEGIN TRANSACTION
 			declare @ID INT;
 			select @ID = ISNULL(MAX(ProductorID), 0) + 1 from Productor
 			insert into Productor (ProductorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN) values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN)
-			
+			SELECT '10000' as Estado, 'Se agrego correctamente el productor' AS Mensaje;
 		COMMIT TRANSACTION
 
 	end try
@@ -181,6 +184,7 @@ as
 			select @ID = ISNULL(MAX(FincaID), 0) + 1 from Finca
 			
 			insert into Finca (FincaID, ProductorID,Nombre,ExtencionTotal) values (@ID, @PId,@Nombre,@ext)
+			SELECT '10000' as Estado, 'Se creo correctamente la finca' AS Mensaje;
 		commit transaction 
 	end try
 	begin catch	
@@ -233,6 +237,7 @@ as
 			select @ID = ISNULL(MAX(LoteID), 0) + 1 from Lote
 			
 			insert into Lote (LoteID, FincaID,Extencion,MaximoCosechas,TipoSuelo,TipoDeRiego) values (@ID, @FincaID,@ext,@MaximoCosechas,@TipoSuelo,@TipoDeRiego)
+			SELECT '10000' as Estado, 'Se creo correctamente el lote' AS Mensaje;
 		commit transaction 
 	end try
 	begin catch	
@@ -258,6 +263,7 @@ as
 			declare @ID int;
 			select @ID = ISNULL(MAX(CultivoID), 0) + 1 from Cultivo
 			insert into Cultivo (CultivoID, ProductoID, Nombre, Observaciones) Values (@ID, @ProductoID, @Nombre, @Observaciones)
+			SELECT '10000' as Estado, 'Se creo correctamente el cultivo' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -267,59 +273,62 @@ as
 	end catch
 go
 --Procedimiento para crear una cosecha
-create or alter procedure spCrearCosecha 
-@LoteID	int,
-@CultivoID int,
-@FechaInicio date = null,
-@FechaFinal date = null,
-@CantidadCosechas int,	--Voy a tratar CantidadCosechas como ciclos de cosecha esperados de una cosecha :P
-@Precio	varchar(20)
-as
-	begin try
-		if not exists(select LoteID from Lote where LoteID = @LoteID)
-			THROW 50051, 'No existe el lote solicitado', 1;
+create or alter procedure spCrearCosecha   
+@LoteID int,  
+@CultivoID int,  
+@FechaInicio date = null, 
+@FechaFinal date = null,  
+@CantidadCosechas int, --Voy a tratar CantidadCosechas como ciclos de cosecha esperados de una cosecha :P  
+@Precio varchar(20)  
+as   
+	begin try    
+		if not exists(select LoteID from Lote where LoteID = @LoteID)     
+			THROW 50051, 'No existe el lote solicitado', 1;      
+			
+		if not exists(select CultivoID from Cultivo where CultivoID = @CultivoID)     
+		THROW 50051, 'No existe el cultivo solicitado', 1;  
+		
+		if @FechaInicio is not null
+			begin
+				EXEC spValidarFecha @FechaInicio;
 
-		if not exists(select CultivoID from Cultivo where CultivoID = @CultivoID)
-			THROW 50051, 'No existe el cultivo solicitado', 1;
-		
-		if @FechaInicio is null and @FechaFinal is not null
-			THROW 50004, 'No puede existir fecha final sin una fecha inicial', 1;
-		
-		if @FechaInicio is not null and @FechaFinal is not null
-		begin
-			if @FechaInicio >= @FechaFinal
-			THROW 50004, 'La fecha final de la cosecha es igual o mas vieja que la fecha de inicio', 1;
+			if @FechaFinal is not null
+				begin
+					EXEC spValidarFecha @FechaFinal;
+
+				if @FechaInicio >= @FechaFinal
+					THROW 50004, 'La fecha final de la cosecha es igual o más vieja que la fecha de inicio', 1;
+			end
 		end
-
-		if @CantidadCosechas = 0
-			THROW 50001, 'La cantidad esperada de cosechas debe ser mayor a 0', 1;
-	
-		if (select EstadoID from Cosecha where LoteID = @LoteID) = 20001
-			THROW 50052, 'El lote seleccionado esta ocupado por un cultivo en crecimiento', 1;
+		else if @FechaFinal is not null
+			THROW 50004, 'No puede existir fecha final sin una fecha inicial', 1;    
+			
+		if @CantidadCosechas = 0     
+			THROW 50001, 'La cantidad esperada de cosechas debe ser mayor a 0', 1;       
 		
-		if (select EstadoID from Cosecha where LoteID = @LoteID) = 20002
-			THROW 50052, 'El lote seleccionado esta ocupado por un cultivo aun no cosechado y entregado', 1
+		if (select EstadoID from Cosecha where LoteID = @LoteID) = 20001     
+			THROW 50052, 'El lote seleccionado esta ocupado por un cultivo en crecimiento', 1;        
 		
-		exec spValidarDecimal 'Precio', @Precio;
-		declare @p decimal(10,2);
-		set @p = convert(decimal(10,2), @Precio);
-		
-		BEGIN TRANSACTION
-		declare @ID int;
-		select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha
-		insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio) 
-			values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 20001, @CantidadCosechas, @p) 
-			--Se crea el registro asumiendo que el la cosecha esta recien plantada. Quizas mas adelante se puede manejar con un ComboBox en la pantalla pertinente 
-		COMMIT TRANSACTION
-	end try
-
-	begin catch
-		
-		if @@TRANCOUNT > 0
-		ROLLBACK TRANSACTION
-		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
-	end catch
-go
+		if (select EstadoID from Cosecha where LoteID = @LoteID) = 20002     
+			THROW 50052, 'El lote seleccionado esta ocupado por un cultivo aun no cosechado y entregado', 1        
+			
+		exec spValidarDecimal 'Precio', @Precio;    
+		declare @p decimal(10,2);    
+		set @p = convert(decimal(10,2), @Precio);        
+			BEGIN TRANSACTION    declare @ID int;    
+				select @ID = ISNULL(MAX(CosechaID), 0)+1 from Cosecha    
+				insert into Cosecha (CosechaID, LoteID, CultivoID, FechaInicio, FechaFinal, EstadoID, CantidadCosechas, Precio)      
+				values (@ID, @LoteID, @CultivoID, @FechaInicio, @FechaFinal, 20001, @CantidadCosechas, @p) --Se crea el registro asumiendo que el la cosecha esta recien plantada. Quizas mas adelante se puede manejar con un ComboBox en la pantalla pertinente
+				SELECT '10000' as Estado, 'Se creo correctamente la cosecha' AS Mensaje;         
+			COMMIT TRANSACTION   
+		end try     
+		begin catch        
+			if @@TRANCOUNT > 0    
+				ROLLBACK TRANSACTION    
+			select ERROR_NUMBER() as Estado, 
+		ERROR_MESSAGE() as Mensaje;   
+		end catch
+GO
 --Procedimiento para crear productos
 create or alter procedure spCrearProducto
 @ProductoID varchar(13),
@@ -343,6 +352,7 @@ as
 
 			insert into Producto (ProductoID, Nombre, UnidadMedida, CategoriaID) 
 				values (@ProductoID, @Nombre, @UnidadMedida, @CategoriaID)
+				SELECT '10000' as Estado, 'Se creo correctamente el producto' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
@@ -368,6 +378,7 @@ as
 
 			insert into Categoria (CategoriaID, Nombre, Observaciones) 
 				values (@CategoriaID, @Nombre, @Observaciones)
+				SELECT '10000' as Estado, 'Se agrego correctamente la categoria' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
