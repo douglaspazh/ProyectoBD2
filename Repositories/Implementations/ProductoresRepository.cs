@@ -97,7 +97,7 @@ namespace ProyectoBD2.Repositories.Implementations
             return dataTable;
         }
 
-        public void AddProductor( Dictionary<string, dynamic> productorData )
+        public DataTable AddProductor( Dictionary<string, dynamic> productorData )
         {
             // Extracting values from the dictionary
             var nombre = productorData["Nombre"] as string;
@@ -123,12 +123,16 @@ namespace ProyectoBD2.Repositories.Implementations
             command.Parameters.AddWithValue( "@Correo", correo );
             command.Parameters.AddWithValue( "@Documento", documento );
 
+            var dataTable = new DataTable();
             connection.Open();
-            command.ExecuteNonQuery();
+            using var reader = command.ExecuteReader();
+            dataTable.Load( reader );
             connection.Close();
+
+            return dataTable;
         }
 
-        public void DeleteProductor( int productorId )
+        public DataTable DeleteProductor( int productorId )
         {
             var connectionString = _context.Database.GetConnectionString();
             using var connection = new SqlConnection( connectionString );
@@ -138,12 +142,16 @@ namespace ProyectoBD2.Repositories.Implementations
             };
             command.Parameters.AddWithValue( "@ID", productorId );
 
+            var dataTable = new DataTable();
             connection.Open();
-            command.ExecuteNonQuery();
+            using var reader = command.ExecuteReader();
+            dataTable.Load( reader );
             connection.Close();
+
+            return dataTable;
         }
 
-        public void UpdateProductor( Dictionary<string, object> productorData )
+        public DataTable UpdateProductor( Dictionary<string, object> productorData )
         {
             // Extracting values from the dictionary
             var productorId = (int)productorData["ProductorID"];
@@ -173,9 +181,13 @@ namespace ProyectoBD2.Repositories.Implementations
             command.Parameters.AddWithValue("@Direccion", direccion);
             command.Parameters.AddWithValue("@EstadoID", estadoId);
 
+            var dataTable = new DataTable();
             connection.Open();
-            command.ExecuteNonQuery();
+            using var reader = command.ExecuteReader();
+            dataTable.Load( reader );
             connection.Close();
+
+            return dataTable;
         }
 
         public DataTable GetAllEstados()

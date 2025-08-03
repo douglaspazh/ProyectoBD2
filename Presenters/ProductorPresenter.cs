@@ -142,20 +142,25 @@ namespace ProyectoBD2.Presenters
                     { "EstadoID", _view.EstadoID }
                 };
 
+                var result = new DataTable();
+
                 if ( _view.IsEditing )
+                    result = _repository.UpdateProductor( productor );
+                else
+                    result = _repository.AddProductor( productor );
+
+                if ( (int)result.Rows[0]["Estado"] != 10000 )
                 {
-                    _repository.UpdateProductor( productor );
-                    _view.Message = "Productor actualizado exitosamente.";
+                    _view.IsSuccessful = false;
                 }
                 else
                 {
-                    _repository.AddProductor( productor );
-                    _view.Message = "Productor agregado exitosamente.";
+                    _view.IsSuccessful = true;
+                    CleanViewFields();
+                    LoadProductoresByPage( _actualPage );
                 }
-
-                _view.IsSuccessful = true;
-                CleanViewFields();
-                LoadProductoresByPage( _actualPage );
+                    
+                _view.Message = result.Rows[0]["Mensaje"].ToString()!;
             }
             catch ( Exception ex )
             {
