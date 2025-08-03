@@ -1,4 +1,5 @@
 use GrupoNo1
+
 create or alter trigger trEntradasPorInsumo
 on CompraDetalle
 after insert

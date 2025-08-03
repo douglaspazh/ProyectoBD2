@@ -1,4 +1,5 @@
 use GrupoNo1
+
 --Codigos de error
 --50001 el campo esta vacio
 --50002 tamaño incorrecto del campo
@@ -85,7 +86,7 @@ create or alter procedure spCrearProveedor
 @Telefono varchar(9), 
 @Correo varchar(51),
 @Documento varchar(14),
-@RTN varchar(21) = null,
+@RTN varchar(15) = null,
 @PeriodoDePagoDias int,
 @TasaInteres varchar(20)
 as
@@ -102,7 +103,7 @@ as
 		declare @tasaI DECIMAL(10,2)
 		set @tasaI = CONVERT(DECIMAL(10,2), @TasaInteres);
 		if @RTN != null
-			exec spValidarCampoVarchar 'RTN', @RTN, 0, 20;
+			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from proveedor where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
 		BEGIN TRANSACTION
@@ -129,7 +130,7 @@ create or alter procedure spCrearProductor
 @Telefono varchar(9), 
 @Correo varchar(151),
 @Documento varchar(14),
-@RTN varchar(21) = null
+@RTN varchar(15) = null
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
@@ -140,7 +141,7 @@ as
 		exec spValidarCorreo @Correo;
 		exec spValidarCampoVarchar 'Documento', @Documento, 0, 13;
 		if @RTN != null
-			exec spValidarCampoVarchar 'RTN', @RTN, 0, 20;
+			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from productor where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
 		BEGIN TRANSACTION

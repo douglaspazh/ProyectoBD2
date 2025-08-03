@@ -1,5 +1,6 @@
 ﻿USE GrupoNo1
 GO
+
 --Registros Proveedor
 EXEC spCrearProveedor 'Machetes','El Diablo','Choloma','66666666','macheldia@gmail.com','6666666666666', null, 31, '0.5'
 EXEC spCrearProveedor 'Guadañas','La garra','Olancho','99999999','gualagarra@gmail.com','9199999999999', null, 31, '0.5'
