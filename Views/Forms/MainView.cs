@@ -18,7 +18,7 @@ namespace ProyectoBD2.Views.Forms
         }
 
         private Form activeForm = null;
-        private void OpenChildForm( Form childForm )
+        private void OpenChildForm(Form childForm)
         {
             activeForm?.Close();
             activeForm = childForm;
@@ -27,19 +27,34 @@ namespace ProyectoBD2.Views.Forms
             childForm.Dock = DockStyle.Fill;
 
             splitContainer.Panel2.Controls.Clear();
-            splitContainer.Panel2.Controls.Add( childForm );
+            splitContainer.Panel2.Controls.Add(childForm);
             childForm.BringToFront();
             childForm.Show();
         }
 
-        private void btnProductores_Click( object sender, EventArgs e )
+        private void btnProductores_Click(object sender, EventArgs e)
         {
-            OpenChildForm( new ProductoresView() );
+            OpenChildForm(new ProductoresView());
         }
 
-        private void btnFincas_Click( object sender, EventArgs e )
+        private void btnFincas_Click(object sender, EventArgs e)
         {
-            OpenChildForm( new FincasView() );
+            OpenChildForm(new FincasView());
+        }
+
+        private void btnCosechas_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new CosechasView());
+        }
+
+        private void btnLotes_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new LotesView());
+        }
+
+        private void btnCultivos_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new CultivosView());
         }
     }
 }

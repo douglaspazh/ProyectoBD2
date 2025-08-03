@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace ProyectoBD2.Views.Forms
 {
     public partial class CosechasView : Form
@@ -16,5 +17,12 @@ namespace ProyectoBD2.Views.Forms
         {
             InitializeComponent();
         }
+
+               
+
+
+             
+
+       
     }
 }
