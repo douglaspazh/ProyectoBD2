@@ -190,7 +190,8 @@ create table Salidas(
 	BodegaID varchar(2) not null,
 	ProductoID varchar(12) not null,
 	Cantidad int not null,
-	FechaDeSalida date not null
+	FechaDeSalida date not null,
+	Tipo varchar(1) not null
 )
 
 insert into salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida) values ('5B','102345123412', 7,CAST(GETDATE() AS DATE))

@@ -87,7 +87,7 @@ as
 			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha,EstadoID) 
 				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),null);
 		COMMIT TRANSACTION
-		select '10000' as Estado, 'Compra Agregada' as Mensaje, @ID  as CompraID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
+		select '10000' as Estado, 'Compra Agregada' as Mensaje, @ID as CompraID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
 	end try
 	begin catch
 		if @@TRANCOUNT > 0
@@ -145,6 +145,7 @@ begin try
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
+
 create or alter procedure spRecogerCosecha
 @CosechaID int,
 @BodegaID varchar(3)

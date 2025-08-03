@@ -1,5 +1,6 @@
 use GrupoNo1
-
+-- Transaccion correcta
+--10000 operacion realizada correctamente
 --Codigos de error
 --50001 el campo esta vacio
 --50002 tamaño incorrecto del campo
