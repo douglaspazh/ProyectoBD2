@@ -289,19 +289,19 @@ as
 		THROW 50051, 'No existe el cultivo solicitado', 1;  
 		
 		if @FechaInicio is not null
-			EXEC spValidarFecha @FechaInicio
-		
-		if @FechaFinal is not null
-			EXEC spValidarFecha @FechaInicio
-		
-		if @FechaInicio is null and @FechaFinal is not null     
-			THROW 50004, 'No puede existir fecha final sin una fecha inicial', 1;        
-		
-		if @FechaInicio is not null and @FechaFinal is not null    
-			begin     
-				if @FechaInicio >= @FechaFinal     
-					THROW 50004, 'La fecha final de la cosecha es igual o mas vieja que la fecha de inicio', 1;    
-			end      
+			begin
+				EXEC spValidarFecha @FechaInicio;
+
+			if @FechaFinal is not null
+				begin
+					EXEC spValidarFecha @FechaFinal;
+
+				if @FechaInicio >= @FechaFinal
+					THROW 50004, 'La fecha final de la cosecha es igual o más vieja que la fecha de inicio', 1;
+			end
+		end
+		else if @FechaFinal is not null
+			THROW 50004, 'No puede existir fecha final sin una fecha inicial', 1;    
 			
 		if @CantidadCosechas = 0     
 			THROW 50001, 'La cantidad esperada de cosechas debe ser mayor a 0', 1;       
