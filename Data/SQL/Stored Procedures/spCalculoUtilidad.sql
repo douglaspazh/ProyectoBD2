@@ -23,3 +23,32 @@ BEGIN
 END;
 
 EXEC spCalculoUtilidad;
+
+
+
+
+create or alter procedure spCalculoUtilidad
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @IngresosTotal DECIMAL(18,2);
+    DECLARE @GastosTotal DECIMAL(18,2);
+    DECLARE @Utilidad DECIMAL(18,2);
+
+   SELECT @IngresosTotal = ISNULL(SUM(pp.Abono), 0)+ ISNULL(SUM(fd.Precio * fd.Cantidad), 0)
+		FROM ProductorPagos pp FULL OUTER JOIN FacturaDetalle fd ON 1 = 0;
+		   
+   SELECT @GastosTotal =ISNULL(SUM(la.Monto), 0)+ ISNULL(SUM(ca.Monto), 0)
+		FROM LiquidacionAbonos la FULL OUTER JOIN CompraAbonos ca ON 1 = 0;
+
+   SET @Utilidad = @IngresosTotal - @GastosTotal;
+
+   SELECT 
+        @IngresosTotal AS IngresosTotales,
+        @GastosTotal AS GastosTotales,
+        @Utilidad AS Utilidad;
+END;
+
+EXEC spCalculoUtilidad;
+
