@@ -27,9 +27,9 @@ create table Cheques(
 	ChequesID int identity(1,1),
 	VoucherID int not null,
 	BancoID int not null,
-	Moneda varchar(3) not null, --USD, L, GBP... O como lo manejemos, tentativo a cambiar
+	Moneda varchar(1) not null constraint moneda_lempira default 'L',
 	LugarEmision varchar(50) not null,
-	FechaEmision date not null,
+	FechaEmision date not null constraint fecha_emision default CAST(GETDATE() AS DATE),
 	Denominacion decimal(10,2) not null,
 	Firma varchar(50) not null,
 )
