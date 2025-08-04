@@ -45,8 +45,9 @@ as
 			end
 			close CursorProducto;
 			deallocate CursorProducto;
+			select '10000' as Estado, 'Compra Agregada' as Mensaje
 		COMMIT TRANSACTION
-		select '10000' as Estado, 'Compra Agregada' as Mensaje, @ID as CompraID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
+		
 	end try
 	begin catch
 		if @@TRANCOUNT > 0
@@ -71,22 +72,22 @@ begin try
 		--Validar que existe este producto
 		exec spValidarProducto @ProductoID
 		--Validar que el producto lo tenga el proveedor
-		if not exists(select  proi.ProductoID from Compra as c
-		inner join ProveedorInsumo as proi on c.ProveedorID = proi.ProveedorID where proi.ProductoID = @ProductoID and c.CompraID = @CompraID)
-				THROW 50051, 'El productor no maneja este producto', 1;
+		--if not exists(select  proi.ProductoID from Compra as c
+		--inner join ProveedorInsumo as proi on c.ProveedorID = proi.ProveedorID where proi.ProductoID = @ProductoID and c.CompraID = @CompraID)
+		--		THROW 50051, 'El productor no maneja este producto', 1;
 
 		--Validar que el producto no este agotado
-		declare @ProducP varchar(13), @EstadoP int,@msg varchar(150),@nomP varchar(50); 
+		--declare @ProducP varchar(13), @EstadoP int,@msg varchar(150),@nomP varchar(50); 
 
-		select  @EstadoP= proi.EstadoID,@ProducP=proi.ProductoID from Compra as c
-		inner join ProveedorInsumo as proi on c.ProveedorID = proi.ProveedorID where proi.ProductoID = @ProductoID
+		--select  @EstadoP= proi.EstadoID,@ProducP=proi.ProductoID from Compra as c
+		--inner join ProveedorInsumo as proi on c.ProveedorID = proi.ProveedorID where proi.ProductoID = @ProductoID
 
-		select @nomP = Nombre from Producto where ProductoID=@ProducP;
-		if @EstadoP = 31002
-		begin
-			set @msg = 'El producto '+@nomP+' no esta disponible';
-			THROW 50052, @msg, 1
-		end
+		--select @nomP = Nombre from Producto where ProductoID=@ProducP;
+		--if @EstadoP = 31002
+		--begin
+		--	set @msg = 'El producto '+@nomP+' no esta disponible';
+		--	THROW 50052, @msg, 1
+		--end
 
 		exec spValidarDecimal 'Precio unitario', @PrecioUnitario;
 

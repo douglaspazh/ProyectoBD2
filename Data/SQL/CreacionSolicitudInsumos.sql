@@ -1,12 +1,13 @@
-use GrupoNo1
 
-exec spCrearSolicitudInsumos 3
 create type dbo.InsumoSolicitud as table (
     ProductoID varchar(13),
     BodegaID varchar(3),
 	Cantidad int,
 	Precio varchar(20)
 );
+
+--Este deberia ser el unico procedimiento que se deberia ejecutar
+exec spCrearSolicitudInsumos
 create or alter procedure spCrearSolicitudInsumos
 @ProductorID int,
 @ProductosTable InsumoSolicitud readonly
@@ -47,10 +48,7 @@ as
 		SELECT ERROR_NUMBER() as Estado,ERROR_MESSAGE() AS Mensaje;
 	end catch
 go
-select * from vStockActual
-exec spAgregarInsumosSolicitud 2,'102345123412','5B',8,41
-select * from vStockActual
-select * from salidas
+
 create or alter procedure spAgregarInsumosSolicitud
 @SolicitudInsumosID int,--
 @ProductoID varchar(12),--

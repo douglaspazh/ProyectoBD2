@@ -71,12 +71,13 @@ create table Estado(
 --empresa no lo manejamos realmente, pero por cualquier cosa yo la agrego a manera de registros.
 
 
-create table ProveedorInsumo(
-	ProveedorID int not null,
-	ProductoID varchar(12) not null,
-	EstadoID int not null,--(Disponible, agotado)
-	Precio decimal(10,2) not null,
-)
+--create table ProveedorInsumo(
+--	ProveedorID int not null,
+--	ProductoID varchar(12) not null,
+--	EstadoID int not null,--(Disponible, agotado)
+--	Precio decimal(10,2) not null,
+--)
+
 create table Compra(
 	CompraID int not null,
 	ProveedorID int not null,
