@@ -1,10 +1,13 @@
 use GrupoNo1
-
-create or alter trigger trEntradasPorInsumo
+--Cuando se agrega un producto a la tabla de CompraDetalle
+--este se almacena como entrada de produdcto al inventario de tipo I
+create or alter trigger trEntradasPorInsumo--Listo
 on CompraDetalle
 after insert
 as
 begin
+	--Debido a que los registros de compra detalles se van ingresando de uno en uno
+	--se pueden manejar de esta manera
 	declare @ID INT;
 	select @ID = ISNULL(MAX(EntradaID), 0) + 1 from Entradas
 	insert into Entradas (EntradaID,BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
@@ -12,38 +15,72 @@ begin
 	Compra as c on c.CompraID=i.CompraID
 end
 
+--Cuando se registra una entrada de cosecha, se cambia el estado de la Cosecha
+--a entregado
+--Y se registra la entrada del producto al inventario de tipo C
+create or alter trigger trEntradasPorCosecha
+on EntradaCosecha
+after insert
+as
+begin
+	--Debido a que los registros de entradacosecha se van ingresando de uno en uno
+	--se pueden manejar de esta manera
+	declare @ID INT,@CosechaID int,@ProductorID int,@Total decimal(10,2);
+	select @CosechaID = CosechaID from inserted
+	select @ID = ISNULL(MAX(EntradaID), 0) + 1 from Entradas
+	update Cosecha set EstadoID=20003 where CosechaID=@CosechaID
+	
+	--Ingresar la entrada del producto al inventario
+	insert into Entradas (EntradaID,BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
+	select @ID,i.BodegaID,i.ProductoID,i.Cantidad,c.FechaIngreso,'C' from inserted i inner join
+	EntradaCosecha as c on c.CosechaID=i.CosechaID
+
+	--Ingresar la liquidacion de la cosecha como pendiente
+	insert into LiquidacionCosecha(CosechaID,ProductorID,TotalPagar,EstadoID)
+	select @CosechaID,i.ProductoID,i.Cantidad*i.PrecioUnitario,30001 from inserted i
+end
+
+--Cuando se realiza un abono a una cosecha, se valida el valor del SaldoPendiente
+--Para asignarle el estado de Parcial o Cancelado dependiendo
+--De si este saldo pendiente es 0 o aun existe deuda
 create or alter trigger trEstadoLiquidacion
 on LiquidacionAbonos
 after insert
 as
 begin
-	declare @id int;
-	select @id =LiquidacionID from inserted
-	if(select SaldoPendiente from vSaldoPendienteCosecha where LiquidacionID=@id) = 0.00
-		--Cosecha liquidada
-		update LiquidacionCosecha set EstadoID=30003 where LiquidacionID=@id
-	else
 	--Cosecha parcialmente liquidada
-	update LiquidacionCosecha set EstadoID=30002 where LiquidacionID=@id
+	update lc 
+	set EstadoID=
+	case 
+		when sp.SaldoPendiente = 0.00 then 30003 -- Liquidados
+        else 30002 -- Parcialmente liquidados
+    END 
+	from LiquidacionCosecha as lc
+	inner join LiquidacionAbonos as la on la.LiquidacionID=lc.LiquidacionID
+	inner join vSaldoPendienteCosecha as sp on sp.LiquidacionID=lc.LiquidacionID
 end
 
+--Cuando se realiza un abono a una compra, se valida el valor del SaldoPendiente
+--Para asignarle el estado de Parcial o Cancelado dependiendo
+--De si este saldo pendiente es 0 o aun existe deuda
 create or alter trigger trEstadoCompra
 on CompraAbonos
 after insert
 as
 begin
-	declare @id int;
-	select * from CompraAbonos
-	select @id =LiquidacionID from inserted
-	if(select SaldoPendiente from vSaldoPendienteCosecha where LiquidacionID=@id) = 0.00
-		--Cosecha liquidada
-		update LiquidacionCosecha set EstadoID=30003 where LiquidacionID=@id
-	else
-	--Cosecha parcialmente liquidada
-	update LiquidacionCosecha set EstadoID=30002 where LiquidacionID=@id
-	
+	update c
+	set EstadoID=
+	case 
+		when sp.SaldoPendiente = 0.00 then 30003 -- Liquidados
+        else 30002 -- Parcialmente liquidados
+    END 
+	from Compra as c
+	INNER JOIN CompraAbonos ca ON ca.CompraID = c.CompraID
+	INNER JOIN vSaldoPendienteCompra sp ON sp.CompraID = c.CompraID;
 end
-
+--Cuando registremos un abono por parte del productor a una solicitud de insumos, se valida el valor del SaldoPendiente
+--Para asignarle el estado de Parcial o Cancelado dependiendo
+--De si este saldo pendiente es 0 o aun existe deuda
 create or alter trigger trEstadoPagoInsumos
 on ProductorPagos
 after insert
@@ -59,34 +96,13 @@ begin
 	from SolicitudInsumos as si
 	INNER JOIN ProductorPagos i ON si.SolicitudInsumosID = i.SolicitudInsumosID
 	INNER JOIN vSaldoPendienteInsumos v ON si.SolicitudInsumosID = v.SolicitudInsumosID;
-	select * from s
 
 end
 
 
-
-create or alter trigger trEntradasPorCosecha
-on EntradaCosecha
-after insert
-as
-begin
-	declare @ID INT,@CosechaID int,@ProductorID int,@Total decimal(10,2);
-	select @CosechaID = CosechaID from inserted
-	select @ID = ISNULL(MAX(EntradaID), 0) + 1 from Entradas
-	update Cosecha set EstadoID=20003 where CosechaID=@CosechaID
-	
-	--Ingresar la entrada del producto al inventario
-	insert into Entradas (EntradaID,BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
-	select @ID,i.BodegaID,i.ProductoID,i.Cantidad,c.FechaIngreso,'C' from inserted i inner join
-	EntradaCosecha as c on c.CosechaID=i.CosechaID
-
-	--Ingresar la liquidacion de la cosecha como pendiente
-	insert into LiquidacionCosecha(CosechaID,ProductorID,TotalPagar,EstadoID)
-	select @CosechaID,i.ProductoID,i.Cantidad*i.PrecioUnitario,30001 from inserted i
-end
-select * from salidas
-
-create or alter trigger trSalidasPorFactura 
+--Registramos las salidas cada que se agrega un producto a
+--la tabla facturaDetalle
+create or alter trigger trSalidasPorFactura --Listo
 on FacturaDetalle  
 after insert  
 as  
@@ -94,8 +110,9 @@ begin
 	insert into Salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida,Tipo) 
 	select BodegaID,ProductoID,Cantidad,CAST(GETDATE() AS DATE),'F' from inserted  
 end
-
-create or alter trigger trSalidasPorSolicitudInsumos
+--Registramos las salidas cada que se agrega un producto a
+--una solicitud de insumos
+create or alter trigger trSalidasPorSolicitudInsumos--Listo
 on SolicitudInsumosDetalle 
 after insert  
 as  
@@ -103,6 +120,9 @@ begin
 	insert into Salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida,Tipo) 
 	select BodegaID,ProductoID,Cantidad,CAST(GETDATE() AS DATE),'S' from inserted  
 end
+--Este se ejecuta cuando el estado del voucher se actualiza a pagado,
+--para efectuar los respectivos registros de pagos de insumos, pagos de cosecha
+--o las deducciones de insumos que se realizan en el voucher establecido
 create or alter trigger trAbonosVoucher
 on Voucher
 after update
@@ -151,12 +171,6 @@ begin
 	close VoucherCursor;
 	deallocate VoucherCursor;
 end
-
---Prueba del funcionamiento
-spRecogerCosecha 2,'5A'
-select * from cosecha
-select * from EntradaCosecha
-select * from Entradas
 
 
 
