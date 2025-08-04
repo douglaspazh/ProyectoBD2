@@ -26,6 +26,10 @@ as
 GO 
 
 --Procedimiento crear cuenta para Proveedores
+exec spCrearCuentaProveedor 2,3,'475344758957' 
+exec spCrearCuentaProveedor 2,3,'852334758957' 
+exec spCrearCuentaProveedor 2,3,'152344758957' 
+select * from Banco
 create or alter procedure spCrearCuentaProveedor
 @ProveedorID int,
 @BancoID int,

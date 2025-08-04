@@ -69,9 +69,17 @@ as
 		select ERROR_NUMBER() as Estado, ERROR_MESSAGE() as Mensaje;
 	end catch
 go
-
+select * from Producto
+create type dbo.InsumoCompra as table (
+    ProductoID varchar(13),
+    BodegaID varchar(3),
+	Cantidad int,
+	PrecioUnitario varchar(20)
+);
+select * from Factura
 create or alter procedure spComprarInsumos
 @ProveedorID int,
+@ProductosTable InsumoCompra readonly,
 @Impuesto varchar(20) = null,
 @Descuento varchar(20) = null
 as
@@ -86,6 +94,22 @@ as
 			select @ID = ISNULL(MAX(CompraID), 0) + 1 from Compra
 			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha,EstadoID) 
 				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),null);
+			--Agregar productos
+			declare @ProductoID varchar(13), @BodegaID varchar(3), @Cantidad int,@PrecioUnitario varchar(20);
+
+			declare CursorProducto cursor for 
+			select ProductoID, BodegaID, 
+			Cantidad ,PrecioUnitario from @ProductosTable
+
+			open CursorProducto;
+			fetch next from CursorProducto into @ProductoID, @BodegaID, @Cantidad,@PrecioUnitario
+			while @@FETCH_STATUS=0
+			begin
+				exec spAgregarInsumoCompra @ID,@ProductoID, @BodegaID, @Cantidad,@PrecioUnitario
+				fetch next from CursorProducto into @ProductoID, @BodegaID, @Cantidad,@PrecioUnitario
+			end
+			close CursorProducto;
+			deallocate CursorProducto;
 		COMMIT TRANSACTION
 		select '10000' as Estado, 'Compra Agregada' as Mensaje, @ID as CompraID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
 	end try

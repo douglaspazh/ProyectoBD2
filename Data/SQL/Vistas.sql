@@ -60,11 +60,30 @@ create or alter view vComprasPendientes as
 	from Compra as c 
 	inner join Proveedor as p on c.ProveedorID = p.ProveedorID
 	where c.EstadoID=30001
+
+create or alter view vTotalPagarVoucherProductor
+as
+	select di.VoucherProductorID,sum(di.Monto)as TotalPagar from (select VoucherProductorID, sum(Monto*-1) as Monto from DeduccionProductor group by VoucherProductorID
+	union
+	select VoucherProductorID, sum(Monto) as Monto from IngresosProductor group by VoucherProductorID) as di group by VoucherProductorID
+
+create or alter view vCuentasProveedor
+as
+	select cb.CuentaID,cp.ProveedorID,cb.NumeroCuenta from CuentaBancaria as cb
+	inner join CuentaProveedor as cp on cb.CuentaID=cp.CuentaID
+
+create or alter view vCuentasProductor
+as
+	select cb.CuentaID,cp.ProductorID,cb.NumeroCuenta from CuentaBancaria as cb
+	inner join CuentaProductor as cp on cb.CuentaID=cp.CuentaID
 --Vistas creadas
 select * from vSaldoPendienteCosecha
 select * from vSaldoPendienteInsumos
 select * from vStockActual
 select * from vComprasPendientes
 select * from vSaldoPendienteCompra
+select * from vTotalPagarVoucherProductor
+select * from vCuentasProveedor
+select * from vCuentasProductor
 
 

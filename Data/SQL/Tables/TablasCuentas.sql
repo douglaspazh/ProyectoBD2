@@ -46,7 +46,8 @@ create table Voucher(
 	VoucherID int not null,
 	NumeroVoucher varchar(12) not null,
 	Fecha date not null,
-	EstadoID int not null constraint No_Pagado default 30001
+	EstadoID int not null constraint No_Pagado default 30001,
+	TipoPagoID int
 )
 
 create table VoucherProductor(
@@ -94,3 +95,7 @@ create table IngresosProveedor(
 	Monto decimal (10,2) not null
 )
 
+create table TipoPago(
+	TipoPagoID int,
+	Nombre varchar(20)
+)
