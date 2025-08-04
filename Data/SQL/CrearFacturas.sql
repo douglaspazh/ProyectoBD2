@@ -1,6 +1,6 @@
 --Una vez se ejecuta, ya queda almacenado el type en la base de datos
 create type dbo.ProductoFactura as table (
-    ProductoID int,
+    ProductoID varchar(12),
     BodegaID varchar(3),
 	Precio decimal(10,2),
 	Cantidad int,
@@ -39,7 +39,7 @@ as
 			insert into factura (FacturaID,ClienteID,Fecha,Impuesto,Descuento,Descripcion) values 
 			(@ID,@ClienteID, CAST(GETDATE() AS DATE), @Impuesto, @Descuento, @Descuento)
 			--Proceso para agregar los productos a la factura
-			declare @ProductoID int,@BodegaID varchar(3),@Precio decimal(10,2),
+			declare @ProductoID varchar(12),@BodegaID varchar(3),@Precio decimal(10,2),
 			@Cantidad int,@Observaciones varchar(150);
 
 			declare CursorProducto cursor for 

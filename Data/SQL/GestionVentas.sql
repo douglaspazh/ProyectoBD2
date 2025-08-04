@@ -48,8 +48,18 @@ go
 --Prueba de agregar un cliente
 exec spCrearCliente   'Guillermo','Fernandez',null,'0501998701187',null,'98653520',null
 
+create type dbo.ProductoFactura as table (
+    ProductoID int,
+    BodegaID varchar(3),
+	Precio decimal(10,2),
+	Cantidad int,
+	Observaciones varchar(150) null
+);
+spGenerarFactura 3
+select * from factura
 create or alter procedure spGenerarFactura
 @ClienteID int,
+@ProductosTable ProductoFactura readonly,
 @Descripcion varchar(151) =  null,
 @Impuesto varchar(20) = null,
 @Descuento varchar(20) = null
@@ -68,7 +78,21 @@ as
 			select @ID = ISNULL(MAX(FacturaID), 0) + 1 from factura
 			insert into factura (FacturaID,ClienteID,Fecha,Impuesto,Descuento,Descripcion) values 
 			(@ID,@ClienteID, CAST(GETDATE() AS DATE), @Impuesto, @Descuento, @Descuento)
-			select '10000' as Estado, 'Factura creada' as Mensaje, @ID  as FacturaID--Si todo sale bien, se retornara el id de la compra, para poder agregar los insumos
+			--Proceso para agregar los productos a la factura
+			declare @ProductoID int,@BodegaID varchar(3),@Precio decimal(10,2),
+			@Cantidad int,@Observaciones varchar(150);
+
+			declare CursorProducto cursor for 
+			select ProductoID,BodegaID,Precio,Cantidad,Observaciones from @ProductosTable
+			open CursorProducto;
+			fetch next from CursorProducto into @ProductoID,@BodegaID,@Precio,@Cantidad,@Observaciones
+			while @@FETCH_STATUS=0
+			begin
+				exec spAgregarProductoFactura @ID,@ProductoID,@BodegaID,@Precio,@Cantidad,@Observaciones
+				fetch next from CursorProducto into @ProductoID,@BodegaID,@Precio,@Cantidad,@Observaciones
+			end
+			close CursorProducto;
+			deallocate CursorProducto;
 		COMMIT TRANSACTION
 		
 	end try
@@ -86,8 +110,8 @@ select * from vStockActual
 
 create or alter procedure spAgregarProductoFactura
 @FacturaID int,--a
-@BodegaID varchar(2),--a
 @ProductoID varchar(12),--a
+@BodegaID varchar(2),--a
 @Precio varchar(20),--a
 @Cantidad int,--a
 @Observaciones varchar(151) = null--a
