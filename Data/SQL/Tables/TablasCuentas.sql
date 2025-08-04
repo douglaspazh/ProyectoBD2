@@ -22,11 +22,6 @@ create table Banco(
 	Nombre varchar(50) not null,
 )
 
-create table Voucher(
-	VoucherID int not null,
-	NumeroVoucher varchar(12) not null,
-	Fecha date not null
-)
 
 create table Cheques(
 	ChequesID int not null,
@@ -47,34 +42,53 @@ create table Depositos(
 	Fecha date
 )
 
+create table Voucher(
+	VoucherID int not null,
+	NumeroVoucher varchar(12) not null,
+	Fecha date not null,
+	EstadoID int not null constraint No_Pagado default 30001
+)
+
 create table VoucherProductor(
-	VoucherProductorID int not null,
+	VoucherProductorID int identity(1,1),
 	VoucherID int not null,
 	ProductorID int not null
 )
-
+create table VoucherProveedor(
+	VoucherProveedorID int identity(1,1),
+	VoucherID int not null,
+	ProveedorID int not null
+)
 create table DeduccionProductor(
-	DeduccionProductorID int not null,
+	DeduccionProductorID int identity(1,1),
 	VoucherProductorID int not null,
 	SolicitudInsumosID int not null,
 	Monto decimal (10,2) not null
 )
 
-create table IngersosProductor(
-	IngresosProductorID int not null,
+create table IngresosProductor(
+	IngresosProductorID int identity(1,1),
 	VoucherProductorID int not null,
-	EntradaCosechaID int not null,
+	LiquidacionID int not null,
 	Monto decimal (10,2) not null
 )
 
-create table VoucherProveedor(
-	VoucherProveedorID int not null,
-	VoucherID int not null,
-	ProveedorID int not null
+create table LiquidacionAbonos(
+	LiquidacionAbonoID int identity(1,1),
+	LiquidacionID int,
+	Monto decimal(10,2),
+	Fecha date
+)
+
+create table CompraAbonos(
+	CompraAbonosID int identity(1,1),
+	CompraID int not null,
+	Monto decimal(10,2) not null,
+	Fecha date not null
 )
 
 create table IngresosProveedor(
-	IngresosProveedorID int not null,
+	IngresosProveedorID int identity(1,1),
 	VoucherProveedorID int not null,
 	CompraID int not null,
 	Monto decimal (10,2) not null
