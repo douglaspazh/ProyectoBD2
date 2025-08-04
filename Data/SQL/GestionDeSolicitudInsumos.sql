@@ -31,9 +31,8 @@ create or alter procedure spAgregarInsumosSolicitud
 @SolicitudInsumosID int,--
 @ProductoID varchar(12),--
 @BodegaID varchar(12),--
-@Cantidad int,--
-@Precio varchar(20),--
-@Impuesto varchar(20)=null
+@Cantidad int,
+@Precio varchar(20)
 as
 	begin try
 		if (select COUNT(SolicitudInsumosID) from SolicitudInsumos where SolicitudInsumosID = @SolicitudInsumosID) != 1
@@ -41,8 +40,6 @@ as
 		exec spValidarBodega @BodegaID
 		exec spValidarProducto @ProductoID
 		exec spValidarDecimal 'Precio', @Precio
-		if @Impuesto is not null
-			exec spValidarDecimal 'Impuesto', @Impuesto
 		exec spvalidarCampoInt @Cantidad, 'cantidad productos'
 
 		if (select COUNT(ProductoID) from vStockActual where ProductoID = @ProductoID and @BodegaID=BodegaID) != 1
@@ -50,8 +47,8 @@ as
 		if(select Cantidad from vStockActual where ProductoID = @ProductoID and @BodegaID=BodegaID)<@Cantidad
 			THROW 50052, 'No existe esta cantidad de producto', 1;
 		BEGIN TRANSACTION
-			insert into SolicitudInsumosDetalle (SolicitudInsumosID,ProductoID,BodegaID,Cantidad,Precio,Impuesto) values 
-			(@SolicitudInsumosID,@ProductoID,@BodegaID,@Cantidad, @Precio, @Impuesto)
+			insert into SolicitudInsumosDetalle (SolicitudInsumosID,ProductoID,BodegaID,Cantidad,Precio) values 
+			(@SolicitudInsumosID,@ProductoID,@BodegaID,@Cantidad, @Precio)
 		COMMIT TRANSACTION
 	end try
 	begin catch
