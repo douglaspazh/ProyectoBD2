@@ -24,7 +24,7 @@ create table Banco(
 
 
 create table Cheques(
-	ChequesID int not null,
+	ChequesID int identity(1,1),
 	VoucherID int not null,
 	BancoID int not null,
 	Moneda varchar(3) not null, --USD, L, GBP... O como lo manejemos, tentativo a cambiar
@@ -35,7 +35,7 @@ create table Cheques(
 )
 
 create table Depositos(
-	DepositosID int not null,
+	DepositosID int identity(1,1),
 	VoucherID int not null,
 	CuentaID int not null,
 	Monto decimal(10,2) not null,
