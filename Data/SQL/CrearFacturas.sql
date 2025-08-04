@@ -1,10 +1,10 @@
 --Una vez se ejecuta, ya queda almacenado el type en la base de datos
 create type dbo.ProductoFactura as table (
-    ProductoID varchar(12),
+    ProductoID varchar(13),
     BodegaID varchar(3),
-	Precio decimal(10,2),
+	Precio varchar(20),
 	Cantidad int,
-	Observaciones varchar(150) null
+	Observaciones varchar(151) null
 );
 declare @ProductosAgregar dbo.ProductoFactura;
 
