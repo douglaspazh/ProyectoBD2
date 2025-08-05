@@ -1,7 +1,6 @@
 CREATE OR ALTER PROCEDURE spInsertProductor
     @Nombre     VARCHAR(26), 
     @Apellido   VARCHAR(26), 
-    @Direccion  VARCHAR(51), 
     @Telefono   VARCHAR(9), 
     @Correo     VARCHAR(151),
     @Documento  VARCHAR(14),
@@ -11,7 +10,6 @@ AS
         -- Validaciones de campos
 		EXEC spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
 		EXEC spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
-		EXEC spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
 		EXEC spValidarCampoVarchar 'Telefono', @Telefono, 8, 8;
 		EXEC spValidarCampoVarchar 'Correo', @Correo, 0, 50;
 		EXEC spValidarCorreo @Correo;
@@ -28,8 +26,8 @@ AS
 			DECLARE @ID INT;
 			SELECT @ID = ISNULL(MAX(ProductorID), 0) + 1 FROM Productor
 
-			INSERT INTO Productor (ProductorID, Nombre, Apellido, Direccion, Telefono, Correo, EstadoID, Documento, RTN) 
-            VALUES (@ID, @Nombre, @Apellido, @Direccion, @Telefono, @Correo, 10001, @Documento, @RTN);
+			INSERT INTO Productor (ProductorID, Nombre, Apellido, Telefono, Correo, EstadoID, Documento, RTN) 
+            VALUES (@ID, @Nombre, @Apellido, @Telefono, @Correo, 10001, @Documento, @RTN);
 
             SELECT 10000 as Estado, 'Productor agregado correctamente' AS Mensaje;
 		COMMIT TRANSACTION

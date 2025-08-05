@@ -1,8 +1,7 @@
 CREATE OR ALTER PROCEDURE spUpdateProductor
 	@ID INT,
 	@Nombre VARCHAR(26), 
-	@Apellido VARCHAR(26), 
-	@Direccion VARCHAR(51), 
+	@Apellido VARCHAR(26),
 	@Telefono VARCHAR(9), 
 	@Correo VARCHAR(151),
 	@Documento VARCHAR(14),
@@ -13,7 +12,6 @@ AS
 	    -- Validaciones de campos
 		EXEC spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
 		EXEC spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
-		EXEC spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
 		EXEC spValidarCampoVarchar 'Telefono', @Telefono, 8, 8;
 		EXEC spValidarCampoVarchar 'Correo', @Correo, 0, 50;
 		EXEC spValidarCorreo @Correo;
@@ -30,7 +28,6 @@ AS
             UPDATE Productor 
                 SET Nombre = @Nombre,
                     Apellido = @Apellido,
-                    Direccion = @Direccion,
                     Telefono = @Telefono,
                     Correo = @Correo,
                     Documento = @Documento,
