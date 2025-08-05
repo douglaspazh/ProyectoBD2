@@ -113,12 +113,12 @@ namespace ProyectoBD2.Views.Forms
 
         public int FincaID
         {
-            get => int.Parse(txtFincaID.Text.Trim());
+            get => Convert.ToInt32(txtFincaID.Text.Trim());
             set => txtFincaID.Text = value.ToString();
         }
         public int ProductorID
         {
-            get => int.Parse(txtProductorID.Text.Trim());
+            get => Convert.ToInt32(txtProductorID.Text.Trim());
             set => txtProductorID.Text = value.ToString();
         }
         public string Nombre
@@ -126,25 +126,29 @@ namespace ProyectoBD2.Views.Forms
             get => txtNombre.Text.Trim();
             set => txtNombre.Text = value;
         }
-        public string ProductorNombre
-        {
-            get => cmbProductorNombre.Text.Trim();
-            set => cmbProductorNombre.Text = value;
+        public int Productor
+        {   get => Convert.ToInt32( cmbProductor.SelectedValue );
+            set => cmbProductor.SelectedValue = value;
         }
-        public string Direccion
+        public int DepartamentoID
         {
-            get => txtDireccion.Text.Trim();
-            set => txtDireccion.Text = value;
+            get => Convert.ToInt32(cmbDepartamento.SelectedValue);
+            set => cmbDepartamento.SelectedValue = value;
+        }
+        public int MunicipioID
+        {
+            get => Convert.ToInt32(cmbMunicipio.SelectedValue);
+            set => cmbMunicipio.SelectedValue = value;
+        }
+        public string Ubicacion
+        {
+            get => txtUbicacion.Text.Trim();
+            set => txtUbicacion.Text = value;
         }
         public decimal ExtensionTotal
         {
-            get => decimal.Parse(txtExtensionTotal.Text.Trim());
+            get => Convert.ToDecimal( txtExtensionTotal.Text.Trim() );
             set => txtExtensionTotal.Text = value.ToString();
-        }
-        public string FechaRegistro
-        {
-            get => txtFechaRegistro.Text.Trim();
-            set => txtFechaRegistro.Text = value;
         }
         public string SearchTerm
         {
@@ -161,8 +165,6 @@ namespace ProyectoBD2.Views.Forms
                 txtFincaID.Visible = value;
                 lblProductorID.Visible = value;
                 txtProductorID.Visible = value;
-                lblFechaRegistro.Visible = value;
-                txtFechaRegistro.Visible = value;
                 btnGuardar.Text = value ? "Actualizar" : "Guardar";
             }
         }
