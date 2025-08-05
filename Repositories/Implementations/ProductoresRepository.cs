@@ -49,7 +49,7 @@ namespace ProyectoBD2.Repositories.Implementations
             {
                 CommandType = CommandType.StoredProcedure
             };
-            command.Parameters.AddWithValue( "@ProductorID", productorId );
+            command.Parameters.AddWithValue( "@ID", productorId );
             var dataTable = new DataTable();
             connection.Open();
             using var reader = command.ExecuteReader();
@@ -104,7 +104,6 @@ namespace ProyectoBD2.Repositories.Implementations
             var apellido = productorData["Apellido"] as string;
             var documento = productorData["Documento"] as string;
             var rtn = productorData["RTN"] as string;
-            var direccion = productorData["Direccion"] as string;
             var telefono = productorData["Telefono"] as string;
             var correo = productorData["Correo"] as string;
 
@@ -118,7 +117,6 @@ namespace ProyectoBD2.Repositories.Implementations
             command.Parameters.AddWithValue( "@Nombre", nombre );
             command.Parameters.AddWithValue( "@Apellido", apellido );
             command.Parameters.AddWithValue( "@RTN", rtn );
-            command.Parameters.AddWithValue( "@Direccion", direccion );
             command.Parameters.AddWithValue( "@Telefono", telefono );
             command.Parameters.AddWithValue( "@Correo", correo );
             command.Parameters.AddWithValue( "@Documento", documento );
@@ -161,7 +159,6 @@ namespace ProyectoBD2.Repositories.Implementations
             var rtn = productorData["RTN"] as string;
             var telefono = productorData["Telefono"] as string;
             var correo = productorData["Correo"] as string;
-            var direccion = productorData["Direccion"] as string;
             var estadoId = (int)productorData["EstadoID"];
 
             // Using a stored procedure to update the productor
@@ -178,7 +175,6 @@ namespace ProyectoBD2.Repositories.Implementations
             command.Parameters.AddWithValue("@RTN", rtn);
             command.Parameters.AddWithValue("@Telefono", telefono);
             command.Parameters.AddWithValue("@Correo", correo);
-            command.Parameters.AddWithValue("@Direccion", direccion);
             command.Parameters.AddWithValue("@EstadoID", estadoId);
 
             var dataTable = new DataTable();

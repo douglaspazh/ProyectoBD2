@@ -91,7 +91,6 @@ namespace ProyectoBD2.Presenters
                     _view.Correo = row["Correo"].ToString() ?? string.Empty;
                     _view.Documento = row["Documento"].ToString() ?? string.Empty;
                     _view.RTN = row["RTN"].ToString() ?? string.Empty;
-                    _view.Direccion = row["Direccion"].ToString() ?? string.Empty;
                     _view.EstadoID = Convert.ToInt32( row["EstadoID"] );
                 }
             }
@@ -134,7 +133,6 @@ namespace ProyectoBD2.Presenters
                     { "ProductorID", _view.ProductorID },
                     { "Nombre", _view.Nombre },
                     { "Apellido", _view.Apellido },
-                    { "Direccion", _view.Direccion },
                     { "Telefono", _view.Telefono },
                     { "Correo", _view.Correo },
                     { "Documento", _view.Documento }, 
@@ -183,7 +181,6 @@ namespace ProyectoBD2.Presenters
             _view.Correo = string.Empty;
             _view.Documento = string.Empty;
             _view.RTN = string.Empty;
-            _view.Direccion = string.Empty;
             _view.EstadoID = 0;
         }
 

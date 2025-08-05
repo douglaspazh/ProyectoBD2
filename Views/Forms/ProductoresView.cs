@@ -18,7 +18,7 @@ namespace ProyectoBD2.Views.Forms
         {
             InitializeComponent();
             AssociatedAndRaiseEvents();
-            tabControl.TabPages.Remove(tbpDetalle);
+            tabControl.TabPages.Remove(tbpDetalleProductor);
 
             _presenter = new ProductorPresenter(this, new ProductoresRepository());
 
@@ -53,18 +53,18 @@ namespace ProyectoBD2.Views.Forms
             {
                 AddNewEvent?.Invoke( this, EventArgs.Empty );
                 tabControl.TabPages.Remove( tbpLista );
-                tabControl.TabPages.Add( tbpDetalle );
-                tabControl.SelectedTab = tbpDetalle;
-                tbpDetalle.Text = "Nuevo Productor";
+                tabControl.TabPages.Add( tbpDetalleProductor );
+                tabControl.SelectedTab = tbpDetalleProductor;
+                tbpDetalleProductor.Text = "Nuevo Productor";
             };
 
             btnEditar.Click += delegate
             {
                 EditEvent?.Invoke( this, EventArgs.Empty );
                 tabControl.TabPages.Remove(tbpLista);
-                tabControl.TabPages.Add(tbpDetalle);
-                tabControl.SelectedTab = tbpDetalle;
-                tbpDetalle.Text = "Editar Productor";
+                tabControl.TabPages.Add(tbpDetalleProductor);
+                tabControl.SelectedTab = tbpDetalleProductor;
+                tbpDetalleProductor.Text = "Editar Productor";
             };
 
             btnEliminar.Click += delegate
@@ -78,13 +78,15 @@ namespace ProyectoBD2.Views.Forms
                     MessageBox.Show( Message );
                 }
             };
-            
+
+            btnEliminar2.Click += ( s, e ) => btnEliminar.PerformClick();
+
             btnGuardar.Click += delegate
             {
                 SaveEvent?.Invoke( this, EventArgs.Empty );
                 if ( isSuccessful )
                 {
-                    tabControl.TabPages.Remove( tbpDetalle );
+                    tabControl.TabPages.Remove( tbpDetalleProductor );
                     tabControl.TabPages.Add( tbpLista );
                     tabControl.SelectedTab = tbpLista;
                 }
@@ -94,7 +96,7 @@ namespace ProyectoBD2.Views.Forms
             btnCancelar.Click += delegate
             {
                 CancelEvent?.Invoke( this, EventArgs.Empty );
-                tabControl.TabPages.Remove( tbpDetalle );
+                tabControl.TabPages.Remove( tbpDetalleProductor );
                 tabControl.TabPages.Add( tbpLista );
                 tabControl.SelectedTab = tbpLista;
             };
@@ -111,6 +113,8 @@ namespace ProyectoBD2.Views.Forms
 
         public void SetListBindingSource( BindingSource productores )
         {
+            dgvProductores.ClearSelection();
+            dgvProductores.CurrentCell = null;
             dgvProductores.DataSource = productores;
         }
 
@@ -134,15 +138,9 @@ namespace ProyectoBD2.Views.Forms
             cmbEstado.ValueMember = "EstadoID";
         }
 
-        public int EstadoID
-        {
-            get => cmbEstado.SelectedValue != null ? Convert.ToInt32(cmbEstado.SelectedValue) : 0;
-            set => cmbEstado.SelectedValue = value;
-        }
-
         public int ProductorID
         {
-            get => int.TryParse( txtProductorID.Text.Trim(), out int id ) ? id : 0;
+            get => Convert.ToInt32( ProductorID.ToString().Trim() );
             set => txtProductorID.Text = value.ToString();
         }
         public string Nombre 
@@ -165,11 +163,6 @@ namespace ProyectoBD2.Views.Forms
             get => txtRTN.Text.Trim();
             set => txtRTN.Text = value;
         }
-        public string Direccion 
-        {
-            get => txtDireccion.Text.Trim();
-            set => txtDireccion.Text = value;
-        }
         public string Telefono 
         {
             get => txtTelefono.Text.Trim();
@@ -179,6 +172,11 @@ namespace ProyectoBD2.Views.Forms
         {
             get => txtEmail.Text.Trim();
             set => txtEmail.Text = value;
+        }
+        public int EstadoID
+        {
+            get => Convert.ToInt32( cmbEstado.SelectedValue );
+            set => cmbEstado.SelectedValue = value;
         }
 
         public string SearchTerm {

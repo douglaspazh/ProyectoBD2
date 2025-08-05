@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             dgvProductores = new DataGridView();
             btnAgregar = new Button();
             btnEditar = new Button();
@@ -49,11 +49,10 @@
             btnAnterior = new Button();
             lblPaginas = new Label();
             lblTotalRegistros = new Label();
-            tbpDetalle = new TabPage();
+            tbpDetalleProductor = new TabPage();
+            btnEliminar2 = new Button();
             txtApellido = new TextBox();
             label10 = new Label();
-            txtDireccion = new TextBox();
-            label9 = new Label();
             txtRTN = new TextBox();
             label8 = new Label();
             txtDocumento = new TextBox();
@@ -75,7 +74,7 @@
             panelTop.SuspendLayout();
             tabControl.SuspendLayout();
             tbpLista.SuspendLayout();
-            tbpDetalle.SuspendLayout();
+            tbpDetalleProductor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -90,14 +89,14 @@
             dgvProductores.BorderStyle = BorderStyle.None;
             dgvProductores.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvProductores.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font( "Segoe UI", 9F );
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvProductores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font( "Segoe UI", 9F );
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvProductores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvProductores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProductores.EnableHeadersVisualStyles = false;
             dgvProductores.Location = new Point( 8, 67 );
@@ -108,27 +107,27 @@
             dgvProductores.RowHeadersWidth = 25;
             dgvProductores.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvProductores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProductores.Size = new Size( 705, 422 );
+            dgvProductores.Size = new Size( 700, 422 );
             dgvProductores.TabIndex = 0;
             // 
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAgregar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnAgregar.Location = new Point( 719, 67 );
+            btnAgregar.Location = new Point( 714, 67 );
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size( 95, 30 );
+            btnAgregar.Size = new Size( 100, 32 );
             btnAgregar.TabIndex = 1;
-            btnAgregar.Text = "Agregar";
+            btnAgregar.Text = "Nuevo";
             btnAgregar.UseVisualStyleBackColor = true;
             // 
             // btnEditar
             // 
             btnEditar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEditar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEditar.Location = new Point( 719, 103 );
+            btnEditar.Location = new Point( 714, 105 );
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size( 95, 30 );
+            btnEditar.Size = new Size( 100, 32 );
             btnEditar.TabIndex = 2;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
@@ -137,9 +136,9 @@
             // 
             btnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEliminar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEliminar.Location = new Point( 719, 139 );
+            btnEliminar.Location = new Point( 714, 157 );
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size( 95, 30 );
+            btnEliminar.Size = new Size( 100, 30 );
             btnEliminar.TabIndex = 3;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
@@ -170,7 +169,8 @@
             txtBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             txtBuscar.Location = new Point( 8, 31 );
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size( 338, 25 );
+            txtBuscar.PlaceholderText = "Ingrese un nombre o DNI";
+            txtBuscar.Size = new Size( 322, 25 );
             txtBuscar.TabIndex = 6;
             // 
             // btnBuscar
@@ -178,7 +178,7 @@
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.AutoSize = true;
             btnBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnBuscar.Location = new Point( 352, 29 );
+            btnBuscar.Location = new Point( 339, 29 );
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size( 84, 27 );
             btnBuscar.TabIndex = 7;
@@ -231,7 +231,7 @@
             // tabControl
             // 
             tabControl.Controls.Add( tbpLista );
-            tabControl.Controls.Add( tbpDetalle );
+            tabControl.Controls.Add( tbpDetalleProductor );
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point( 0, 50 );
             tabControl.Name = "tabControl";
@@ -260,7 +260,7 @@
             tbpLista.Padding = new Padding( 3 );
             tbpLista.Size = new Size( 822, 526 );
             tbpLista.TabIndex = 0;
-            tbpLista.Text = "Lista de productores";
+            tbpLista.Text = "Lista de Productores";
             tbpLista.UseVisualStyleBackColor = true;
             // 
             // lblRecordsPerPage
@@ -339,36 +339,45 @@
             lblTotalRegistros.TabIndex = 8;
             lblTotalRegistros.Text = "Total: {} productores";
             // 
-            // tbpDetalle
+            // tbpDetalleProductor
             // 
-            tbpDetalle.Controls.Add( txtApellido );
-            tbpDetalle.Controls.Add( label10 );
-            tbpDetalle.Controls.Add( txtDireccion );
-            tbpDetalle.Controls.Add( label9 );
-            tbpDetalle.Controls.Add( txtRTN );
-            tbpDetalle.Controls.Add( label8 );
-            tbpDetalle.Controls.Add( txtDocumento );
-            tbpDetalle.Controls.Add( label7 );
-            tbpDetalle.Controls.Add( txtProductorID );
-            tbpDetalle.Controls.Add( lblProductorID );
-            tbpDetalle.Controls.Add( pictureBox );
-            tbpDetalle.Controls.Add( btnCancelar );
-            tbpDetalle.Controls.Add( btnGuardar );
-            tbpDetalle.Controls.Add( cmbEstado );
-            tbpDetalle.Controls.Add( label4 );
-            tbpDetalle.Controls.Add( txtEmail );
-            tbpDetalle.Controls.Add( label3 );
-            tbpDetalle.Controls.Add( txtTelefono );
-            tbpDetalle.Controls.Add( label5 );
-            tbpDetalle.Controls.Add( txtNombre );
-            tbpDetalle.Controls.Add( lblNombre );
-            tbpDetalle.Location = new Point( 4, 24 );
-            tbpDetalle.Name = "tbpDetalle";
-            tbpDetalle.Padding = new Padding( 3 );
-            tbpDetalle.Size = new Size( 822, 526 );
-            tbpDetalle.TabIndex = 1;
-            tbpDetalle.Text = "Detalle de productor";
-            tbpDetalle.UseVisualStyleBackColor = true;
+            tbpDetalleProductor.Controls.Add( btnEliminar2 );
+            tbpDetalleProductor.Controls.Add( txtApellido );
+            tbpDetalleProductor.Controls.Add( label10 );
+            tbpDetalleProductor.Controls.Add( txtRTN );
+            tbpDetalleProductor.Controls.Add( label8 );
+            tbpDetalleProductor.Controls.Add( txtDocumento );
+            tbpDetalleProductor.Controls.Add( label7 );
+            tbpDetalleProductor.Controls.Add( txtProductorID );
+            tbpDetalleProductor.Controls.Add( lblProductorID );
+            tbpDetalleProductor.Controls.Add( pictureBox );
+            tbpDetalleProductor.Controls.Add( btnCancelar );
+            tbpDetalleProductor.Controls.Add( btnGuardar );
+            tbpDetalleProductor.Controls.Add( cmbEstado );
+            tbpDetalleProductor.Controls.Add( label4 );
+            tbpDetalleProductor.Controls.Add( txtEmail );
+            tbpDetalleProductor.Controls.Add( label3 );
+            tbpDetalleProductor.Controls.Add( txtTelefono );
+            tbpDetalleProductor.Controls.Add( label5 );
+            tbpDetalleProductor.Controls.Add( txtNombre );
+            tbpDetalleProductor.Controls.Add( lblNombre );
+            tbpDetalleProductor.Location = new Point( 4, 24 );
+            tbpDetalleProductor.Name = "tbpDetalleProductor";
+            tbpDetalleProductor.Padding = new Padding( 3 );
+            tbpDetalleProductor.Size = new Size( 822, 526 );
+            tbpDetalleProductor.TabIndex = 1;
+            tbpDetalleProductor.Text = "Detalle de Productor";
+            tbpDetalleProductor.UseVisualStyleBackColor = true;
+            // 
+            // btnEliminar2
+            // 
+            btnEliminar2.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnEliminar2.Location = new Point( 443, 365 );
+            btnEliminar2.Name = "btnEliminar2";
+            btnEliminar2.Size = new Size( 100, 30 );
+            btnEliminar2.TabIndex = 34;
+            btnEliminar2.Text = "Eliminar";
+            btnEliminar2.UseVisualStyleBackColor = true;
             // 
             // txtApellido
             // 
@@ -387,25 +396,6 @@
             label10.Size = new Size( 59, 17 );
             label10.TabIndex = 32;
             label10.Text = "Apellido:";
-            // 
-            // txtDireccion
-            // 
-            txtDireccion.Location = new Point( 179, 307 );
-            txtDireccion.MaxLength = 150;
-            txtDireccion.Multiline = true;
-            txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size( 247, 47 );
-            txtDireccion.TabIndex = 31;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            label9.Location = new Point( 180, 287 );
-            label9.Name = "label9";
-            label9.Size = new Size( 65, 17 );
-            label9.TabIndex = 30;
-            label9.Text = "Dirección:";
             // 
             // txtRTN
             // 
@@ -466,7 +456,7 @@
             // pictureBox
             // 
             pictureBox.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox.Location = new Point( 31, 29 );
+            pictureBox.Location = new Point( 25, 31 );
             pictureBox.Name = "pictureBox";
             pictureBox.Size = new Size( 125, 125 );
             pictureBox.TabIndex = 21;
@@ -475,7 +465,7 @@
             // btnCancelar
             // 
             btnCancelar.Font = new Font( "Segoe UI", 9.75F );
-            btnCancelar.Location = new Point( 285, 457 );
+            btnCancelar.Location = new Point( 296, 365 );
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size( 100, 30 );
             btnCancelar.TabIndex = 20;
@@ -485,7 +475,7 @@
             // btnGuardar
             // 
             btnGuardar.Font = new Font( "Segoe UI", 9.75F );
-            btnGuardar.Location = new Point( 179, 457 );
+            btnGuardar.Location = new Point( 179, 365 );
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size( 100, 30 );
             btnGuardar.TabIndex = 19;
@@ -497,7 +487,7 @@
             cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEstado.Font = new Font( "Segoe UI", 9.75F );
             cmbEstado.FormattingEnabled = true;
-            cmbEstado.Location = new Point( 180, 396 );
+            cmbEstado.Location = new Point( 180, 314 );
             cmbEstado.Name = "cmbEstado";
             cmbEstado.Size = new Size( 121, 25 );
             cmbEstado.TabIndex = 18;
@@ -506,7 +496,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font( "Segoe UI", 9.75F );
-            label4.Location = new Point( 180, 376 );
+            label4.Location = new Point( 180, 294 );
             label4.Name = "label4";
             label4.Size = new Size( 51, 17 );
             label4.TabIndex = 17;
@@ -585,8 +575,8 @@
             tabControl.ResumeLayout( false );
             tbpLista.ResumeLayout( false );
             tbpLista.PerformLayout();
-            tbpDetalle.ResumeLayout( false );
-            tbpDetalle.PerformLayout();
+            tbpDetalleProductor.ResumeLayout( false );
+            tbpDetalleProductor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             ResumeLayout( false );
         }
@@ -603,7 +593,7 @@
         private Button btnBuscar;
         private Panel panelTop;
         private TabControl tabControl;
-        private TabPage tbpDetalle;
+        private TabPage tbpDetalleProductor;
         private TabPage tbpLista;
         private PictureBox pictureBox;
         private Button btnCancelar;
@@ -632,9 +622,8 @@
         private Label label8;
         private TextBox txtDocumento;
         private Label label7;
-        private TextBox txtDireccion;
-        private Label label9;
         private TextBox txtApellido;
         private Label label10;
+        private Button btnEliminar2;
     }
 }
