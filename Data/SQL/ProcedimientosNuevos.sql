@@ -40,7 +40,6 @@ as
 	end		
 go
 
-
 create or alter procedure spValidarDecimal
 @nombre varchar(20),
 @campo varchar(20)
@@ -59,6 +58,7 @@ as
 		throw 50002, @mensajeError, 1;
 	end	
 go
+
 create or alter procedure spValidarCampoVarchar 
 @nombre varchar(50), 
 @campo varchar(50), 
@@ -84,13 +84,13 @@ go
 create or alter procedure spCrearProveedor
 @Nombre varchar(26), 
 @Apellido varchar(26), 
+@Documento varchar(14),
 @Direccion varchar(151), 
 @Telefono varchar(9), 
 @Correo varchar(51),
-@Documento varchar(14),
-@RTN varchar(15) = null,
-@PeriodoDePagoDias int,
-@TasaInteres varchar(20)
+@PeriodoDePagoDias int,--decimal(10,2)
+@TasaInteres varchar(20),
+@RTN varchar(15) = null
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
@@ -102,8 +102,7 @@ as
 		exec spValidarCampoVarchar 'Documento', @Documento, 0, 13;
 		exec spValidarCampoInt @PeriodoDePagoDias,'Periodo de pago';
 		exec spValidarDecimal 'Tasa de interes',@TasaInteres;
-		declare @tasaI DECIMAL(10,2)
-		set @tasaI = CONVERT(DECIMAL(10,2), @TasaInteres);
+		
 		if @RTN != null
 			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from proveedor where Documento = @Documento) > 1
@@ -112,7 +111,7 @@ as
 			declare @ID INT;
 			select @ID = ISNULL(MAX(ProveedorID), 0) + 1 from proveedor
 			insert into Proveedor (ProveedorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN,PeriodoDePagoDias,TasaInteres)
-			values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias,@tasaI)
+			values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias,@TasaInteres)
 			SELECT '10000' as Estado, 'Se agrego correctamente el proveedor' AS Mensaje;
 		COMMIT TRANSACTION
 		
@@ -128,16 +127,14 @@ go
 create or alter procedure spCrearProductor
 @Nombre varchar(26), 
 @Apellido varchar(26), 
-@Direccion varchar(51), 
 @Telefono varchar(9), 
-@Correo varchar(151),
+@Correo varchar(51)=null,
 @Documento varchar(14),
 @RTN varchar(15) = null
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
 		exec spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
-		exec spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
 		exec spValidarCampoVarchar 'Telefono', @Telefono, 8, 8;
 		exec spValidarCampoVarchar 'Correo', @Correo, 0, 50;
 		exec spValidarCorreo @Correo;
@@ -149,7 +146,8 @@ as
 		BEGIN TRANSACTION
 			declare @ID INT;
 			select @ID = ISNULL(MAX(ProductorID), 0) + 1 from Productor
-			insert into Productor (ProductorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN) values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN)
+			insert into Productor (ProductorID,Nombre,Apellido,Telefono,Correo,EstadoID,Documento, RTN)
+			values (@ID,@Nombre, @Apellido, @Telefono, @Correo,1001,@Documento,@RTN)
 			SELECT '10000' as Estado, 'Se agrego correctamente el productor' AS Mensaje;
 		COMMIT TRANSACTION
 
@@ -167,23 +165,26 @@ spCrearProductor 'Alejandro Josue','Chavez Irias','asd','97589431','aklemas@gmai
 spCrearProveedor 'Alejandro Josue','Chavez Irias','asd','97589431','aklemas@gmail.com','0501200311847',null,31
 --Nota: Los campos decimal, se tomaran como un varchar inicialmente para facilitar su validacion
 --Procedimiento para agregar una finca
+
 create or alter procedure spCrearFinca
-@PId int,
+@ProductorID int,
+@MunicipioID int,
 @Nombre varchar(51), 
-@ExtencionTotal varchar(20)
+@ExtencionTotal varchar(20)--decimal(10,2)
 as
 	begin try
-		if (select COUNT(ProductorID) from productor where ProductorID = @PId) != 1
+		if (select COUNT(ProductorID) from productor where ProductorID = @ProductorID) != 1
 				THROW 50051, 'No existe este productor', 1;
+		if not exists (select MunicipioID from municipio where MunicipioID = @MunicipioID)
+				THROW 50051, 'No existe este municipio', 1;
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 50;
 		exec spValidarDecimal 'Extension Total',@ExtencionTotal;
-		declare @ext DECIMAL(10,2)
-		set @ext = CONVERT(DECIMAL(10,2), @ExtencionTotal);
 		begin transaction
 			declare @ID INT;
 			select @ID = ISNULL(MAX(FincaID), 0) + 1 from Finca
 			
-			insert into Finca (FincaID, ProductorID,Nombre,ExtencionTotal) values (@ID, @PId,@Nombre,@ext)
+			insert into Finca (FincaID, ProductorID,Nombre,MunicipioID, ExtencionTotal) 
+			values (@ID, @ProductorID,@Nombre,@MunicipioID,@ExtencionTotal)
 			SELECT '10000' as Estado, 'Se creo correctamente la finca' AS Mensaje;
 		commit transaction 
 	end try
@@ -196,7 +197,7 @@ go
 --Procedimiento para agregar un lote
 create or alter procedure spCrearLote
 @FincaID int,
-@Extencion varchar(20),
+@Extencion varchar(20),--decimal(10,2)
 @MaximoCosechas int,
 @TipoSuelo varchar(51) = null,
 @TipoDeRiego varchar(51) = null
@@ -236,7 +237,8 @@ as
 			declare @ID INT;
 			select @ID = ISNULL(MAX(LoteID), 0) + 1 from Lote
 			
-			insert into Lote (LoteID, FincaID,Extencion,MaximoCosechas,TipoSuelo,TipoDeRiego) values (@ID, @FincaID,@ext,@MaximoCosechas,@TipoSuelo,@TipoDeRiego)
+			insert into Lote (LoteID, FincaID,Extencion,MaximoCosechas,TipoSuelo,TipoDeRiego) 
+			values (@ID, @FincaID,@ext,@MaximoCosechas,@TipoSuelo,@TipoDeRiego)
 			SELECT '10000' as Estado, 'Se creo correctamente el lote' AS Mensaje;
 		commit transaction 
 	end try
@@ -262,7 +264,8 @@ as
 		BEGIN TRANSACTION
 			declare @ID int;
 			select @ID = ISNULL(MAX(CultivoID), 0) + 1 from Cultivo
-			insert into Cultivo (CultivoID, ProductoID, Nombre, Observaciones) Values (@ID, @ProductoID, @Nombre, @Observaciones)
+			insert into Cultivo (CultivoID, ProductoID, Nombre, Observaciones) 
+			Values (@ID, @ProductoID, @Nombre, @Observaciones)
 			SELECT '10000' as Estado, 'Se creo correctamente el cultivo' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
@@ -279,7 +282,7 @@ create or alter procedure spCrearCosecha
 @FechaInicio date = null, 
 @FechaFinal date = null,  
 @CantidadCosechas int, --Voy a tratar CantidadCosechas como ciclos de cosecha esperados de una cosecha :P  
-@Precio varchar(20)  
+@Precio varchar(20) --decimal(10,2) 
 as   
 	begin try    
 		if not exists(select LoteID from Lote where LoteID = @LoteID)     
@@ -333,7 +336,7 @@ GO
 create or alter procedure spCrearProducto
 @ProductoID varchar(13),
 @Nombre varchar(51),
-@UnidadMedida varchar(11),
+@ContenidoPorUnidad varchar(16),
 @CategoriaID int = null
 as
 	begin try
@@ -341,7 +344,7 @@ as
 		if exists(select ProductoID from producto where ProductoID = @ProductoID)
 				THROW 50050, 'El codigo ingresado ya existe', 1;
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 50;
-		exec spValidarCampoVarchar 'Unidad de medida', @UnidadMedida, 0, 10;
+		exec spValidarCampoVarchar 'contenido por unidad', @ContenidoPorUnidad, 0, 10;
 
 		if @CategoriaID is not null
 		begin 
@@ -350,8 +353,8 @@ as
 		end
 		BEGIN TRANSACTION
 
-			insert into Producto (ProductoID, Nombre, UnidadMedida, CategoriaID) 
-				values (@ProductoID, @Nombre, @UnidadMedida, @CategoriaID)
+			insert into Producto (ProductoID, Nombre, ContenidoPorUnidad, CategoriaID) 
+				values (@ProductoID, @Nombre, @ContenidoPorUnidad, @CategoriaID)
 				SELECT '10000' as Estado, 'Se creo correctamente el producto' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
@@ -363,21 +366,18 @@ as
 go
 --Procedimiento para crear una categoria
 create or alter procedure spCrearCategoria
-@CategoriaID int,
 @Nombre varchar(51),
 @Observaciones varchar(151) = null
 as
 	begin try
-		if exists(select CategoriaID from Categoria where CategoriaID = @CategoriaID)
-				THROW 50050, 'El codigo ingresado ya existe', 1;
-		exec spValidarCampoVarchar 'Nombre Categoria', @Nombre, 0, 50;--Se utiliza a manera de codigo de barras
+		exec spValidarCampoVarchar 'Nombre Categoria', @Nombre, 0, 50;
 		if @Observaciones is not null
 			exec spValidarCampoVarchar 'Observaciones', @Observaciones, 0, 150;
 
 		BEGIN TRANSACTION
 
-			insert into Categoria (CategoriaID, Nombre, Observaciones) 
-				values (@CategoriaID, @Nombre, @Observaciones)
+			insert into Categoria (Nombre, Observaciones) 
+				values (@Nombre, @Observaciones)
 				SELECT '10000' as Estado, 'Se agrego correctamente la categoria' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
