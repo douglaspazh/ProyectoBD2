@@ -1,17 +1,18 @@
 use GrupoNo1
 
---Agregar Listo
+--Tabla lista
 create table Productor(
 	ProductorID int not null,
 	Nombre varchar(25) not null,
 	Apellido varchar(25) not null,
 	Documento varchar(13) not null,
 	RTN varchar(14) null,
-	Direccion varchar(150) not null,
 	Telefono varchar(8) not null,
 	Correo varchar(50) null,
 	EstadoID int not null
 )
+--Crear procedimientos para cambiar el estadoId del proveedor y del productor
+--Listo
 create table Proveedor(
 	ProveedorID int,
 	Nombre varchar(25) not null,
@@ -25,15 +26,28 @@ create table Proveedor(
 	PeriodoDePagoDias int not null,
 	TasaInteres decimal(10,2) not null
 )
-
+--tabla lista
 create table Finca(
 	FincaID int not null,
 	ProductorID int not null,
 	Nombre varchar(50) not null,
+	MunicipioID int not null,
 	ExtencionTotal decimal(10,2) not null,
 	UnidadMedidaID int null CONSTRAINT Finca_UnidadMedida DEFAULT 1
 )
-
+--listo
+CREATE TABLE Departamento (
+    DepartamentoID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL
+);
+--listo
+CREATE TABLE Municipio (
+    MunicipioID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL,
+    DepartamentoID INT NOT NULL,
+    FOREIGN KEY (DepartamentoID) REFERENCES Departamento(DepartamentoID)
+);
+--Listo
 create table Lote(
 	LoteID int not null,
 	FincaID int not null,
@@ -43,6 +57,7 @@ create table Lote(
 	TipoDeRiego varchar(50) null,
 	UnidadMedidaID int null CONSTRAINT Lote_UnidadMedida DEFAULT 1
 )
+--listo
 create table Cosecha(
 	CosechaID int not null,
 	LoteID int not null,
@@ -60,7 +75,7 @@ create table Cultivo(
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null
 )
-
+--listo
 create table Estado(
 	EstadoID int not null,
 	Nombre varchar(25) not null,
@@ -77,13 +92,26 @@ create table Estado(
 --	EstadoID int not null,--(Disponible, agotado)
 --	Precio decimal(10,2) not null,
 --)
+--listo
+create table Producto(
+	ProductoID varchar(12) not null,
+	Nombre varchar(50) not null,
+	ContenidoPorUnidad varchar(15) not null,
+	CategoriaID int null
+)
+--listo
+create table Categoria(
+	CategoriaID int identity(1,1),
+	Nombre varchar(50) not null,
+	Observaciones varchar(150) null
+)
 
 create table Compra(
 	CompraID int not null,
 	ProveedorID int not null,
 	Impuesto decimal(10,2) null,
 	Descuento decimal(10,2) null,
-	Fecha date not null,
+	Fecha date not null
 	EstadoID int null CONSTRAINT Compra_sin_abono DEFAULT 30001
 )
 
@@ -125,23 +153,13 @@ create table EntradaCosecha(
 	FechaIngreso date null
 	CONSTRAINT FechaIngreso_cosecha DEFAULT CAST(GETDATE() AS DATE)
 )
-create table Producto(
-	ProductoID varchar(12) not null,
-	Nombre varchar(50) not null,
-	UnidadMedida varchar(10) not null,
-	CategoriaID int null
-)
 
 create table UnidadMedida(
 	UnidadMedidaID int not null,
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null,
 )
-create table Categoria(
-	CategoriaID int not null,
-	Nombre varchar(50) not null,
-	Observaciones varchar(150) null
-)
+
 
 create table Entradas(
 	EntradaID int not null,
