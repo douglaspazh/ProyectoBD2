@@ -2,12 +2,12 @@ create type dbo.InsumoCompra as table (
     ProductoID varchar(13),
     BodegaID varchar(3),
 	Cantidad int,
-	PrecioUnitario varchar(20)
+	Precio varchar(20)--decimal(10,2)
 );
 declare @InsumosAgregar dbo.InsumoCompra;
 
 -- Inserta datos en la variable tabla
-INSERT INTO @ProductosAgregar (ProductoID, BodegaID, Cantidad, PrecioUnitario)
+INSERT INTO @ProductosAgregar (ProductoID, BodegaID, Cantidad, Precio)
 VALUES 
 --Aqui agregar los registros de este producto
 
@@ -15,8 +15,8 @@ spComprarInsumos 1,@InsumosAgregar
 create or alter procedure spComprarInsumos
 @ProveedorID int,
 @ProductosTable InsumoCompra readonly,
-@Impuesto varchar(20) = null,
-@Descuento varchar(20) = null
+@Impuesto varchar(20) = null,--decimal(10,2)
+@Descuento varchar(20) = null--decimal(10,2)
 as
 	begin try
 		if (select COUNT(ProveedorID) from Proveedor where ProveedorID = @ProveedorID) != 1
@@ -30,18 +30,18 @@ as
 			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha,EstadoID) 
 				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),null);
 			--Agregar productos
-			declare @ProductoID varchar(13), @BodegaID varchar(3), @Cantidad int,@PrecioUnitario varchar(20);
+			declare @ProductoID varchar(13), @BodegaID varchar(3), @Cantidad int,@Precio varchar(20);
 
 			declare CursorProducto cursor for 
 			select ProductoID, BodegaID, 
-			Cantidad ,PrecioUnitario from @ProductosTable
+			Cantidad ,Precio from @ProductosTable
 
 			open CursorProducto;
-			fetch next from CursorProducto into @ProductoID, @BodegaID, @Cantidad,@PrecioUnitario
+			fetch next from CursorProducto into @ProductoID, @BodegaID, @Cantidad,@Precio
 			while @@FETCH_STATUS=0
 			begin
-				exec spAgregarInsumoCompra @ID,@ProductoID, @BodegaID, @Cantidad,@PrecioUnitario
-				fetch next from CursorProducto into @ProductoID, @BodegaID, @Cantidad,@PrecioUnitario
+				exec spAgregarInsumoCompra @ID,@ProductoID, @BodegaID, @Cantidad,@Precio
+				fetch next from CursorProducto into @ProductoID, @BodegaID, @Cantidad,@Precio
 			end
 			close CursorProducto;
 			deallocate CursorProducto;
@@ -61,7 +61,7 @@ create or alter procedure spAgregarInsumoCompra
 @ProductoID varchar(13),
 @BodegaID varchar(3),
 @Cantidad int,
-@PrecioUnitario varchar(20)--decimal
+@Precio varchar(20)--decimal(10,2)
 as
 begin try
 		--Valida la existencia de un registro de esa compra
@@ -89,13 +89,13 @@ begin try
 		--	THROW 50052, @msg, 1
 		--end
 
-		exec spValidarDecimal 'Precio unitario', @PrecioUnitario;
+		exec spValidarDecimal 'Precio', @Precio;
 
 		BEGIN TRANSACTION
 			declare @ID INT;
 			select @ID = ISNULL(MAX(CompraDetalleID), 0) + 1 from CompraDetalle
-			insert into CompraDetalle (CompraDetalleID, CompraID,ProductoID,Cantidad,PrecioUnitario,BodegaID) 
-				values (@ID, @CompraID,@ProductoID, @Cantidad, @PrecioUnitario ,@BodegaID)
+			insert into CompraDetalle (CompraDetalleID, CompraID,ProductoID,Cantidad,Precio,BodegaID) 
+				values (@ID, @CompraID,@ProductoID, @Cantidad, @Precio ,@BodegaID)
 		COMMIT TRANSACTION
 	end try
 	begin catch

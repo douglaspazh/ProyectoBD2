@@ -1,10 +1,10 @@
 create or alter procedure spCrearCuentaBancaria
-@NumeroCuenta varchar(25),
+@NumeroCuenta varchar(21),
 @BancoID int,
 @CuentaID int output
 as
 	BEGIN TRY
-		EXEC spValidarCampoVarchar 'Numero de cuenta', @NumeroCuenta, 10, 14
+		EXEC spValidarCampoVarchar 'Numero de cuenta', @NumeroCuenta, 10, 20
 
 		if exists(select NumeroCuenta from CuentaBancaria where NumeroCuenta=@NumeroCuenta)
 			THROW 50050, 'Este registro ya existe', 1;

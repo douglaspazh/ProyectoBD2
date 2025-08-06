@@ -25,19 +25,19 @@ as
 begin
 	--Debido a que los registros de entradacosecha se van ingresando de uno en uno
 	--se pueden manejar de esta manera
-	declare @ID INT,@CosechaID int,@ProductorID int,@Total decimal(10,2);
+	declare @CosechaID int,@ProductorID int,@Total decimal(10,2);
 	select @CosechaID = CosechaID from inserted
-	select @ID = ISNULL(MAX(EntradaID), 0) + 1 from Entradas
+	--Actualizar la cosecha a entregado
 	update Cosecha set EstadoID=20003 where CosechaID=@CosechaID
 	
 	--Ingresar la entrada del producto al inventario
-	insert into Entradas (EntradaID,BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
-	select @ID,i.BodegaID,i.ProductoID,i.Cantidad,c.FechaIngreso,'C' from inserted i inner join
+	insert into Entradas (BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
+	select i.BodegaID,i.ProductoID,i.Cantidad,c.FechaIngreso,'C' from inserted i inner join
 	EntradaCosecha as c on c.CosechaID=i.CosechaID
 
 	--Ingresar la liquidacion de la cosecha como pendiente
 	insert into LiquidacionCosecha(CosechaID,ProductorID,TotalPagar,EstadoID)
-	select @CosechaID,i.ProductoID,i.Cantidad*i.PrecioUnitario,30001 from inserted i
+	select @CosechaID,i.ProductoID,i.Cantidad*i.Precio,30001 from inserted i
 end
 
 --Cuando se realiza un abono a una cosecha, se valida el valor del SaldoPendiente

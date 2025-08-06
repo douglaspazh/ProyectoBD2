@@ -50,11 +50,11 @@ as
 go
 
 create or alter procedure spAgregarInsumosSolicitud
-@SolicitudInsumosID int,--
-@ProductoID varchar(12),--
-@BodegaID varchar(12),--
+@SolicitudInsumosID int,
+@ProductoID varchar(13),
+@BodegaID varchar(3),
 @Cantidad int,
-@Precio varchar(20)
+@Precio varchar(20)--decimal(10,2)
 as
 	begin try
 		if (select COUNT(SolicitudInsumosID) from SolicitudInsumos where SolicitudInsumosID = @SolicitudInsumosID) != 1

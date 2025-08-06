@@ -21,8 +21,8 @@ create or alter procedure spGenerarFactura
 @ClienteID int,
 @ProductosTable ProductoFactura readonly,
 @Descripcion varchar(151) =  null,
-@Impuesto varchar(20) = null,
-@Descuento varchar(20) = null
+@Impuesto varchar(20) = null,--decimal(10,2)
+@Descuento varchar(20) = null--decimal(10,2)
 as
 	begin try
 		exec spValidarCliente @ClienteID
@@ -72,7 +72,7 @@ create or alter procedure spAgregarProductoFactura
 @FacturaID int,--a
 @ProductoID varchar(12),--a
 @BodegaID varchar(2),--a
-@Precio varchar(20),--a
+@Precio varchar(20),--decimal(10,2)
 @Cantidad int,--a
 @Observaciones varchar(151) = null--a
 as

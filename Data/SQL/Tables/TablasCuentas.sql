@@ -1,28 +1,28 @@
 --Tablas Cuentas y Vouchers
+--listo
 create table CuentaProductor(
 	CuentaProductorID int identity(1,1),
 	CuentaID int not null,
 	ProductorID int not null,
 )
-
+--listo
 create table CuentaProveedor(
 	CuentaProveedorID int identity(1,1),
 	CuentaID int not null,
 	ProveedorID int not null,
 )
-
+--listo
 create table CuentaBancaria(
 	CuentaID int not null,
 	NumeroCuenta varchar(20) not null,
 	BancoID int not null,
 )
-
+--listo
 create table Banco(
 	BancoID int not null,
 	Nombre varchar(50) not null,
 )
-
-
+--listo
 create table Cheques(
 	ChequesID int identity(1,1),
 	VoucherID int not null,
@@ -33,7 +33,7 @@ create table Cheques(
 	Denominacion decimal(10,2) not null,
 	Firma varchar(50) not null,
 )
-
+--listo
 create table Depositos(
 	DepositosID int identity(1,1),
 	VoucherID int not null,
@@ -41,7 +41,7 @@ create table Depositos(
 	Monto decimal(10,2) not null,
 	Fecha date
 )
-
+--listo
 create table Voucher(
 	VoucherID int not null,
 	NumeroVoucher varchar(12) not null,
@@ -49,52 +49,54 @@ create table Voucher(
 	EstadoID int not null constraint No_Pagado default 30001,
 	TipoPagoID int
 )
-
+--listo
 create table VoucherProductor(
 	VoucherProductorID int identity(1,1),
 	VoucherID int not null,
 	ProductorID int not null
 )
+--listo
 create table VoucherProveedor(
 	VoucherProveedorID int identity(1,1),
 	VoucherID int not null,
 	ProveedorID int not null
 )
+--listo
 create table DeduccionProductor(
 	DeduccionProductorID int identity(1,1),
 	VoucherProductorID int not null,
 	SolicitudInsumosID int not null,
 	Monto decimal (10,2) not null
 )
-
+--listo
 create table IngresosProductor(
 	IngresosProductorID int identity(1,1),
 	VoucherProductorID int not null,
 	LiquidacionID int not null,
 	Monto decimal (10,2) not null
 )
-
+--listo
 create table LiquidacionAbonos(
 	LiquidacionAbonoID int identity(1,1),
 	LiquidacionID int,
 	Monto decimal(10,2),
 	Fecha date
 )
-
+--listo
 create table CompraAbonos(
 	CompraAbonosID int identity(1,1),
 	CompraID int not null,
 	Monto decimal(10,2) not null,
 	Fecha date not null
 )
-
+--listo
 create table IngresosProveedor(
 	IngresosProveedorID int identity(1,1),
 	VoucherProveedorID int not null,
 	CompraID int not null,
 	Monto decimal (10,2) not null
 )
-
+--listo
 create table TipoPago(
 	TipoPagoID int,
 	Nombre varchar(20)

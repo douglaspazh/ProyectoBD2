@@ -1,5 +1,15 @@
 use GrupoNo1
-
+-- Transaccion correcta:
+--10000 operacion realizada correctamente
+--Codigos de error:
+--50001 el campo esta vacio
+--50002 tamaño incorrecto del campo
+--50003 correo invalido
+--50004 Fechas incompatibles
+--50005 Dato incompatible
+--50050 registro duplicado
+--50051 registro inexistente
+--50052 problemas logisticos
 --Tabla lista
 create table Productor(
 	ProductorID int not null,
@@ -66,9 +76,9 @@ create table Cosecha(
 	FechaFinal date null,
 	EstadoID int not null,
 	CantidadCosechas int not null,
-	Precio decimal(10,2) not null
 )
 
+--listo
 create table Cultivo(
 	CultivoID int not null,
 	ProductoID varchar(12) not null,
@@ -105,75 +115,62 @@ create table Categoria(
 	Nombre varchar(50) not null,
 	Observaciones varchar(150) null
 )
-
+--Listo
+create table Bodega(
+	BodegaID varchar(2) not null,
+	Observaciones varchar(150) null,
+)
+--listo
 create table Compra(
 	CompraID int not null,
 	ProveedorID int not null,
 	Impuesto decimal(10,2) null,
 	Descuento decimal(10,2) null,
-	Fecha date not null
+	Fecha date not null,
 	EstadoID int null CONSTRAINT Compra_sin_abono DEFAULT 30001
 )
-
+--listo
 create table CompraDetalle(
 	CompraDetalleID int not null,
 	CompraID int not null,
 	ProductoID varchar(12) not null,
 	Cantidad int not null,
-	PrecioUnitario decimal(10,2) not null,
+	Precio decimal(10,2) not null,
 	BodegaID varchar(2) not null, --Al momento de la compra, se asigna tambien la bodega en la que sera ubicada
 )
 
-create table Bodega(
-	BodegaID varchar(2) not null,
-	Observaciones varchar(150) null,
-)
-create table BodegaDetalle(
-	BodegaDetalleID int not null,
-	BodegaID varchar(2) not null,
-	ProductoID varchar(12) not null,
-	Cantidad int not null,
-	FechaEntrada datetime not null
-)
-create table TrasladoBodega(
-	TrasladoBodegaID int not null,
-	BodegaOrigenID varchar(2) not null,
-	BodegaDestinoID varchar(2) not null,
-	ProductoID int not null,
-	Cantidad int not null,
-)
-
+--listo
 create table EntradaCosecha(
 	EntradaCosechaID int identity(1,1),
 	CosechaID int not null,
 	ProductoID varchar(12) not null,
 	BodegaID varchar(2) not null,
 	Cantidad int not null,
-	PrecioUnitario int not null,
+	Precio decimal(10,2) not null,
 	FechaIngreso date null
 	CONSTRAINT FechaIngreso_cosecha DEFAULT CAST(GETDATE() AS DATE)
 )
-
-create table UnidadMedida(
-	UnidadMedidaID int not null,
-	Nombre varchar(50) not null,
-	Observaciones varchar(150) null,
-)
-
-
+--Listo
 create table Entradas(
-	EntradaID int not null,
+	EntradaID int identity(1,1),
 	BodegaID varchar(2) not null,
 	ProductoID varchar(12) not null,
 	Cantidad int not null,
 	FechaEntrada date not null,
 	Tipo varchar(1) not null,
-	 CONSTRAINT CK_TipoValido 
+	 CONSTRAINT CK_eTipoValido 
         CHECK (Tipo IN ('C', 'I')) 
 	--C de cosechas
 	--I de insumos
 )
 
+--listo
+create table UnidadMedida(
+	UnidadMedidaID int not null,
+	Nombre varchar(50) not null,
+	Observaciones varchar(150) null,
+)
+--Listo
 create table Cliente(
 	ClienteID int not null,
 	Nombre varchar(25) not null,
@@ -184,7 +181,7 @@ create table Cliente(
 	Telefono varchar(8) null,
 	Correo varchar(50)null,
 )
-
+--listo
 create table Factura(
 	FacturaID int not null,
 	ClienteID int not null,
@@ -193,17 +190,17 @@ create table Factura(
 	Descuento decimal(10,2) null,
 	Descripcion varchar(150) null 
 )
-
+--listo
 create table FacturaDetalle(
 	FacturaDetalleID int not null,
 	FacturaID int not null,
-	BodegaID varchar(2) not null,
 	ProductoID varchar(12) not null,
+	BodegaID varchar(2) not null,
 	Precio decimal(10,2) not null,
 	Cantidad int not null,
 	Observaciones varchar(150) null
 )
-
+--Listo
 create table Salidas(
 	SalidaID int identity(1,1),
 	BodegaID varchar(2) not null,
@@ -211,10 +208,9 @@ create table Salidas(
 	Cantidad int not null,
 	FechaDeSalida date not null,
 	Tipo varchar(1) not null
+	CONSTRAINT CK_sTipoValido 
+        CHECK (Tipo IN ('F', 'S'))
 )
 
-insert into salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida) values ('5B','102345123412', 7,CAST(GETDATE() AS DATE))
-insert into salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida) values ('5A','1', 1,CAST(GETDATE() AS DATE))
-insert into Categoria (CategoriaID,Nombre) values (1,'Legumbres')
 --Registro de unidad hectareas
 insert into UnidadMedida (UnidadMedidaID, Nombre, Observaciones) values (1,'Hectarea','Campo por defecto de las extenciones de finca')

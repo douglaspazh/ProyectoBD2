@@ -10,8 +10,8 @@ as
 		BEGIN TRANSACTION
 			declare @ID int
 			select @ID = ISNULL(MAX(BancoID),0)+1 from Banco
-			insert into Banco(BancoID,Nombre,EstadoID)
-			values (@ID, @Nombre, 10001) --Al crear el Banco se asume que esta activo
+			insert into Banco(BancoID,Nombre)
+			values (@ID, @Nombre) --Al crear el Banco se asume que esta activo
 		COMMIT TRANSACTION
 		SELECT 10000 as Estado, 'Banco creado exitosamente' as Mensaje
 	END TRY
