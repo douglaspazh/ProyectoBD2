@@ -1,5 +1,7 @@
 ﻿create or alter procedure spGetFacturaDetalleByFactura
-@FacturaID int
+@FacturaID int,
+@PageNumber int,
+@PageSize int 
 as
 	select * into #Factura from Factura where FacturaID = @FacturaID
 	select * into #FacturaDetalle from FacturaDetalle where FacturaDetalleID = @FacturaID
@@ -9,4 +11,7 @@ as
 	inner join #FacturaDetalle as fd on f.FacturaID = fd.FacturaID
 	inner join Producto as p on fd.ProductoID = p.ProductoID
 	inner join Categoria as c on p.CategoriaID = c.CategoriaID
+	order by Bodega ASC
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
 go

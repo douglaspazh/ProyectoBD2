@@ -1,5 +1,7 @@
 ﻿create or alter procedure spGetAllFacturasByCliente
-@ClienteID int
+@ClienteID int,
+@PageNumber int,
+@PageSize int 
 as
 	select * into #Factura from Factura where ClienteID = @ClienteID
 	select * into #Cliente from Cliente where ClienteID = @ClienteID
@@ -8,4 +10,6 @@ as
 	from #Factura as f
 	inner join #Cliente as c on c.ClienteID = f.FacturaID
 	order by f.Fecha DESC
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+    FETCH NEXT @PageSize ROWS ONLY;
 go
