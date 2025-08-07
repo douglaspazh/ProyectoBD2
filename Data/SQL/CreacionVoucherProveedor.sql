@@ -33,11 +33,11 @@ as
 			select CompraID from @IngresosTable
 
 			open CursorIngresos;
-			fetch next from CompraID into @CompraID
+			fetch next from CursorIngresos into @CompraID
 			while @@FETCH_STATUS=0
 			begin
 				exec spAgregarIngresoProveedorVoucher @ID,@CompraID
-				fetch next from CompraID into @CompraID
+				fetch next from CursorIngresos into @CompraID
 			end
 			close CursorIngresos;
 			deallocate CursorIngresos;

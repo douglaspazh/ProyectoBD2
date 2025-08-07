@@ -8,10 +8,9 @@ as
 begin
 	--Debido a que los registros de compra detalles se van ingresando de uno en uno
 	--se pueden manejar de esta manera
-	declare @ID INT;
-	select @ID = ISNULL(MAX(EntradaID), 0) + 1 from Entradas
-	insert into Entradas (EntradaID,BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
-	select @ID,i.BodegaID,i.ProductoID,i.Cantidad,c.Fecha,'I' from inserted i inner join
+	
+	insert into Entradas (BodegaID,ProductoID,Cantidad,FechaEntrada, Tipo)
+	select i.BodegaID,i.ProductoID,i.Cantidad,c.Fecha,'I' from inserted i inner join
 	Compra as c on c.CompraID=i.CompraID
 end
 
@@ -128,7 +127,6 @@ on Voucher
 after update
 as
 begin
-	set nocount on;
 
 	declare @VoucherID int, @EstadoID int;
 	declare VoucherCursor cursor for
@@ -165,8 +163,9 @@ begin
 				inner join IngresosProveedor ipp on ipp.VoucherProveedorID=v.VoucherProveedorID
 				where v.VoucherID=@VoucherID;		
 			end
-		fetch next from VoucherCursor into @VoucherID, @EstadoID;
+		
 		end
+		fetch next from VoucherCursor into @VoucherID, @EstadoID;
 	end
 	close VoucherCursor;
 	deallocate VoucherCursor;
