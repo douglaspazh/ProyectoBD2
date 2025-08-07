@@ -6,10 +6,9 @@
         int FincaID { get; set; }
         int ProductorID { get; set; }
         string Nombre { get; set; }
-        string ProductorNombre { get; set; }
-        string Direccion { get; set; }
+        int MunicipioID { get; set; }
+        string Ubicacion { get; set; }
         decimal ExtensionTotal { get; set; }
-        string FechaRegistro { get; set; }
         string SearchTerm { get; set; }
         bool IsEditing { get; set; }
         bool IsSuccessful { get; set; }

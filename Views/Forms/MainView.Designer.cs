@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             splitContainer = new SplitContainer();
-            btnHistorialInsumos = new FontAwesome.Sharp.IconButton();
+            btnVentas = new FontAwesome.Sharp.IconButton();
             iconButton1 = new FontAwesome.Sharp.IconButton();
             btnProveedores = new FontAwesome.Sharp.IconButton();
-            btnAsignacionInsumos = new FontAwesome.Sharp.IconButton();
+            btnBodegas = new FontAwesome.Sharp.IconButton();
             dungeonLabel7 = new ReaLTaiizor.Controls.DungeonLabel();
             dungeonLabel3 = new ReaLTaiizor.Controls.DungeonLabel();
             btnCultivos = new FontAwesome.Sharp.IconButton();
-            btnKardex = new FontAwesome.Sharp.IconButton();
-            btnStock = new FontAwesome.Sharp.IconButton();
-            btnCatalogoInsumos = new FontAwesome.Sharp.IconButton();
+            btnCompras = new FontAwesome.Sharp.IconButton();
+            btnFacturas = new FontAwesome.Sharp.IconButton();
+            btnProductos = new FontAwesome.Sharp.IconButton();
             btnCosechas = new FontAwesome.Sharp.IconButton();
             btnConfiguraciones = new FontAwesome.Sharp.IconButton();
             btnFincas = new FontAwesome.Sharp.IconButton();
@@ -50,6 +50,8 @@
             dungeonLabel4 = new ReaLTaiizor.Controls.DungeonLabel();
             dungeonLabel5 = new ReaLTaiizor.Controls.DungeonLabel();
             dungeonLabel6 = new ReaLTaiizor.Controls.DungeonLabel();
+            btnRecibos = new FontAwesome.Sharp.IconButton();
+            iconButton4 = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -66,51 +68,53 @@
             // splitContainer.Panel1
             // 
             splitContainer.Panel1.AutoScroll = true;
-            splitContainer.Panel1.Controls.Add( btnHistorialInsumos );
-            splitContainer.Panel1.Controls.Add( iconButton1 );
+            splitContainer.Panel1.Controls.Add( btnVentas );
+            splitContainer.Panel1.Controls.Add( btnRecibos );
             splitContainer.Panel1.Controls.Add( btnProveedores );
-            splitContainer.Panel1.Controls.Add( btnAsignacionInsumos );
-            splitContainer.Panel1.Controls.Add( dungeonLabel7 );
+            splitContainer.Panel1.Controls.Add( btnBodegas );
             splitContainer.Panel1.Controls.Add( dungeonLabel3 );
-            splitContainer.Panel1.Controls.Add( btnCultivos );
-            splitContainer.Panel1.Controls.Add( btnKardex );
-            splitContainer.Panel1.Controls.Add( btnStock );
-            splitContainer.Panel1.Controls.Add( btnCatalogoInsumos );
-            splitContainer.Panel1.Controls.Add( btnCosechas );
+            splitContainer.Panel1.Controls.Add( btnProductos );
             splitContainer.Panel1.Controls.Add( btnConfiguraciones );
+            splitContainer.Panel1.Controls.Add( btnFacturas );
             splitContainer.Panel1.Controls.Add( btnFincas );
-            splitContainer.Panel1.Controls.Add( dungeonLabel2 );
             splitContainer.Panel1.Controls.Add( dungeonLabel1 );
+            splitContainer.Panel1.Controls.Add( btnCompras );
             splitContainer.Panel1.Controls.Add( panelLogo );
             splitContainer.Panel1.Controls.Add( btnProductores );
             splitContainer.Panel1MinSize = 40;
             // 
             // splitContainer.Panel2
             // 
+            splitContainer.Panel2.Controls.Add( iconButton4 );
             splitContainer.Panel2.Controls.Add( iconButton2 );
+            splitContainer.Panel2.Controls.Add( iconButton1 );
             splitContainer.Panel2.Controls.Add( dungeonLabel4 );
             splitContainer.Panel2.Controls.Add( dungeonLabel5 );
             splitContainer.Panel2.Controls.Add( dungeonLabel6 );
+            splitContainer.Panel2.Controls.Add( dungeonLabel7 );
+            splitContainer.Panel2.Controls.Add( btnCultivos );
+            splitContainer.Panel2.Controls.Add( dungeonLabel2 );
+            splitContainer.Panel2.Controls.Add( btnCosechas );
             splitContainer.Size = new Size( 984, 661 );
             splitContainer.SplitterDistance = 185;
             splitContainer.TabIndex = 7;
             // 
-            // btnHistorialInsumos
+            // btnVentas
             // 
-            btnHistorialInsumos.FlatStyle = FlatStyle.Flat;
-            btnHistorialInsumos.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnHistorialInsumos.IconChar = FontAwesome.Sharp.IconChar.None;
-            btnHistorialInsumos.IconColor = Color.Black;
-            btnHistorialInsumos.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnHistorialInsumos.IconSize = 32;
-            btnHistorialInsumos.ImageAlign = ContentAlignment.MiddleLeft;
-            btnHistorialInsumos.Location = new Point( 0, 450 );
-            btnHistorialInsumos.Name = "btnHistorialInsumos";
-            btnHistorialInsumos.Padding = new Padding( 5, 0, 0, 0 );
-            btnHistorialInsumos.Size = new Size( 170, 28 );
-            btnHistorialInsumos.TabIndex = 15;
-            btnHistorialInsumos.Text = "Historial";
-            btnHistorialInsumos.UseVisualStyleBackColor = true;
+            btnVentas.FlatStyle = FlatStyle.Flat;
+            btnVentas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnVentas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnVentas.IconColor = Color.Black;
+            btnVentas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnVentas.IconSize = 32;
+            btnVentas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnVentas.Location = new Point( 0, 210 );
+            btnVentas.Name = "btnVentas";
+            btnVentas.Padding = new Padding( 5, 0, 0, 0 );
+            btnVentas.Size = new Size( 170, 28 );
+            btnVentas.TabIndex = 15;
+            btnVentas.Text = "Ventas";
+            btnVentas.UseVisualStyleBackColor = true;
             // 
             // iconButton1
             // 
@@ -121,7 +125,7 @@
             iconButton1.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButton1.IconSize = 32;
             iconButton1.ImageAlign = ContentAlignment.MiddleLeft;
-            iconButton1.Location = new Point( 0, 578 );
+            iconButton1.Location = new Point( 260, 414 );
             iconButton1.Name = "iconButton1";
             iconButton1.Padding = new Padding( 5, 0, 0, 0 );
             iconButton1.Size = new Size( 170, 28 );
@@ -138,7 +142,7 @@
             btnProveedores.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnProveedores.IconSize = 32;
             btnProveedores.ImageAlign = ContentAlignment.MiddleLeft;
-            btnProveedores.Location = new Point( 0, 506 );
+            btnProveedores.Location = new Point( 0, 156 );
             btnProveedores.Name = "btnProveedores";
             btnProveedores.Padding = new Padding( 5, 0, 0, 0 );
             btnProveedores.Size = new Size( 170, 28 );
@@ -146,22 +150,22 @@
             btnProveedores.Text = "Proveedores";
             btnProveedores.UseVisualStyleBackColor = true;
             // 
-            // btnAsignacionInsumos
+            // btnBodegas
             // 
-            btnAsignacionInsumos.FlatStyle = FlatStyle.Flat;
-            btnAsignacionInsumos.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnAsignacionInsumos.IconChar = FontAwesome.Sharp.IconChar.None;
-            btnAsignacionInsumos.IconColor = Color.Black;
-            btnAsignacionInsumos.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnAsignacionInsumos.IconSize = 32;
-            btnAsignacionInsumos.ImageAlign = ContentAlignment.MiddleLeft;
-            btnAsignacionInsumos.Location = new Point( 0, 414 );
-            btnAsignacionInsumos.Name = "btnAsignacionInsumos";
-            btnAsignacionInsumos.Padding = new Padding( 5, 0, 0, 0 );
-            btnAsignacionInsumos.Size = new Size( 170, 28 );
-            btnAsignacionInsumos.TabIndex = 15;
-            btnAsignacionInsumos.Text = "Asignaciones";
-            btnAsignacionInsumos.UseVisualStyleBackColor = true;
+            btnBodegas.FlatStyle = FlatStyle.Flat;
+            btnBodegas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnBodegas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnBodegas.IconColor = Color.Black;
+            btnBodegas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnBodegas.IconSize = 32;
+            btnBodegas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnBodegas.Location = new Point( 0, 414 );
+            btnBodegas.Name = "btnBodegas";
+            btnBodegas.Padding = new Padding( 5, 0, 0, 0 );
+            btnBodegas.Size = new Size( 170, 28 );
+            btnBodegas.TabIndex = 15;
+            btnBodegas.Text = "Bodegas";
+            btnBodegas.UseVisualStyleBackColor = true;
             // 
             // dungeonLabel7
             // 
@@ -169,7 +173,7 @@
             dungeonLabel7.BackColor = Color.Transparent;
             dungeonLabel7.Font = new Font( "Segoe UI", 11F );
             dungeonLabel7.ForeColor = Color.FromArgb( 76, 76, 77 );
-            dungeonLabel7.Location = new Point( 0, 355 );
+            dungeonLabel7.Location = new Point( 111, 355 );
             dungeonLabel7.Name = "dungeonLabel7";
             dungeonLabel7.Size = new Size( 63, 20 );
             dungeonLabel7.TabIndex = 7;
@@ -181,11 +185,11 @@
             dungeonLabel3.BackColor = Color.Transparent;
             dungeonLabel3.Font = new Font( "Segoe UI", 11F );
             dungeonLabel3.ForeColor = Color.FromArgb( 76, 76, 77 );
-            dungeonLabel3.Location = new Point( 0, 483 );
+            dungeonLabel3.Location = new Point( 0, 187 );
             dungeonLabel3.Name = "dungeonLabel3";
-            dungeonLabel3.Size = new Size( 68, 20 );
+            dungeonLabel3.Size = new Size( 100, 20 );
             dungeonLabel3.TabIndex = 11;
-            dungeonLabel3.Text = "Compras";
+            dungeonLabel3.Text = "Transacciones";
             // 
             // btnCultivos
             // 
@@ -195,7 +199,7 @@
             btnCultivos.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnCultivos.IconSize = 32;
             btnCultivos.ImageAlign = ContentAlignment.MiddleLeft;
-            btnCultivos.Location = new Point( 0, 250 );
+            btnCultivos.Location = new Point( 269, 277 );
             btnCultivos.Name = "btnCultivos";
             btnCultivos.Padding = new Padding( 5, 0, 0, 0 );
             btnCultivos.Size = new Size( 170, 28 );
@@ -204,56 +208,56 @@
             btnCultivos.UseVisualStyleBackColor = true;
             btnCultivos.Click += btnCultivos_Click;
             // 
-            // btnKardex
+            // btnCompras
             // 
-            btnKardex.FlatStyle = FlatStyle.Flat;
-            btnKardex.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnKardex.IconChar = FontAwesome.Sharp.IconChar.None;
-            btnKardex.IconColor = Color.Black;
-            btnKardex.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnKardex.IconSize = 32;
-            btnKardex.ImageAlign = ContentAlignment.MiddleLeft;
-            btnKardex.Location = new Point( 0, 322 );
-            btnKardex.Name = "btnKardex";
-            btnKardex.Padding = new Padding( 5, 0, 0, 0 );
-            btnKardex.Size = new Size( 170, 28 );
-            btnKardex.TabIndex = 7;
-            btnKardex.Text = "Kardex";
-            btnKardex.UseVisualStyleBackColor = true;
+            btnCompras.FlatStyle = FlatStyle.Flat;
+            btnCompras.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnCompras.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnCompras.IconColor = Color.Black;
+            btnCompras.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnCompras.IconSize = 32;
+            btnCompras.ImageAlign = ContentAlignment.MiddleLeft;
+            btnCompras.Location = new Point( 0, 244 );
+            btnCompras.Name = "btnCompras";
+            btnCompras.Padding = new Padding( 5, 0, 0, 0 );
+            btnCompras.Size = new Size( 170, 28 );
+            btnCompras.TabIndex = 7;
+            btnCompras.Text = "Compras";
+            btnCompras.UseVisualStyleBackColor = true;
             // 
-            // btnStock
+            // btnFacturas
             // 
-            btnStock.FlatStyle = FlatStyle.Flat;
-            btnStock.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnStock.IconChar = FontAwesome.Sharp.IconChar.None;
-            btnStock.IconColor = Color.Black;
-            btnStock.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnStock.IconSize = 32;
-            btnStock.ImageAlign = ContentAlignment.MiddleLeft;
-            btnStock.Location = new Point( 0, 286 );
-            btnStock.Name = "btnStock";
-            btnStock.Padding = new Padding( 5, 0, 0, 0 );
-            btnStock.Size = new Size( 170, 28 );
-            btnStock.TabIndex = 7;
-            btnStock.Text = "Stock Actual";
-            btnStock.UseVisualStyleBackColor = true;
+            btnFacturas.FlatStyle = FlatStyle.Flat;
+            btnFacturas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnFacturas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnFacturas.IconColor = Color.Black;
+            btnFacturas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnFacturas.IconSize = 32;
+            btnFacturas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnFacturas.Location = new Point( 0, 278 );
+            btnFacturas.Name = "btnFacturas";
+            btnFacturas.Padding = new Padding( 5, 0, 0, 0 );
+            btnFacturas.Size = new Size( 170, 28 );
+            btnFacturas.TabIndex = 7;
+            btnFacturas.Text = "Facturas";
+            btnFacturas.UseVisualStyleBackColor = true;
             // 
-            // btnCatalogoInsumos
+            // btnProductos
             // 
-            btnCatalogoInsumos.FlatStyle = FlatStyle.Flat;
-            btnCatalogoInsumos.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnCatalogoInsumos.IconChar = FontAwesome.Sharp.IconChar.BoxOpen;
-            btnCatalogoInsumos.IconColor = Color.Black;
-            btnCatalogoInsumos.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnCatalogoInsumos.IconSize = 32;
-            btnCatalogoInsumos.ImageAlign = ContentAlignment.MiddleLeft;
-            btnCatalogoInsumos.Location = new Point( 0, 378 );
-            btnCatalogoInsumos.Name = "btnCatalogoInsumos";
-            btnCatalogoInsumos.Padding = new Padding( 5, 0, 0, 0 );
-            btnCatalogoInsumos.Size = new Size( 170, 28 );
-            btnCatalogoInsumos.TabIndex = 6;
-            btnCatalogoInsumos.Text = "Catálogo";
-            btnCatalogoInsumos.UseVisualStyleBackColor = true;
+            btnProductos.FlatStyle = FlatStyle.Flat;
+            btnProductos.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnProductos.IconChar = FontAwesome.Sharp.IconChar.BoxOpen;
+            btnProductos.IconColor = Color.Black;
+            btnProductos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnProductos.IconSize = 32;
+            btnProductos.ImageAlign = ContentAlignment.MiddleLeft;
+            btnProductos.Location = new Point( 0, 378 );
+            btnProductos.Name = "btnProductos";
+            btnProductos.Padding = new Padding( 5, 0, 0, 0 );
+            btnProductos.Size = new Size( 170, 28 );
+            btnProductos.TabIndex = 6;
+            btnProductos.Text = "Productos";
+            btnProductos.UseVisualStyleBackColor = true;
             // 
             // btnCosechas
             // 
@@ -264,7 +268,7 @@
             btnCosechas.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnCosechas.IconSize = 32;
             btnCosechas.ImageAlign = ContentAlignment.MiddleLeft;
-            btnCosechas.Location = new Point( 0, 214 );
+            btnCosechas.Location = new Point( 86, 222 );
             btnCosechas.Name = "btnCosechas";
             btnCosechas.Padding = new Padding( 5, 0, 0, 0 );
             btnCosechas.Size = new Size( 170, 28 );
@@ -313,7 +317,7 @@
             dungeonLabel2.BackColor = Color.Transparent;
             dungeonLabel2.Font = new Font( "Segoe UI", 11F );
             dungeonLabel2.ForeColor = Color.FromArgb( 76, 76, 77 );
-            dungeonLabel2.Location = new Point( 0, 191 );
+            dungeonLabel2.Location = new Point( 248, 144 );
             dungeonLabel2.Name = "dungeonLabel2";
             dungeonLabel2.Size = new Size( 151, 20 );
             dungeonLabel2.TabIndex = 10;
@@ -405,6 +409,33 @@
             dungeonLabel6.TabIndex = 14;
             dungeonLabel6.Text = "Reportes y Consultas";
             // 
+            // btnRecibos
+            // 
+            btnRecibos.FlatStyle = FlatStyle.Flat;
+            btnRecibos.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnRecibos.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnRecibos.IconColor = Color.Black;
+            btnRecibos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnRecibos.Location = new Point( 0, 312 );
+            btnRecibos.Name = "btnRecibos";
+            btnRecibos.Padding = new Padding( 5, 0, 0, 0 );
+            btnRecibos.Size = new Size( 170, 30 );
+            btnRecibos.TabIndex = 15;
+            btnRecibos.Text = "Recibos";
+            btnRecibos.UseVisualStyleBackColor = true;
+            // 
+            // iconButton4
+            // 
+            iconButton4.IconChar = FontAwesome.Sharp.IconChar.None;
+            iconButton4.IconColor = Color.Black;
+            iconButton4.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconButton4.Location = new Point( 271, 98 );
+            iconButton4.Name = "iconButton4";
+            iconButton4.Size = new Size( 75, 23 );
+            iconButton4.TabIndex = 16;
+            iconButton4.Text = "iconButton4";
+            iconButton4.UseVisualStyleBackColor = true;
+            // 
             // MainView
             // 
             AutoScaleDimensions = new SizeF( 7F, 15F );
@@ -432,7 +463,7 @@
         private FontAwesome.Sharp.IconButton btnFincas;
         private FontAwesome.Sharp.IconButton iconButton1;
         private FontAwesome.Sharp.IconButton btnConfiguraciones;
-        private FontAwesome.Sharp.IconButton btnCatalogoInsumos;
+        private FontAwesome.Sharp.IconButton btnProductos;
         private Panel panelLogo;
         private ReaLTaiizor.Controls.DungeonLabel dungeonLabel6;
         private ReaLTaiizor.Controls.DungeonLabel dungeonLabel5;
@@ -442,11 +473,13 @@
         private ReaLTaiizor.Controls.DungeonLabel dungeonLabel1;
         private FontAwesome.Sharp.IconButton btnCultivos;
         private FontAwesome.Sharp.IconButton btnCosechas;
-        private FontAwesome.Sharp.IconButton btnStock;
-        private FontAwesome.Sharp.IconButton btnKardex;
+        private FontAwesome.Sharp.IconButton btnFacturas;
+        private FontAwesome.Sharp.IconButton btnCompras;
         private ReaLTaiizor.Controls.DungeonLabel dungeonLabel7;
-        private FontAwesome.Sharp.IconButton btnAsignacionInsumos;
-        private FontAwesome.Sharp.IconButton btnHistorialInsumos;
+        private FontAwesome.Sharp.IconButton btnBodegas;
+        private FontAwesome.Sharp.IconButton btnVentas;
         private FontAwesome.Sharp.IconButton iconButton2;
+        private FontAwesome.Sharp.IconButton btnRecibos;
+        private FontAwesome.Sharp.IconButton iconButton4;
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panelTop = new Panel();
             btnCerrar = new FontAwesome.Sharp.IconButton();
@@ -64,11 +65,20 @@
             label14 = new Label();
             tbpListaLotes = new TabPage();
             tbpDetalleLote = new TabPage();
+            btnEliminarLote = new Button();
+            btnEditarLote = new Button();
+            btnAgregarLote = new Button();
+            dgvLotes = new DataGridView();
+            label3 = new Label();
+            txtBuscarLote = new TextBox();
+            btnBuscarLote = new Button();
             panelTop.SuspendLayout();
             tabControl.SuspendLayout();
             tbpLista.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvFincas).BeginInit();
             tbpDetalle.SuspendLayout();
+            tbpListaLotes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvLotes).BeginInit();
             SuspendLayout();
             // 
             // panelTop
@@ -210,14 +220,14 @@
             dgvFincas.BorderStyle = BorderStyle.None;
             dgvFincas.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvFincas.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font( "Segoe UI", 9F );
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvFincas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font( "Segoe UI", 9F );
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvFincas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvFincas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvFincas.EnableHeadersVisualStyles = false;
             dgvFincas.Location = new Point( 8, 64 );
@@ -237,9 +247,9 @@
             label2.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             label2.Location = new Point( 8, 11 );
             label2.Name = "label2";
-            label2.Size = new Size( 80, 17 );
+            label2.Size = new Size( 82, 17 );
             label2.TabIndex = 8;
-            label2.Text = "Buscar finca:";
+            label2.Text = "Buscar Finca:";
             // 
             // txtBuscar
             // 
@@ -465,6 +475,13 @@
             // 
             // tbpListaLotes
             // 
+            tbpListaLotes.Controls.Add( btnEliminarLote );
+            tbpListaLotes.Controls.Add( btnEditarLote );
+            tbpListaLotes.Controls.Add( btnAgregarLote );
+            tbpListaLotes.Controls.Add( dgvLotes );
+            tbpListaLotes.Controls.Add( label3 );
+            tbpListaLotes.Controls.Add( txtBuscarLote );
+            tbpListaLotes.Controls.Add( btnBuscarLote );
             tbpListaLotes.Location = new Point( 4, 24 );
             tbpListaLotes.Name = "tbpListaLotes";
             tbpListaLotes.Padding = new Padding( 3 );
@@ -482,6 +499,103 @@
             tbpDetalleLote.TabIndex = 3;
             tbpDetalleLote.Text = "Detalle de Lote";
             tbpDetalleLote.UseVisualStyleBackColor = true;
+            // 
+            // btnEliminarLote
+            // 
+            btnEliminarLote.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnEliminarLote.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnEliminarLote.Location = new Point( 715, 151 );
+            btnEliminarLote.Name = "btnEliminarLote";
+            btnEliminarLote.Size = new Size( 100, 30 );
+            btnEliminarLote.TabIndex = 22;
+            btnEliminarLote.Text = "Eliminar";
+            btnEliminarLote.UseVisualStyleBackColor = true;
+            // 
+            // btnEditarLote
+            // 
+            btnEditarLote.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnEditarLote.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnEditarLote.Location = new Point( 715, 104 );
+            btnEditarLote.Name = "btnEditarLote";
+            btnEditarLote.Size = new Size( 100, 30 );
+            btnEditarLote.TabIndex = 21;
+            btnEditarLote.Text = "Editar";
+            btnEditarLote.UseVisualStyleBackColor = true;
+            // 
+            // btnAgregarLote
+            // 
+            btnAgregarLote.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAgregarLote.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnAgregarLote.Location = new Point( 715, 68 );
+            btnAgregarLote.Name = "btnAgregarLote";
+            btnAgregarLote.Size = new Size( 100, 30 );
+            btnAgregarLote.TabIndex = 20;
+            btnAgregarLote.Text = "Nuevo";
+            btnAgregarLote.UseVisualStyleBackColor = true;
+            // 
+            // dgvLotes
+            // 
+            dgvLotes.AllowUserToAddRows = false;
+            dgvLotes.AllowUserToDeleteRows = false;
+            dgvLotes.AllowUserToResizeColumns = false;
+            dgvLotes.AllowUserToResizeRows = false;
+            dgvLotes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvLotes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvLotes.BorderStyle = BorderStyle.None;
+            dgvLotes.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            dgvLotes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font( "Segoe UI", 9F );
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvLotes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvLotes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvLotes.EnableHeadersVisualStyles = false;
+            dgvLotes.Location = new Point( 7, 68 );
+            dgvLotes.MultiSelect = false;
+            dgvLotes.Name = "dgvLotes";
+            dgvLotes.ReadOnly = true;
+            dgvLotes.RowHeadersVisible = false;
+            dgvLotes.RowHeadersWidth = 25;
+            dgvLotes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvLotes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvLotes.Size = new Size( 702, 419 );
+            dgvLotes.TabIndex = 19;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label3.Location = new Point( 7, 15 );
+            label3.Name = "label3";
+            label3.Size = new Size( 78, 17 );
+            label3.TabIndex = 16;
+            label3.Text = "Buscar Lote:";
+            // 
+            // txtBuscarLote
+            // 
+            txtBuscarLote.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBuscarLote.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            txtBuscarLote.Location = new Point( 7, 35 );
+            txtBuscarLote.Name = "txtBuscarLote";
+            txtBuscarLote.PlaceholderText = "Ingresar codigo de lote o finca";
+            txtBuscarLote.Size = new Size( 361, 25 );
+            txtBuscarLote.TabIndex = 17;
+            // 
+            // btnBuscarLote
+            // 
+            btnBuscarLote.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBuscarLote.AutoSize = true;
+            btnBuscarLote.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnBuscarLote.Location = new Point( 374, 33 );
+            btnBuscarLote.Name = "btnBuscarLote";
+            btnBuscarLote.Size = new Size( 84, 27 );
+            btnBuscarLote.TabIndex = 18;
+            btnBuscarLote.Text = "Buscar";
+            btnBuscarLote.UseVisualStyleBackColor = true;
             // 
             // FincasView
             // 
@@ -501,6 +615,9 @@
             ((System.ComponentModel.ISupportInitialize)dgvFincas).EndInit();
             tbpDetalle.ResumeLayout( false );
             tbpDetalle.PerformLayout();
+            tbpListaLotes.ResumeLayout( false );
+            tbpListaLotes.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvLotes).EndInit();
             ResumeLayout( false );
         }
 
@@ -541,5 +658,12 @@
         private Button button1;
         private TabPage tbpListaLotes;
         private TabPage tbpDetalleLote;
+        private Button btnEliminarLote;
+        private Button btnEditarLote;
+        private Button btnAgregarLote;
+        private DataGridView dgvLotes;
+        private Label label3;
+        private TextBox txtBuscarLote;
+        private Button btnBuscarLote;
     }
 }

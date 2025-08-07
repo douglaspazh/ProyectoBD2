@@ -63,10 +63,7 @@ namespace ProyectoBD2.Presenters
                 _view.FincaID = selectedFinca.FincaID;
                 _view.ProductorID = selectedFinca.ProductorID;
                 _view.Nombre = selectedFinca.Nombre;
-                _view.ProductorNombre = selectedFinca.Productor!.Nombre;
-                _view.Direccion = selectedFinca.Direccion ?? string.Empty;
                 _view.ExtensionTotal = selectedFinca.ExtensionTotal;
-                _view.FechaRegistro = selectedFinca.FechaRegistro.ToString( "dd/MM/yyyy" );
                 _view.IsEditing = true;
             }
         }
@@ -105,9 +102,8 @@ namespace ProyectoBD2.Presenters
                     FincaID = _view.FincaID,
                     ProductorID = _view.ProductorID,
                     Nombre = _view.Nombre,
-                    Direccion = _view.Direccion,
+                    Direccion = _view.Ubicacion,
                     ExtensionTotal = _view.ExtensionTotal,
-                    FechaRegistro = DateOnly.ParseExact( _view.FechaRegistro, "dd/MM/yyyy" )
                 };
 
                 if ( _view.IsEditing )
@@ -142,10 +138,8 @@ namespace ProyectoBD2.Presenters
             _view.FincaID = 0;
             _view.ProductorID = 0;
             _view.Nombre = string.Empty;
-            _view.ProductorNombre = string.Empty;
-            _view.Direccion = string.Empty;
+            _view.Ubicacion = string.Empty;
             _view.ExtensionTotal = 0;
-            _view.FechaRegistro = DateOnly.FromDateTime( DateTime.Now ).ToString( "dd/MM/yyyy" );
         }
     }
 }
