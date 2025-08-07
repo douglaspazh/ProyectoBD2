@@ -26,8 +26,9 @@ as
 			
 			insert into Depositos (VoucherID,CuentaID,Monto,Fecha)
 			select @VoucherID,@CuentaID,sum(Monto),CAST(GETDATE() AS DATE) from IngresosProveedor 
-			where VoucherProveedorID=1
+			where VoucherProveedorID=@VoucherProveedorID
 			group by VoucherProveedorID
+			
 			update Voucher set EstadoID=30003,TipoPagoID=1 where VoucherID=@VoucherID 
 			
 			SELECT 10000 as Estado,'El voucher ha sido pagado' AS Mensaje;

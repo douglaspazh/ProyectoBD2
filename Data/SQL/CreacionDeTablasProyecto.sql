@@ -83,8 +83,10 @@ create table Cultivo(
 	CultivoID int not null,
 	ProductoID varchar(12) not null,
 	Nombre varchar(50) not null,
-	Observaciones varchar(150) null
+	Observaciones varchar(150) null,
+	CantidadPorCosecha int not null
 )
+
 --listo
 create table Estado(
 	EstadoID int not null,
