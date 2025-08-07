@@ -18,83 +18,74 @@ namespace ProyectoBD2.Repositories.Implementations
             _context = new AppDbContext();
         }
 
+        // Method to execute a stored procedure and return a DataTable
+        public DataTable ExecuteSPDataTable( string storedProcedure, Dictionary<string, dynamic> parameters = null)
+        {
+            try
+            {
+                // Using a stored procedure to execute a command
+                var connectionString = _context.Database.GetConnectionString();
+                using var connection = new SqlConnection( connectionString );
+                using var command = new SqlCommand( storedProcedure, connection )
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                if ( parameters != null )
+                {
+                    foreach ( var param in parameters )
+                    {
+                        command.Parameters.AddWithValue( param.Key, param.Value );
+                    }
+                }
+                var dataTable = new DataTable();
+                connection.Open();
+                using var reader = command.ExecuteReader();
+                dataTable.Load( reader );
+                connection.Close();
+                return dataTable;
+            }
+            catch ( SqlException ex )
+            {
+                Debug.WriteLine( $"Error executing stored procedure {storedProcedure}: {ex.Message}" );
+                throw;
+            }
+        }
 
         public DataTable GetAllProductores()
         {
-            // Using a stored procedure to get all productores
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spGetAllProductores", connection )
+            Dictionary<string, dynamic> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@PageNumber", 1 },
+                { "@PageSize", 25 }
             };
-            command.Parameters.AddWithValue( "@PageNumber", 1 );
-            command.Parameters.AddWithValue( "@PageSize", 25 );
-
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load(reader);
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spGetAllProductores", parameters );
         }
 
         public DataTable GetProductorById( int productorId )
         {
-            // Using a stored procedure to get a specific productor by ID
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spGetProductorByID", connection )
+            Dictionary<string, dynamic> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@ID", productorId }
             };
-            command.Parameters.AddWithValue( "@ID", productorId );
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load(reader);
-            connection.Close();
-            return dataTable;
+            return ExecuteSPDataTable( "spGetProductorByID", parameters );
         }
 
         public DataTable GetByValue( string value )
         {
-            // Using a stored procedure to search for productores by value
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spGetProductorByValue", connection )
+            Dictionary<string, dynamic> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@Value", value }
             };
-            command.Parameters.AddWithValue( "@Value", value );
-
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load( reader );
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spGetProductorByValue", parameters );
         }
 
         public DataTable GetByEstado( int estadoId )
         {
-            // Using a stored procedure to get productores by estado
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spGetProductorByEstado", connection )
+            Dictionary<string, object> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@EstadoID", estadoId }
             };
-            command.Parameters.AddWithValue( "@EstadoID", estadoId );
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load( reader );
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spGetProductorByEstado", parameters );
         }
 
         public DataTable AddProductor( Dictionary<string, dynamic> productorData )
@@ -108,45 +99,25 @@ namespace ProyectoBD2.Repositories.Implementations
             var correo = productorData["Correo"] as string;
 
             // Using a stored procedure to insert the productor
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spInsertProductor", connection )
+            Dictionary<string, dynamic> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@Nombre", nombre },
+                { "@Apellido", apellido },
+                { "@Documento", documento },
+                { "@RTN", rtn },
+                { "@Telefono", telefono },
+                { "@Correo", correo }
             };
-            command.Parameters.AddWithValue( "@Nombre", nombre );
-            command.Parameters.AddWithValue( "@Apellido", apellido );
-            command.Parameters.AddWithValue( "@RTN", rtn );
-            command.Parameters.AddWithValue( "@Telefono", telefono );
-            command.Parameters.AddWithValue( "@Correo", correo );
-            command.Parameters.AddWithValue( "@Documento", documento );
-
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load( reader );
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spAddProductor", parameters );
         }
 
         public DataTable DeleteProductor( int productorId )
         {
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spDeleteProductor", connection )
+           Dictionary<string, object> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@ID", productorId }
             };
-            command.Parameters.AddWithValue( "@ID", productorId );
-
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load( reader );
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spDeleteProductor", parameters );
         }
 
         public DataTable UpdateProductor( Dictionary<string, object> productorData )
@@ -162,47 +133,25 @@ namespace ProyectoBD2.Repositories.Implementations
             var estadoId = (int)productorData["EstadoID"];
 
             // Using a stored procedure to update the productor
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection(connectionString);
-            using var command = new SqlCommand( "spUpdateProductor", connection )
+            Dictionary<string, object> parameters = new()
             {
-                CommandType = CommandType.StoredProcedure
+                { "@ID", productorId },
+                { "@Nombre", nombre },
+                { "@Apellido", apellido },
+                { "@Documento", documento },
+                { "@RTN", rtn },
+                { "@Telefono", telefono },
+                { "@Correo", correo },
+                { "@EstadoID", estadoId }
             };
-            command.Parameters.AddWithValue("@ID", productorId);
-            command.Parameters.AddWithValue("@Nombre", nombre);
-            command.Parameters.AddWithValue("@Apellido", apellido);
-            command.Parameters.AddWithValue("@Documento", documento);
-            command.Parameters.AddWithValue("@RTN", rtn);
-            command.Parameters.AddWithValue("@Telefono", telefono);
-            command.Parameters.AddWithValue("@Correo", correo);
-            command.Parameters.AddWithValue("@EstadoID", estadoId);
 
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load( reader );
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spUpdateProductor", parameters );
         }
 
         public DataTable GetAllEstados()
         {
             // Using a stored procedure to get all estados
-            var connectionString = _context.Database.GetConnectionString();
-            using var connection = new SqlConnection( connectionString );
-            using var command = new SqlCommand( "spGetProductorEstados", connection )
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-
-            var dataTable = new DataTable();
-            connection.Open();
-            using var reader = command.ExecuteReader();
-            dataTable.Load(reader);
-            connection.Close();
-
-            return dataTable;
+            return ExecuteSPDataTable( "spGetProductorEstados" );
         }
     }
 }

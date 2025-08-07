@@ -140,7 +140,7 @@ namespace ProyectoBD2.Views.Forms
 
         public int ProductorID
         {
-            get => Convert.ToInt32( ProductorID.ToString().Trim() );
+            get => Convert.ToInt32( txtProductorID.Text );
             set => txtProductorID.Text = value.ToString();
         }
         public string Nombre 

@@ -13,7 +13,6 @@ namespace ProyectoBD2.Views.Interfaces
         string Documento { get; set; }
         string RTN { get; set; }
         string Correo { get; set; }
-        string Direccion { get; set; }
         int EstadoID { get; set; }
         string SearchTerm { get; set; }
         bool IsEditing { get; set; }
