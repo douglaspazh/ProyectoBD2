@@ -14,16 +14,16 @@ as
 			THROW 50051, 'La cosecha ya fue entregada', 1;
 
 		--Obtener el producto y la cantidad de la cosecha
-		declare @ProductoID varchar(12), @Cantidad int
+		declare @ProductoID varchar(12), @Cantidad int,@CantidadPorCosecha int
 
-		select @ProductoID= cu.ProductoID,@Cantidad=co.CantidadCosechas
+		select @ProductoID= cu.ProductoID,@Cantidad=co.CantidadCosechas,@CantidadPorCosecha=cu.CantidadPorCosecha
 		from (select CantidadCosechas,CultivoID from cosecha where CosechaID=@CosechaID) as co 
-		inner join (select ProductoID,CultivoID from cultivo) as cu on cu.CultivoID = co.CultivoID 
+		inner join (select ProductoID,CultivoID,CantidadPorCosecha from cultivo) as cu on cu.CultivoID = co.CultivoID 
 
-		exec spValidarDecimal @Precio, 'precio de la cosecha'
+		exec spValidarDecimal 'precio de la cosecha',@Precio
 		BEGIN TRANSACTION
 			insert into EntradaCosecha (CosechaID ,ProductoID,BodegaID,Cantidad, Precio) 
-				values (@CosechaID, @productoID,@BodegaID,@Cantidad,@Precio)
+				values (@CosechaID, @productoID,@BodegaID,@Cantidad*@CantidadPorCosecha,@Precio)
 				SELECT '10000' as Estado, 'La cosecha se ha almacenado correctamente' AS Mensaje;
 		COMMIT TRANSACTION
 	end try

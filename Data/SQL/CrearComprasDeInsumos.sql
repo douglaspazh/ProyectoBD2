@@ -7,8 +7,8 @@ create type dbo.InsumoCompra as table (
 declare @InsumosAgregar dbo.InsumoCompra;
 
 -- Inserta datos en la variable tabla
-INSERT INTO @ProductosAgregar (ProductoID, BodegaID, Cantidad, Precio)
-VALUES 
+INSERT INTO @InsumosAgregar (ProductoID, BodegaID, Cantidad, Precio)
+VALUES ()
 --Aqui agregar los registros de este producto
 
 spComprarInsumos 1,@InsumosAgregar
@@ -27,8 +27,8 @@ as
 		BEGIN TRANSACTION
 			declare @ID INT;
 			select @ID = ISNULL(MAX(CompraID), 0) + 1 from Compra
-			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha,EstadoID) 
-				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE),null);
+			insert into Compra (CompraID, ProveedorID,Impuesto,Descuento,Fecha) 
+				values (@ID, @ProveedorID,@Impuesto,@Descuento, CAST(GETDATE() AS DATE));
 			--Agregar productos
 			declare @ProductoID varchar(13), @BodegaID varchar(3), @Cantidad int,@Precio varchar(20);
 
@@ -71,23 +71,6 @@ begin try
 		exec spValidarCampoInt @Cantidad, 'Cantidad de insumos';
 		--Validar que existe este producto
 		exec spValidarProducto @ProductoID
-		--Validar que el producto lo tenga el proveedor
-		--if not exists(select  proi.ProductoID from Compra as c
-		--inner join ProveedorInsumo as proi on c.ProveedorID = proi.ProveedorID where proi.ProductoID = @ProductoID and c.CompraID = @CompraID)
-		--		THROW 50051, 'El productor no maneja este producto', 1;
-
-		--Validar que el producto no este agotado
-		--declare @ProducP varchar(13), @EstadoP int,@msg varchar(150),@nomP varchar(50); 
-
-		--select  @EstadoP= proi.EstadoID,@ProducP=proi.ProductoID from Compra as c
-		--inner join ProveedorInsumo as proi on c.ProveedorID = proi.ProveedorID where proi.ProductoID = @ProductoID
-
-		--select @nomP = Nombre from Producto where ProductoID=@ProducP;
-		--if @EstadoP = 31002
-		--begin
-		--	set @msg = 'El producto '+@nomP+' no esta disponible';
-		--	THROW 50052, @msg, 1
-		--end
 
 		exec spValidarDecimal 'Precio', @Precio;
 
