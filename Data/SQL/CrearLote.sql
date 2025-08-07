@@ -1,7 +1,6 @@
 create or alter procedure spCrearLote
 @FincaID int,
 @Extencion varchar(20),--decimal(10,2)
-@MaximoCosechas int,
 @TipoSuelo varchar(51) = null,
 @TipoDeRiego varchar(51) = null
 as
@@ -40,8 +39,8 @@ as
 			declare @ID INT;
 			select @ID = ISNULL(MAX(LoteID), 0) + 1 from Lote
 			
-			insert into Lote (LoteID, FincaID,Extencion,MaximoCosechas,TipoSuelo,TipoDeRiego) 
-			values (@ID, @FincaID,@ext,@MaximoCosechas,@TipoSuelo,@TipoDeRiego)
+			insert into Lote (LoteID, FincaID,Extencion,TipoSuelo,TipoDeRiego) 
+			values (@ID, @FincaID,@ext,@TipoSuelo,@TipoDeRiego)
 			SELECT '10000' as Estado, 'Se creo correctamente el lote' AS Mensaje;
 		commit transaction 
 	end try

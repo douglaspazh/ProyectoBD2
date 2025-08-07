@@ -45,6 +45,7 @@ create table Finca(
 	ExtencionTotal decimal(10,2) not null,
 	UnidadMedidaID int null CONSTRAINT Finca_UnidadMedida DEFAULT 1
 )
+
 --listo
 CREATE TABLE Departamento (
     DepartamentoID INT PRIMARY KEY IDENTITY(1,1),
@@ -62,11 +63,11 @@ create table Lote(
 	LoteID int not null,
 	FincaID int not null,
 	Extencion decimal(10,2) not null,
-	MaximoCosechas int not null,
 	TipoSuelo varchar(50) null,
 	TipoDeRiego varchar(50) null,
 	UnidadMedidaID int null CONSTRAINT Lote_UnidadMedida DEFAULT 1
 )
+
 --listo
 create table Cosecha(
 	CosechaID int not null,
