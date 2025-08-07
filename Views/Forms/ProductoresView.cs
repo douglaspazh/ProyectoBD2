@@ -1,133 +1,63 @@
-﻿using ProyectoBD2.Presenters;
-using ProyectoBD2.Repositories.Implementations;
-using ProyectoBD2.Views.Interfaces;
+﻿using ProyectoBD2.Data;
 using System.Data;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace ProyectoBD2.Views.Forms
 {
-    public partial class ProductoresView : Form, IProductorView
+    public partial class ProductoresView : Form
     {
         // Fields
-        private readonly ProductorPresenter _presenter;
-        private bool isSuccessful;
+        private int _actualPage = 1;
+        private int _pageSize = 25;
+        private int _totalPages = 0;
+        private int _totalRecords = 0;
         private bool isEditing;
-        private string message;
+        private readonly Utils utils = new();
 
         // Constructor
         public ProductoresView()
         {
             InitializeComponent();
-            AssociatedAndRaiseEvents();
-            tabControl.TabPages.Remove(tbpDetalleProductor);
 
-            _presenter = new ProductorPresenter(this, new ProductoresRepository());
+            tabControl.TabPages.Remove( tbpDetalleProductor );
+
+            cmbRecordsPerPage.SelectedIndex = 0;
+            cmbEstado.SelectedIndex = -1;
+        }
+
+        public void SetListBindingSource( string spName = "spGetAllProductores", Dictionary<string, dynamic>? parameters = null )
+        {
+            parameters ??= new()
+                {
+                    { "@PageNumber", _actualPage },
+                    { "@PageSize", _pageSize }
+                };
+            dgvProductores.DataSource = utils.ExecuteSPDataTable( spName, parameters );
+
+            _totalRecords = dgvProductores.Rows.Count;
+            _totalPages = (int)Math.Ceiling( (double)_totalRecords / _pageSize );
+            DisplayPageRange();
 
             if ( dgvProductores.Columns.Contains( "ProductorID" ) )
                 dgvProductores.Columns["ProductorID"].Visible = false;
             if ( dgvProductores.Columns.Contains( "EstadoID" ) )
                 dgvProductores.Columns["EstadoID"].Visible = false;
-
-            cmbRecordsPerPage.SelectedIndex = 0;
-            cmbEstado.SelectedIndex = -1;
-
-            btnCerrar.Click += ( s, e ) => this.Close();
         }
 
-
-        // Method to associate events with their handlers
-        private void AssociatedAndRaiseEvents()
+        public void DisplayPageRange()
         {
-            btnBuscar.Click += ( s, e ) => SearchEvent?.Invoke( this, EventArgs.Empty );
-            btnSiguiente.Click += ( s, e ) => NextPageEvent?.Invoke( this, EventArgs.Empty );
-            btnAnterior.Click += ( s, e ) => PrevPageEvent?.Invoke( this, EventArgs.Empty );
-            txtBuscar.KeyDown += ( s, e ) =>
-            {
-                if ( e.KeyCode == Keys.Enter )
-                {
-                    SearchEvent?.Invoke( this, EventArgs.Empty );
-                    e.SuppressKeyPress = true; // Prevents the beep sound
-                }
-            };
-
-            btnAgregar.Click += delegate
-            {
-                AddNewEvent?.Invoke( this, EventArgs.Empty );
-                tabControl.TabPages.Remove( tbpLista );
-                tabControl.TabPages.Add( tbpDetalleProductor );
-                tabControl.SelectedTab = tbpDetalleProductor;
-                tbpDetalleProductor.Text = "Nuevo Productor";
-            };
-
-            btnEditar.Click += delegate
-            {
-                EditEvent?.Invoke( this, EventArgs.Empty );
-                tabControl.TabPages.Remove(tbpLista);
-                tabControl.TabPages.Add(tbpDetalleProductor);
-                tabControl.SelectedTab = tbpDetalleProductor;
-                tbpDetalleProductor.Text = "Editar Productor";
-            };
-
-            btnEliminar.Click += delegate
-            {
-                var result = MessageBox.Show("Esta seguro de eliminar este productor?", "Advertencia",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if ( result == DialogResult.Yes )
-                {
-                    DeleteEvent?.Invoke( this, EventArgs.Empty );
-                    MessageBox.Show( Message );
-                }
-            };
-
-            btnEliminar2.Click += ( s, e ) => btnEliminar.PerformClick();
-
-            btnGuardar.Click += delegate
-            {
-                SaveEvent?.Invoke( this, EventArgs.Empty );
-                if ( isSuccessful )
-                {
-                    tabControl.TabPages.Remove( tbpDetalleProductor );
-                    tabControl.TabPages.Add( tbpLista );
-                    tabControl.SelectedTab = tbpLista;
-                }
-                MessageBox.Show( Message );
-            };
-
-            btnCancelar.Click += delegate
-            {
-                CancelEvent?.Invoke( this, EventArgs.Empty );
-                tabControl.TabPages.Remove( tbpDetalleProductor );
-                tabControl.TabPages.Add( tbpLista );
-                tabControl.SelectedTab = tbpLista;
-            };
+            lblTotalRegistros.Text = $"Total: {_totalRecords} productores";
+            lblPaginas.Text = $"Página {_actualPage} de {_totalPages}";
+            lblRecordsPerPage.Text = $"Mostrando {_pageSize} registros por página";
+            btnSiguiente.Enabled = _actualPage < _totalPages;
+            btnAnterior.Enabled = _actualPage > 1;
         }
 
-        public event EventHandler SearchEvent;
-        public event EventHandler AddNewEvent;
-        public event EventHandler EditEvent;
-        public event EventHandler DeleteEvent;
-        public event EventHandler SaveEvent;
-        public event EventHandler CancelEvent;
-        public event EventHandler NextPageEvent;
-        public event EventHandler PrevPageEvent;
-
-        public void SetListBindingSource( BindingSource productores )
+        public void CargarEstados()
         {
-            dgvProductores.ClearSelection();
-            dgvProductores.CurrentCell = null;
-            dgvProductores.DataSource = productores;
-        }
+            var estados = utils.ExecuteSPDataTable( "spGetProductorEstados" );
 
-        public void DisplayPageRange( int currentPage, int totalPages, int totalRecords )
-        {
-            lblTotalRegistros.Text = $"Total: {totalRecords} productores";
-            lblPaginas.Text = $"Página {currentPage} de {totalPages}";
-            btnSiguiente.Enabled = currentPage < totalPages;
-            btnAnterior.Enabled = currentPage > 1;
-        }
-
-        public void CargarEstados( DataTable estados )
-        {
             cmbEstado.DataSource ??= estados.AsEnumerable().Select( row => new
             {
                 Nombre = row["Nombre"],
@@ -138,71 +68,203 @@ namespace ProyectoBD2.Views.Forms
             cmbEstado.ValueMember = "EstadoID";
         }
 
-        public int ProductorID
+        public void CleanFields()
         {
-            get => Convert.ToInt32( txtProductorID.Text );
-            set => txtProductorID.Text = value.ToString();
-        }
-        public string Nombre 
-        { 
-            get => txtNombre.Text.Trim();
-            set => txtNombre.Text = value;
-        }
-        public string Apellido 
-        {
-            get => txtApellido.Text.Trim();
-            set => txtApellido.Text = value;
-        }
-        public string Documento 
-        {
-            get => txtDocumento.Text.Trim();
-            set => txtDocumento.Text = value;
-        }
-        public string RTN 
-        {
-            get => txtRTN.Text.Trim();
-            set => txtRTN.Text = value;
-        }
-        public string Telefono 
-        {
-            get => txtTelefono.Text.Trim();
-            set => txtTelefono.Text = value;
-        }
-        public string Correo 
-        {
-            get => txtEmail.Text.Trim();
-            set => txtEmail.Text = value;
-        }
-        public int EstadoID
-        {
-            get => Convert.ToInt32( cmbEstado.SelectedValue );
-            set => cmbEstado.SelectedValue = value;
+            txtProductorID.Clear();
+            txtNombre.Clear();
+            txtApellido.Clear();
+            txtTelefono.Clear();
+            txtEmail.Clear();
+            txtDocumento.Clear();
+            txtRTN.Clear();
+            cmbEstado.SelectedIndex = -1;
         }
 
-        public string SearchTerm {
-            get => txtBuscar.Text.Trim();
-            set => txtBuscar.Text = value;
-        }
-        public bool IsEditing 
+        private void ProductoresView_Load( object sender, EventArgs e )
         {
-            get => isEditing;
-            set
+            SetListBindingSource( "spGetAllProductores" );
+            CargarEstados();
+        }
+
+        private void btnBuscar_Click( object sender, EventArgs e )
+        {
+            bool emptySearch = string.IsNullOrWhiteSpace( txtBuscar.Text );
+            if ( !emptySearch )
             {
-                isEditing = value;
-                lblProductorID.Visible = value;
-                txtProductorID.Visible = value;
-                btnGuardar.Text = value ? "Actualizar" : "Guardar";
+                Dictionary<string, dynamic> parameters = new()
+                {
+                    { "@Value", txtBuscar.Text.Trim() },
+                    { "@PageNumber", _actualPage },
+                    { "@PageSize", _pageSize }
+                };
+                SetListBindingSource( "spGetProductorByValue", parameters );
+            }
+            else
+            {
+                SetListBindingSource();
             }
         }
-        public bool IsSuccessful
+
+        private void btnAgregar_Click( object sender, EventArgs e )
         {
-            get => isSuccessful;
-            set => isSuccessful = value;
+            lblProductorID.Visible = false;
+            txtProductorID.Visible = false;
+            btnGuardar.Text = "Guardar";
+
+            tabControl.TabPages.Remove( tbpLista );
+            tabControl.TabPages.Add( tbpDetalleProductor );
+            tabControl.SelectedTab = tbpDetalleProductor;
+            tbpDetalleProductor.Text = "Nuevo Productor";
         }
-        public string Message 
+
+        private void btnEditar_Click( object sender, EventArgs e )
         {
-            get => message;
-            set => message = value;
+            var selectedProductor = dgvProductores.CurrentRow.DataBoundItem as DataRowView;
+            if ( selectedProductor != null )
+            {
+                isEditing = true;
+                lblProductorID.Visible = true;
+                txtProductorID.Visible = true;
+
+                tabControl.TabPages.Remove( tbpLista );
+                tabControl.TabPages.Add( tbpDetalleProductor );
+                tabControl.SelectedTab = tbpDetalleProductor;
+                tbpDetalleProductor.Text = "Editar Productor";
+                btnGuardar.Text = "Actualizar";
+
+                Dictionary<string, dynamic> parameters = new()
+                {
+                    { "@ID", Convert.ToInt32( selectedProductor["ProductorID"] ) }
+                };
+                var productorData = utils.ExecuteSPDataTable( "spGetProductorByID", parameters );
+
+                if ( productorData.Rows.Count > 0 ) // Ensure there is at least one row in the DataTable
+                {
+                    var row = productorData.Rows[0]; // Access the first row of the DataTable
+                    txtProductorID.Text = row["ProductorID"].ToString();
+                    txtNombre.Text = row["Nombre"].ToString() ?? string.Empty;
+                    txtApellido.Text = row["Apellido"].ToString() ?? string.Empty;
+                    txtTelefono.Text = row["Telefono"].ToString() ?? string.Empty;
+                    txtEmail.Text = row["Correo"].ToString() ?? string.Empty;
+                    txtDocumento.Text = row["Documento"].ToString() ?? string.Empty;
+                    txtRTN.Text = row["RTN"].ToString() ?? string.Empty;
+                    cmbEstado.SelectedValue = Convert.ToInt32( row["EstadoID"] );
+                }
+            }
+        }
+
+        private void btnEliminar_Click( object sender, EventArgs e )
+        {
+            var selectedProductor = dgvProductores.CurrentRow?.DataBoundItem as DataRowView;
+
+            if ( selectedProductor != null )
+            {
+                var result = MessageBox.Show( "Esta seguro de eliminar este productor?", "Advertencia",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning );
+                if ( result == DialogResult.Yes )
+                {
+                    Dictionary<string, dynamic> parameters = new()
+                    {
+                        { "@ID", Convert.ToInt32( selectedProductor["ProductorID"] ) }
+                    };
+                    utils.ExecuteSPDataTable( "spDeleteProductor", parameters );
+                    SetListBindingSource();
+                    MessageBox.Show( "Productor eliminado exitosamente." );
+                }
+            }
+            else
+            {
+                // If no productor is selected, show a message
+                MessageBox.Show( "No se ha seleccionado ningún productor." );
+            }
+        }
+
+        private void btnGuardar_Click( object sender, EventArgs e )
+        {
+            Dictionary<string, dynamic> productor = new()
+            {
+                { "@Nombre", txtNombre.Text.Trim() },
+                { "@Apellido", txtApellido.Text.Trim() },
+                { "@Telefono", txtTelefono.Text.Trim() },
+                { "@Correo", txtEmail.Text.Trim() },
+                { "@Documento", txtDocumento.Text.Trim() },
+                { "@RTN", txtRTN.Text.Trim() },
+
+            };
+            if ( isEditing )
+            {
+                productor.Add( "@ID", Convert.ToInt32( txtProductorID.Text.Trim() ) );
+                productor.Add( "@Estado", Convert.ToInt32( cmbEstado.SelectedValue ) );
+            }
+
+            var result = new DataTable();
+            if ( isEditing )
+            {
+                result = utils.ExecuteSPDataTable( "spUpdateProductor", productor );
+            }
+            else
+            {
+                result = utils.ExecuteSPDataTable( "spInsertProductor", productor );
+            }
+
+
+            if ( (int)result.Rows[0]["Estado"] == 10000 )
+            {
+                SetListBindingSource();
+                tabControl.TabPages.Remove( tbpDetalleProductor );
+                tabControl.TabPages.Add( tbpLista );
+                tabControl.SelectedTab = tbpLista;
+                CleanFields();
+            }
+
+            MessageBox.Show( result.Rows[0]["Mensaje"].ToString() );
+        }
+
+        private void btnEliminar2_Click( object sender, EventArgs e )
+        {
+            btnEliminar.PerformClick();
+        }
+
+        private void btnCancelar_Click( object sender, EventArgs e )
+        {
+            tabControl.TabPages.Remove( tbpDetalleProductor );
+            tabControl.TabPages.Add( tbpLista );
+            tabControl.SelectedTab = tbpLista;
+            CleanFields();
+        }
+
+        private void btnAnterior_Click( object sender, EventArgs e )
+        {
+            Dictionary<string, dynamic> parameters = new()
+            {
+                { "@PageNumber", _actualPage - 1 },
+                { "@PageSize", _pageSize }
+            };
+            dgvProductores.DataSource = utils.ExecuteSPDataTable( "spGetAllProductores", parameters );
+        }
+
+        private void btnSiguiente_Click( object sender, EventArgs e )
+        {
+            Dictionary<string, dynamic> parameters = new()
+            {
+                { "@PageNumber", _actualPage + 1 },
+                { "@PageSize", _pageSize }
+            };
+            dgvProductores.DataSource = utils.ExecuteSPDataTable( "spGetAllProductores", parameters );
+        }
+
+        private void btnCerrar_Click( object sender, EventArgs e )
+        {
+            this.Close();
+        }
+
+        private void txtBuscar_KeyDown( object sender, KeyEventArgs e )
+        {
+            if ( e.KeyCode == Keys.Enter )
+            {
+                btnBuscar.PerformClick();
+                e.SuppressKeyPress = true; // Prevents the beep sound
+            }
         }
     }
 }

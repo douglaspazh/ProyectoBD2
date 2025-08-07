@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvProductores = new DataGridView();
             btnAgregar = new Button();
             btnEditar = new Button();
@@ -89,14 +89,14 @@
             dgvProductores.BorderStyle = BorderStyle.None;
             dgvProductores.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvProductores.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font( "Segoe UI", 9F );
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvProductores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font( "Segoe UI", 9F );
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvProductores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvProductores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProductores.EnableHeadersVisualStyles = false;
             dgvProductores.Location = new Point( 8, 67 );
@@ -120,6 +120,7 @@
             btnAgregar.TabIndex = 1;
             btnAgregar.Text = "Nuevo";
             btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // btnEditar
             // 
@@ -131,6 +132,7 @@
             btnEditar.TabIndex = 2;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
             // 
             // btnEliminar
             // 
@@ -142,6 +144,7 @@
             btnEliminar.TabIndex = 3;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // label1
             // 
@@ -172,6 +175,7 @@
             txtBuscar.PlaceholderText = "Ingrese un nombre o DNI";
             txtBuscar.Size = new Size( 322, 25 );
             txtBuscar.TabIndex = 6;
+            txtBuscar.KeyDown += txtBuscar_KeyDown;
             // 
             // btnBuscar
             // 
@@ -184,6 +188,7 @@
             btnBuscar.TabIndex = 7;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
             // 
             // panelTop
             // 
@@ -210,6 +215,7 @@
             btnCerrar.Size = new Size( 36, 36 );
             btnCerrar.TabIndex = 7;
             btnCerrar.UseVisualStyleBackColor = true;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // iconButton1
             // 
@@ -306,6 +312,7 @@
             btnSiguiente.TabIndex = 11;
             btnSiguiente.Text = "Siguiente";
             btnSiguiente.UseVisualStyleBackColor = true;
+            btnSiguiente.Click += btnSiguiente_Click;
             // 
             // btnAnterior
             // 
@@ -317,6 +324,7 @@
             btnAnterior.TabIndex = 10;
             btnAnterior.Text = "Anterior";
             btnAnterior.UseVisualStyleBackColor = true;
+            btnAnterior.Click += btnAnterior_Click;
             // 
             // lblPaginas
             // 
@@ -378,13 +386,15 @@
             btnEliminar2.TabIndex = 34;
             btnEliminar2.Text = "Eliminar";
             btnEliminar2.UseVisualStyleBackColor = true;
+            btnEliminar2.Click += btnEliminar2_Click;
             // 
             // txtApellido
             // 
+            txtApellido.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             txtApellido.Location = new Point( 400, 51 );
             txtApellido.MaxLength = 25;
             txtApellido.Name = "txtApellido";
-            txtApellido.Size = new Size( 179, 23 );
+            txtApellido.Size = new Size( 179, 25 );
             txtApellido.TabIndex = 33;
             // 
             // label10
@@ -399,10 +409,11 @@
             // 
             // txtRTN
             // 
+            txtRTN.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             txtRTN.Location = new Point( 400, 115 );
             txtRTN.MaxLength = 20;
             txtRTN.Name = "txtRTN";
-            txtRTN.Size = new Size( 154, 23 );
+            txtRTN.Size = new Size( 154, 25 );
             txtRTN.TabIndex = 29;
             // 
             // label8
@@ -417,10 +428,11 @@
             // 
             // txtDocumento
             // 
+            txtDocumento.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             txtDocumento.Location = new Point( 179, 115 );
             txtDocumento.MaxLength = 13;
             txtDocumento.Name = "txtDocumento";
-            txtDocumento.Size = new Size( 154, 23 );
+            txtDocumento.Size = new Size( 154, 25 );
             txtDocumento.TabIndex = 27;
             // 
             // label7
@@ -471,6 +483,7 @@
             btnCancelar.TabIndex = 20;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // btnGuardar
             // 
@@ -481,6 +494,7 @@
             btnGuardar.TabIndex = 19;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // cmbEstado
             // 
@@ -569,6 +583,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "ProductoresView";
             Text = "ProductoresForm";
+            Load += ProductoresView_Load;
             ((System.ComponentModel.ISupportInitialize)dgvProductores).EndInit();
             panelTop.ResumeLayout( false );
             panelTop.PerformLayout();
