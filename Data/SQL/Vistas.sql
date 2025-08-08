@@ -76,11 +76,20 @@ create or alter view vCuentasProductor
 as
 	select cb.CuentaID,cp.ProductorID,cb.NumeroCuenta from CuentaBancaria as cb
 	inner join CuentaProductor as cp on cb.CuentaID=cp.CuentaID
+
+create
+
+create or alter view vCompras
+as
+select ProveedorID,CompraID,dbo.ObtenerNombreProveedor(ProveedorID) as NombreProveedor, dbo.ConvertirPorcentual(Impuesto) as Impuesto, 
+	dbo.ConvertirPorcentual(Descuento) as Descuento,Fecha,dbo.ObtenerNombreEstado(EstadoID) as Estado from compra
 --Vistas creadas
 select * from vSaldoPendienteCosecha
 select * from vSaldoPendienteInsumos
 select * from vStockActual
-select * from vComprasPendientes
+
+select * from vComprasPendientes 
+select * from vCompras
 select * from vSaldoPendienteCompra
 select * from vTotalPagarVoucherProductor
 select * from vCuentasProveedor

@@ -56,5 +56,15 @@ namespace ProyectoBD2.Views.Forms
         {
             OpenChildForm(new CultivosView());
         }
+
+        private void iconButton1_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new ClientesView());
+        }
+
+        private void btnVentas_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new VentasView());
+        }
     }
 }

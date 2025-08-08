@@ -107,7 +107,8 @@ after insert
 as  
 begin     
 	insert into Salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida,Tipo) 
-	select BodegaID,ProductoID,Cantidad,CAST(GETDATE() AS DATE),'F' from inserted  
+	select i.BodegaID,i.ProductoID,i.Cantidad,f.Fecha,'F' from (select FacturaID,BodegaID,ProductoID,Cantidad from inserted)  i
+	inner join (select FacturaID,Fecha from factura) f on f.FacturaID=i.FacturaID
 end
 --Registramos las salidas cada que se agrega un producto a
 --una solicitud de insumos
@@ -117,7 +118,8 @@ after insert
 as  
 begin  
 	insert into Salidas (BodegaID,ProductoID,Cantidad,FechaDeSalida,Tipo) 
-	select BodegaID,ProductoID,Cantidad,CAST(GETDATE() AS DATE),'S' from inserted  
+	select i.BodegaID,i.ProductoID,i.Cantidad,si.FechaSolicitud,'S' from (select BodegaID,ProductoID,Cantidad,SolicitudInsumosID from inserted) i
+	inner join (select FechaSolicitud,SolicitudInsumosID from SolicitudInsumos) si on si.SolicitudInsumosID=i.SolicitudInsumosID
 end
 --Este se ejecuta cuando el estado del voucher se actualiza a pagado,
 --para efectuar los respectivos registros de pagos de insumos, pagos de cosecha

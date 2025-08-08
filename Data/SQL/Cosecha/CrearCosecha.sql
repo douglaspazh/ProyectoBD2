@@ -1,7 +1,7 @@
 create or alter procedure spCrearCosecha   
 @LoteID int,  
 @CultivoID int,  
-@FechaInicio date = null, --En caso de que la cosecha sea mas antigua que la fecha actual, se especifica
+@FechaInicio date = '', --En caso de que la cosecha sea mas antigua que la fecha actual, se especifica
 @CantidadCosechas int 
 as   
 	begin try    
@@ -11,7 +11,7 @@ as
 		if not exists(select CultivoID from Cultivo where CultivoID = @CultivoID)     
 		THROW 50051, 'No existe el cultivo solicitado', 1;  
 		
-		if @FechaInicio is not null
+		if @FechaInicio != ''
 			EXEC spValidarFecha @FechaInicio;
 	
 		if @CantidadCosechas = 0     

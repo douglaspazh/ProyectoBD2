@@ -17,7 +17,7 @@ as
 			
 			insert into Finca (FincaID, ProductorID,Nombre,MunicipioID, ExtencionTotal) 
 			values (@ID, @ProductorID,@Nombre,@MunicipioID,@ExtencionTotal)
-			SELECT '10000' as Estado, 'Se creo correctamente la finca' AS Mensaje;
+			SELECT 10000 as Estado, 'Se creo correctamente la finca' AS Mensaje;
 		commit transaction 
 	end try
 	begin catch	

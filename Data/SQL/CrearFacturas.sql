@@ -20,17 +20,17 @@ select * from factura
 create or alter procedure spGenerarFactura
 @ClienteID int,
 @ProductosTable ProductoFactura readonly,
-@Descripcion varchar(151) =  null,
-@Impuesto varchar(20) = null,--decimal(10,2)
-@Descuento varchar(20) = null--decimal(10,2)
+@Descripcion varchar(151) =  '',
+@Impuesto varchar(20) = '',--decimal(10,2)
+@Descuento varchar(20) = ''--decimal(10,2)
 as
 	begin try
 		exec spValidarCliente @ClienteID
-		if @Descripcion is not null
+		if @Descripcion != ''
 			exec spValidarCampoVarchar 'Descripcion', @Descripcion, 0, 150;
-		if @Impuesto is not null
+		if @Impuesto != ''
 			exec spValidarDecimal 'Impuesto', @Impuesto;
-		if @Descuento is not null
+		if @Descuento != ''
 			exec spValidarDecimal 'Descuento', @Descuento;
 			
 		BEGIN TRANSACTION
@@ -74,7 +74,7 @@ create or alter procedure spAgregarProductoFactura
 @BodegaID varchar(2),--a
 @Precio varchar(20),--decimal(10,2)
 @Cantidad int,--a
-@Observaciones varchar(151) = null--a
+@Observaciones varchar(151) = ''--a
 as
 	begin try
 		if (select COUNT(FacturaID) from Factura where FacturaID = @FacturaID) != 1
@@ -89,7 +89,7 @@ as
 		if(select Cantidad from vStockActual where ProductoID = @ProductoID and @BodegaID=BodegaID)<@Cantidad
 			THROW 50052, 'No existe esta cantidad de producto', 1;
 		
-		if @Observaciones is not null
+		if @Observaciones != ''
 			exec spValidarCampoVarchar 'Observaciones', @Observaciones, 0, 150;
 			
 		BEGIN TRANSACTION
