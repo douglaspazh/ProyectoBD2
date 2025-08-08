@@ -56,5 +56,10 @@ namespace ProyectoBD2.Views.Forms
         {
             OpenChildForm(new CultivosView());
         }
+
+        private void btnProveedores_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new ProveedoresView());
+        }
     }
 }
