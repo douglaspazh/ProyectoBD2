@@ -1,10 +1,10 @@
 create or alter procedure spCrearCategoria
 @Nombre varchar(51),
-@Observaciones varchar(151) = null
+@Observaciones varchar(151) = ''
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre Categoria', @Nombre, 0, 50;
-		if @Observaciones is not null
+		if @Observaciones != ''
 			exec spValidarCampoVarchar 'Observaciones', @Observaciones, 0, 150;
 
 		BEGIN TRANSACTION

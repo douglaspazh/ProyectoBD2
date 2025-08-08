@@ -1,8 +1,8 @@
 create or alter procedure spCrearLote
 @FincaID int,
 @Extencion varchar(20),--decimal(10,2)
-@TipoSuelo varchar(51) = null,
-@TipoDeRiego varchar(51) = null
+@TipoSuelo varchar(51) = '',
+@TipoDeRiego varchar(51) = ''
 as
 	begin try
 		--Validaciones
@@ -41,7 +41,7 @@ as
 			
 			insert into Lote (LoteID, FincaID,Extencion,TipoSuelo,TipoDeRiego) 
 			values (@ID, @FincaID,@ext,@TipoSuelo,@TipoDeRiego)
-			SELECT '10000' as Estado, 'Se creo correctamente el lote' AS Mensaje;
+			SELECT 10000 as Estado, 'Se creo correctamente el lote' AS Mensaje;
 		commit transaction 
 	end try
 	begin catch	

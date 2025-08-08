@@ -7,7 +7,7 @@ create or alter procedure spCrearProveedor
 @Correo varchar(51),
 @PeriodoDePagoDias int,--decimal(10,2)
 @TasaInteres varchar(20),
-@RTN varchar(15) = null
+@RTN varchar(15) = ''
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
@@ -20,7 +20,7 @@ as
 		exec spValidarCampoInt @PeriodoDePagoDias,'Periodo de pago';
 		exec spValidarDecimal 'Tasa de interes',@TasaInteres;
 		
-		if @RTN != null
+		if @RTN != ''
 			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from proveedor where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
@@ -29,7 +29,7 @@ as
 			select @ID = ISNULL(MAX(ProveedorID), 0) + 1 from proveedor
 			insert into Proveedor (ProveedorID,Nombre,Apellido,Direccion,Telefono,Correo,EstadoID,Documento, RTN,PeriodoDePagoDias,TasaInteres)
 			values (@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,1001,@Documento,@RTN,@PeriodoDePagoDias,@TasaInteres)
-			SELECT '10000' as Estado, 'Se agrego correctamente el proveedor' AS Mensaje;
+			SELECT 10000 as Estado, 'Se agrego correctamente el proveedor' AS Mensaje;
 		COMMIT TRANSACTION
 		
 	end try
