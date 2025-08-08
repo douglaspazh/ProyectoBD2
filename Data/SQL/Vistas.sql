@@ -77,12 +77,71 @@ as
 	select cb.CuentaID,cp.ProductorID,cb.NumeroCuenta from CuentaBancaria as cb
 	inner join CuentaProductor as cp on cb.CuentaID=cp.CuentaID
 
-create
-
-create or alter view vCompras
+create or alter procedure spGetCompraDetalleByCompra
+@CompraID int,
+@PageNumber int,
+@PageSize int 
 as
-select ProveedorID,CompraID,dbo.ObtenerNombreProveedor(ProveedorID) as NombreProveedor, dbo.ConvertirPorcentual(Impuesto) as Impuesto, 
-	dbo.ConvertirPorcentual(Descuento) as Descuento,Fecha,dbo.ObtenerNombreEstado(EstadoID) as Estado from compra
+	select * into #CompraDetalle from CompraDetalle where CompraID = @CompraID
+
+	select 
+	c.CompraID,
+	p.Nombre as NombreProducto, 
+	CONCAT(cd.Cantidad,' ', p.ContenidoPorUnidad) as Cantidad, 
+	cd.Precio as SubTotal, 
+	dbo.ConvertirPorcentual(c.Descuento) as Descuento, 
+	dbo.ConvertirPorcentual(c.Impuesto) as Impuesto, 
+	dbo.fnCalcTotal(cd.Precio, c.Descuento,c.Impuesto) as Total,
+	c.Fecha
+	from #CompraDetalle cd
+	inner join Compra c on c.CompraID = cd.CompraID
+	inner join Producto p on p.ProductoID = cd.ProductoID
+	order by c.Fecha 
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+    FETCH NEXT @PageSize ROWS ONLY;
+go
+
+create or alter procedure spGetCuentasProductor
+@ProductorID int,
+@PageNumber int,
+@PageSize int 
+as
+	select * into #Productor from Productor where ProductorID = @ProductorID
+
+	select 
+		cup.NumeroCuenta,
+		b.Nombre as Banco
+	from vCuentasProductor cup
+	inner join #Productor p on cup.ProductorID = p.ProductorID
+	inner join CuentaBancaria cb on cup.CuentaID = cb.CuentaID
+	inner join Banco b on cb.BancoID = b.BancoID
+	order by b.BancoID
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
+go
+
+
+go
+
+create or alter procedure spGetCuentasProveedor
+@ProveedorID int,
+@PageNumber int,
+@PageSize int 
+as
+	select * into #Proveedor from Proveedor where ProveedorID = @ProveedorID
+
+	select 
+		cup.NumeroCuenta,
+		b.Nombre as Banco
+	from vCuentasProductor cup
+	inner join #Proveedor p on cup.ProductorID = p.ProveedorID
+	inner join CuentaBancaria cb on cup.CuentaID = cb.CuentaID
+	inner join Banco b on cb.BancoID = b.BancoID
+	order by b.BancoID
+	OFFSET (@PageNumber - 1) * @PageSize ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
+go
+
 --Vistas creadas
 select * from vSaldoPendienteCosecha
 select * from vSaldoPendienteInsumos
@@ -94,5 +153,9 @@ select * from vSaldoPendienteCompra
 select * from vTotalPagarVoucherProductor
 select * from vCuentasProveedor
 select * from vCuentasProductor
+
+exec spGetCuentasProductor 1,1,10
+exec spGetCuentasProveedor 1,1,10
+exec spGetCompraDetalleByCompra 1, 1, 12
 
 
