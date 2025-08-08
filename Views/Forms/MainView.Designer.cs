@@ -121,6 +121,7 @@
             btnVentas.TabIndex = 15;
             btnVentas.Text = "Ventas";
             btnVentas.UseVisualStyleBackColor = true;
+            btnVentas.Click += btnVentas_Click;
             // 
             // btnProveedores
             // 
