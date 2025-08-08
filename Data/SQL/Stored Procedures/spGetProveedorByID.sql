@@ -1,0 +1,6 @@
+CREATE OR ALTER PROCEDURE spGetProveedorByID
+    @ID INT
+AS
+BEGIN
+    SELECT * FROM Proveedor WHERE ProveedorID = @ID
+END
