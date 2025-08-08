@@ -50,5 +50,14 @@ namespace ProyectoBD2.Views.Forms
             btnAnterior.Enabled = _actualPage > 1;
         }
 
+        private void dgvDatos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void cmbProductor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

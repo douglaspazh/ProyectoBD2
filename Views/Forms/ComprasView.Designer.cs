@@ -31,8 +31,12 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             tbpDetalleProductor = new TabPage();
+            button1 = new Button();
+            txtDescuento = new TextBox();
             dvProductosCompra = new DataGridView();
             groupBox1 = new GroupBox();
+            txtPrecio = new TextBox();
+            label2 = new Label();
             txtCantidad = new TextBox();
             cmbBodega = new ComboBox();
             label5 = new Label();
@@ -47,12 +51,7 @@
             label4 = new Label();
             lblNombre = new Label();
             tabControl = new TabControl();
-            txtPrecio = new TextBox();
-            label2 = new Label();
-            txtDescuento = new TextBox();
-            button1 = new Button();
             tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
             lblRecordsPerPage = new Label();
             cmbRecordsPerPage = new ComboBox();
             label6 = new Label();
@@ -65,6 +64,7 @@
             btnBuscar = new Button();
             dgvProductores = new DataGridView();
             btnAgregar = new Button();
+            tabPage2 = new TabPage();
             tbpDetalleProductor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dvProductosCompra).BeginInit();
             groupBox1.SuspendLayout();
@@ -93,6 +93,27 @@
             tbpDetalleProductor.TabIndex = 1;
             tbpDetalleProductor.Text = "Generar Compra";
             tbpDetalleProductor.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Font = new Font("Segoe UI", 9.75F);
+            button1.Location = new Point(668, 145);
+            button1.Margin = new Padding(3, 4, 3, 4);
+            button1.Name = "button1";
+            button1.Size = new Size(167, 40);
+            button1.TabIndex = 42;
+            button1.Text = "Eliminar Producto";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // txtDescuento
+            // 
+            txtDescuento.Font = new Font("Segoe UI", 9.75F);
+            txtDescuento.Location = new Point(473, 70);
+            txtDescuento.Margin = new Padding(3, 4, 3, 4);
+            txtDescuento.MaxLength = 25;
+            txtDescuento.Name = "txtDescuento";
+            txtDescuento.Size = new Size(205, 29);
+            txtDescuento.TabIndex = 41;
             // 
             // dvProductosCompra
             // 
@@ -144,6 +165,26 @@
             groupBox1.TabIndex = 38;
             groupBox1.TabStop = false;
             groupBox1.Text = "Agrega Producto";
+            // 
+            // txtPrecio
+            // 
+            txtPrecio.Font = new Font("Segoe UI", 9.75F);
+            txtPrecio.Location = new Point(30, 223);
+            txtPrecio.Margin = new Padding(3, 4, 3, 4);
+            txtPrecio.MaxLength = 8;
+            txtPrecio.Name = "txtPrecio";
+            txtPrecio.Size = new Size(175, 29);
+            txtPrecio.TabIndex = 39;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9.75F);
+            label2.Location = new Point(30, 196);
+            label2.Name = "label2";
+            label2.Size = new Size(61, 23);
+            label2.TabIndex = 38;
+            label2.Text = "Precio:";
             // 
             // txtCantidad
             // 
@@ -294,47 +335,6 @@
             tabControl.Size = new Size(949, 738);
             tabControl.TabIndex = 10;
             // 
-            // txtPrecio
-            // 
-            txtPrecio.Font = new Font("Segoe UI", 9.75F);
-            txtPrecio.Location = new Point(30, 223);
-            txtPrecio.Margin = new Padding(3, 4, 3, 4);
-            txtPrecio.MaxLength = 8;
-            txtPrecio.Name = "txtPrecio";
-            txtPrecio.Size = new Size(175, 29);
-            txtPrecio.TabIndex = 39;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9.75F);
-            label2.Location = new Point(30, 196);
-            label2.Name = "label2";
-            label2.Size = new Size(61, 23);
-            label2.TabIndex = 38;
-            label2.Text = "Precio:";
-            // 
-            // txtDescuento
-            // 
-            txtDescuento.Font = new Font("Segoe UI", 9.75F);
-            txtDescuento.Location = new Point(473, 70);
-            txtDescuento.Margin = new Padding(3, 4, 3, 4);
-            txtDescuento.MaxLength = 25;
-            txtDescuento.Name = "txtDescuento";
-            txtDescuento.Size = new Size(205, 29);
-            txtDescuento.TabIndex = 41;
-            // 
-            // button1
-            // 
-            button1.Font = new Font("Segoe UI", 9.75F);
-            button1.Location = new Point(668, 145);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(167, 40);
-            button1.TabIndex = 42;
-            button1.Text = "Eliminar Producto";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // tabPage1
             // 
             tabPage1.Controls.Add(lblRecordsPerPage);
@@ -356,16 +356,6 @@
             tabPage1.TabIndex = 2;
             tabPage1.Text = "Compras registradas";
             tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            tabPage2.Location = new Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(941, 705);
-            tabPage2.TabIndex = 3;
-            tabPage2.Text = "Detalles de la compra";
-            tabPage2.UseVisualStyleBackColor = true;
             // 
             // lblRecordsPerPage
             // 
@@ -524,6 +514,16 @@
             btnAgregar.TabIndex = 16;
             btnAgregar.Text = "Crear compra";
             btnAgregar.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Location = new Point(4, 29);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(941, 705);
+            tabPage2.TabIndex = 3;
+            tabPage2.Text = "Detalles de la compra";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // ComprasView
             // 
