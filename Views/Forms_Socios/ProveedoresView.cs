@@ -56,7 +56,7 @@ namespace ProyectoBD2.Views.Forms
 
         public void CargarEstados()
         {
-            var estados = utils.ExecuteViewDataTable("vGetProveedoresEstados");
+            var estados = utils.ExecuteViewDataTable("vGetProductorEstados");
 
             cmbEstado.DataSource ??= estados.AsEnumerable().Select(row => new
             {
@@ -95,13 +95,6 @@ namespace ProyectoBD2.Views.Forms
             tabControl1.TabPages.Add(tbpDetalleProveedores);
             tabControl1.SelectedTab = tbpDetalleProveedores;
             tbpDetalleProveedores.Text = "Nuevo Productor";
-        }
-
-
-
-        private void tabPage2_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using ProyectoBD2.Data;
 using System.Data;
+using System.Diagnostics;
 
 namespace ProyectoBD2.Views.Forms
 {
@@ -21,6 +22,7 @@ namespace ProyectoBD2.Views.Forms
 
             SetListBindingSource();
             SetComboBoxData();
+            SetMunicipiosComboBox( 0 );
 
             tabControl.TabPages.Remove( tbpDetalle );
             tabControl.TabPages.Remove( tbpDetalleLote );
@@ -207,7 +209,10 @@ namespace ProyectoBD2.Views.Forms
             if ( cmbDepartamento.SelectedValue == null )
                 return;
 
-            SetMunicipiosComboBox( Convert.ToInt32( cmbDepartamento.SelectedValue ) );
+            if ( cmbDepartamento.SelectedValue is int departamentoID && departamentoID > 0 )
+            {
+                SetMunicipiosComboBox( departamentoID );
+            }
         }
 
         private void btnAnterior_Click( object sender, EventArgs e )
@@ -243,9 +248,9 @@ namespace ProyectoBD2.Views.Forms
         {
             Dictionary<string, dynamic> parameters = new()
             {
-                { "@ProductorID", cmbProductor.SelectedValue },
+                { "@ProductorID", cmbProductor.SelectedValue! },
                 { "@Nombre", txtNombre.Text.Trim() },
-                { "@MunicipioID", cmbMunicipio.SelectedValue },
+                { "@MunicipioID", cmbMunicipio.SelectedValue! },
                 { "@Ubicacion", txtUbicacion.Text.Trim() },
                 { "@ExtencionTotal", Convert.ToDecimal( txtExtensionTotal.Text ) }
             };

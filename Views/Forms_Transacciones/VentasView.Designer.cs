@@ -555,7 +555,6 @@
             label11.Size = new Size(177, 23);
             label11.TabIndex = 45;
             label11.Text = "Seleccionar productor";
-            label11.Click += this.label11_Click;
             // 
             // tabPage3
             // 

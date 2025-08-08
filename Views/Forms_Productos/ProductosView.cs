@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace ProyectoBD2.Views.Forms
 {
-    public partial class LotesView : Form
+    public partial class ProductosView : Form
     {
-        public LotesView()
+        public ProductosView()
         {
             InitializeComponent();
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

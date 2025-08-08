@@ -1,6 +1,6 @@
-﻿namespace ProyectoBD2.Views.Forms
+﻿namespace ProyectoBD2.Views.Forms_Transacciones
 {
-    partial class InventarioView
+    partial class FacturasView
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size( 800, 450 );
-            this.Text = "InventarioView";
+            this.Text = "Facturas";
         }
 
         #endregion

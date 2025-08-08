@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ProyectoBD2.Views.Forms
+namespace ProyectoBD2.Views.Forms_Transacciones
 {
-    public partial class InventarioView : Form
+    public partial class FacturasView : Form
     {
-        public InventarioView()
+        public FacturasView()
         {
             InitializeComponent();
         }

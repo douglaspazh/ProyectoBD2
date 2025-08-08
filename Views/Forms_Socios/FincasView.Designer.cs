@@ -79,6 +79,22 @@
             txtBuscarLote = new TextBox();
             btnBuscarLote = new Button();
             tbpDetalleLote = new TabPage();
+            label4 = new Label();
+            comboBox1 = new ComboBox();
+            label5 = new Label();
+            btnSiguiente2 = new Button();
+            btnAnterior2 = new Button();
+            label7 = new Label();
+            lblLotesRegistros = new Label();
+            label8 = new Label();
+            label10 = new Label();
+            label16 = new Label();
+            label17 = new Label();
+            label18 = new Label();
+            cmbFincas = new ComboBox();
+            cmbSuelos = new ComboBox();
+            comboBox4 = new ComboBox();
+            txtExtencion = new TextBox();
             panelTop.SuspendLayout();
             tabControl.SuspendLayout();
             tbpLista.SuspendLayout();
@@ -86,6 +102,7 @@
             tbpDetalle.SuspendLayout();
             tbpListaLotes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvLotes).BeginInit();
+            tbpDetalleLote.SuspendLayout();
             SuspendLayout();
             // 
             // panelTop
@@ -577,6 +594,13 @@
             // 
             // tbpListaLotes
             // 
+            tbpListaLotes.Controls.Add( label4 );
+            tbpListaLotes.Controls.Add( comboBox1 );
+            tbpListaLotes.Controls.Add( label5 );
+            tbpListaLotes.Controls.Add( btnSiguiente2 );
+            tbpListaLotes.Controls.Add( btnAnterior2 );
+            tbpListaLotes.Controls.Add( label7 );
+            tbpListaLotes.Controls.Add( lblLotesRegistros );
             tbpListaLotes.Controls.Add( btnEliminarLote );
             tbpListaLotes.Controls.Add( btnEditarLote );
             tbpListaLotes.Controls.Add( btnAgregarLote );
@@ -654,7 +678,7 @@
             dgvLotes.RowHeadersWidth = 25;
             dgvLotes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvLotes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvLotes.Size = new Size( 702, 419 );
+            dgvLotes.Size = new Size( 702, 393 );
             dgvLotes.TabIndex = 19;
             // 
             // label3
@@ -691,6 +715,15 @@
             // 
             // tbpDetalleLote
             // 
+            tbpDetalleLote.Controls.Add( txtExtencion );
+            tbpDetalleLote.Controls.Add( comboBox4 );
+            tbpDetalleLote.Controls.Add( cmbSuelos );
+            tbpDetalleLote.Controls.Add( cmbFincas );
+            tbpDetalleLote.Controls.Add( label18 );
+            tbpDetalleLote.Controls.Add( label17 );
+            tbpDetalleLote.Controls.Add( label16 );
+            tbpDetalleLote.Controls.Add( label10 );
+            tbpDetalleLote.Controls.Add( label8 );
             tbpDetalleLote.Location = new Point( 4, 24 );
             tbpDetalleLote.Name = "tbpDetalleLote";
             tbpDetalleLote.Padding = new Padding( 3 );
@@ -698,6 +731,158 @@
             tbpDetalleLote.TabIndex = 3;
             tbpDetalleLote.Text = "Detalle de Lote";
             tbpDetalleLote.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label4.AutoSize = true;
+            label4.Location = new Point( 274, 472 );
+            label4.Name = "label4";
+            label4.Size = new Size( 114, 15 );
+            label4.TabIndex = 29;
+            label4.Text = "({}) Lotes por página";
+            // 
+            // comboBox1
+            // 
+            comboBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange( new object[] { "Auto", "10", "20", "30", "40", "50", "100" } );
+            comboBox1.Location = new Point( 206, 467 );
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size( 65, 25 );
+            comboBox1.TabIndex = 28;
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label5.AutoSize = true;
+            label5.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label5.Location = new Point( 149, 470 );
+            label5.Name = "label5";
+            label5.Size = new Size( 55, 17 );
+            label5.TabIndex = 27;
+            label5.Text = "Mostrar";
+            // 
+            // btnSiguiente2
+            // 
+            btnSiguiente2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSiguiente2.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnSiguiente2.Location = new Point( 618, 467 );
+            btnSiguiente2.Name = "btnSiguiente2";
+            btnSiguiente2.Size = new Size( 95, 30 );
+            btnSiguiente2.TabIndex = 26;
+            btnSiguiente2.Text = "Siguiente";
+            btnSiguiente2.UseVisualStyleBackColor = true;
+            // 
+            // btnAnterior2
+            // 
+            btnAnterior2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAnterior2.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnAnterior2.Location = new Point( 517, 467 );
+            btnAnterior2.Name = "btnAnterior2";
+            btnAnterior2.Size = new Size( 95, 30 );
+            btnAnterior2.TabIndex = 25;
+            btnAnterior2.Text = "Anterior";
+            btnAnterior2.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            label7.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            label7.AutoSize = true;
+            label7.Location = new Point( 430, 472 );
+            label7.Name = "label7";
+            label7.Size = new Size( 81, 15 );
+            label7.TabIndex = 24;
+            label7.Text = "Página {} de {}";
+            // 
+            // lblLotesRegistros
+            // 
+            lblLotesRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblLotesRegistros.AutoSize = true;
+            lblLotesRegistros.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            lblLotesRegistros.Location = new Point( 9, 470 );
+            lblLotesRegistros.Name = "lblLotesRegistros";
+            lblLotesRegistros.Size = new Size( 83, 17 );
+            lblLotesRegistros.TabIndex = 23;
+            lblLotesRegistros.Text = "Total: {} lotes";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point( 44, 42 );
+            label8.Name = "label8";
+            label8.Size = new Size( 38, 15 );
+            label8.TabIndex = 0;
+            label8.Text = "Finca:";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point( 333, 42 );
+            label10.Name = "label10";
+            label10.Size = new Size( 82, 15 );
+            label10.TabIndex = 1;
+            label10.Text = "Tipo de Suelo:";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point( 44, 128 );
+            label16.Name = "label16";
+            label16.Size = new Size( 60, 15 );
+            label16.TabIndex = 2;
+            label16.Text = "Extensión:";
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point( 333, 128 );
+            label17.Name = "label17";
+            label17.Size = new Size( 80, 15 );
+            label17.TabIndex = 3;
+            label17.Text = "Tipo de Riego";
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new Point( 357, 224 );
+            label18.Name = "label18";
+            label18.Size = new Size( 44, 15 );
+            label18.TabIndex = 4;
+            label18.Text = "label18";
+            // 
+            // cmbFincas
+            // 
+            cmbFincas.FormattingEnabled = true;
+            cmbFincas.Location = new Point( 44, 60 );
+            cmbFincas.Name = "cmbFincas";
+            cmbFincas.Size = new Size( 121, 23 );
+            cmbFincas.TabIndex = 5;
+            // 
+            // cmbSuelos
+            // 
+            cmbSuelos.FormattingEnabled = true;
+            cmbSuelos.Location = new Point( 333, 60 );
+            cmbSuelos.Name = "cmbSuelos";
+            cmbSuelos.Size = new Size( 121, 23 );
+            cmbSuelos.TabIndex = 6;
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point( 333, 146 );
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size( 121, 23 );
+            comboBox4.TabIndex = 7;
+            // 
+            // txtExtencion
+            // 
+            txtExtencion.Location = new Point( 44, 146 );
+            txtExtencion.Name = "txtExtencion";
+            txtExtencion.Size = new Size( 100, 23 );
+            txtExtencion.TabIndex = 8;
             // 
             // FincasView
             // 
@@ -720,6 +905,8 @@
             tbpListaLotes.ResumeLayout( false );
             tbpListaLotes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvLotes).EndInit();
+            tbpDetalleLote.ResumeLayout( false );
+            tbpDetalleLote.PerformLayout();
             ResumeLayout( false );
         }
 
@@ -774,5 +961,21 @@
         private Button btnAnterior;
         private Label lblPaginas;
         private Label lblTotalRegistros;
+        private Label label4;
+        private ComboBox comboBox1;
+        private Label label5;
+        private Button btnSiguiente2;
+        private Button btnAnterior2;
+        private Label label7;
+        private Label lblLotesRegistros;
+        private ComboBox comboBox4;
+        private ComboBox cmbSuelos;
+        private ComboBox cmbFincas;
+        private Label label18;
+        private Label label17;
+        private Label label16;
+        private Label label10;
+        private Label label8;
+        private TextBox txtExtencion;
     }
 }
