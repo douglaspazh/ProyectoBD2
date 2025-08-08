@@ -28,15 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             panelTop = new Panel();
             btnCerrar = new FontAwesome.Sharp.IconButton();
             iconButton1 = new FontAwesome.Sharp.IconButton();
             label1 = new Label();
             tabControl = new TabControl();
             tbpLista = new TabPage();
-            button1 = new Button();
+            lblRecordsPerPage = new Label();
+            cmbRecordsPerPage = new ComboBox();
+            label6 = new Label();
+            btnSiguiente = new Button();
+            btnAnterior = new Button();
+            lblPaginas = new Label();
+            lblTotalRegistros = new Label();
+            btnNuevoLote = new Button();
             btnEliminar = new Button();
             btnEditar = new Button();
             btnAgregar = new Button();
@@ -64,7 +71,6 @@
             btnGuardar = new Button();
             label14 = new Label();
             tbpListaLotes = new TabPage();
-            tbpDetalleLote = new TabPage();
             btnEliminarLote = new Button();
             btnEditarLote = new Button();
             btnAgregarLote = new Button();
@@ -72,6 +78,7 @@
             label3 = new Label();
             txtBuscarLote = new TextBox();
             btnBuscarLote = new Button();
+            tbpDetalleLote = new TabPage();
             panelTop.SuspendLayout();
             tabControl.SuspendLayout();
             tbpLista.SuspendLayout();
@@ -106,6 +113,7 @@
             btnCerrar.Size = new Size( 36, 36 );
             btnCerrar.TabIndex = 7;
             btnCerrar.UseVisualStyleBackColor = true;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // iconButton1
             // 
@@ -149,7 +157,14 @@
             // 
             // tbpLista
             // 
-            tbpLista.Controls.Add( button1 );
+            tbpLista.Controls.Add( lblRecordsPerPage );
+            tbpLista.Controls.Add( cmbRecordsPerPage );
+            tbpLista.Controls.Add( label6 );
+            tbpLista.Controls.Add( btnSiguiente );
+            tbpLista.Controls.Add( btnAnterior );
+            tbpLista.Controls.Add( lblPaginas );
+            tbpLista.Controls.Add( lblTotalRegistros );
+            tbpLista.Controls.Add( btnNuevoLote );
             tbpLista.Controls.Add( btnEliminar );
             tbpLista.Controls.Add( btnEditar );
             tbpLista.Controls.Add( btnAgregar );
@@ -165,38 +180,119 @@
             tbpLista.Text = "Lista de Fincas";
             tbpLista.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // lblRecordsPerPage
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            button1.Location = new Point( 716, 11 );
-            button1.Name = "button1";
-            button1.Size = new Size( 100, 30 );
-            button1.TabIndex = 15;
-            button1.Text = "Nuevo Lote";
-            button1.UseVisualStyleBackColor = true;
+            lblRecordsPerPage.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblRecordsPerPage.AutoSize = true;
+            lblRecordsPerPage.Location = new Point( 273, 468 );
+            lblRecordsPerPage.Name = "lblRecordsPerPage";
+            lblRecordsPerPage.Size = new Size( 119, 15 );
+            lblRecordsPerPage.TabIndex = 22;
+            lblRecordsPerPage.Text = "({}) Fincas por página";
+            // 
+            // cmbRecordsPerPage
+            // 
+            cmbRecordsPerPage.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            cmbRecordsPerPage.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbRecordsPerPage.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            cmbRecordsPerPage.FormattingEnabled = true;
+            cmbRecordsPerPage.Items.AddRange( new object[] { "Auto", "10", "20", "30", "40", "50", "100" } );
+            cmbRecordsPerPage.Location = new Point( 205, 463 );
+            cmbRecordsPerPage.Name = "cmbRecordsPerPage";
+            cmbRecordsPerPage.Size = new Size( 65, 25 );
+            cmbRecordsPerPage.TabIndex = 21;
+            // 
+            // label6
+            // 
+            label6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label6.AutoSize = true;
+            label6.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label6.Location = new Point( 148, 466 );
+            label6.Name = "label6";
+            label6.Size = new Size( 55, 17 );
+            label6.TabIndex = 20;
+            label6.Text = "Mostrar";
+            // 
+            // btnSiguiente
+            // 
+            btnSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSiguiente.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnSiguiente.Location = new Point( 617, 463 );
+            btnSiguiente.Name = "btnSiguiente";
+            btnSiguiente.Size = new Size( 95, 30 );
+            btnSiguiente.TabIndex = 19;
+            btnSiguiente.Text = "Siguiente";
+            btnSiguiente.UseVisualStyleBackColor = true;
+            btnSiguiente.Click += btnSiguiente_Click;
+            // 
+            // btnAnterior
+            // 
+            btnAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAnterior.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnAnterior.Location = new Point( 516, 463 );
+            btnAnterior.Name = "btnAnterior";
+            btnAnterior.Size = new Size( 95, 30 );
+            btnAnterior.TabIndex = 18;
+            btnAnterior.Text = "Anterior";
+            btnAnterior.UseVisualStyleBackColor = true;
+            btnAnterior.Click += btnAnterior_Click;
+            // 
+            // lblPaginas
+            // 
+            lblPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblPaginas.AutoSize = true;
+            lblPaginas.Location = new Point( 429, 468 );
+            lblPaginas.Name = "lblPaginas";
+            lblPaginas.Size = new Size( 81, 15 );
+            lblPaginas.TabIndex = 17;
+            lblPaginas.Text = "Página {} de {}";
+            // 
+            // lblTotalRegistros
+            // 
+            lblTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblTotalRegistros.AutoSize = true;
+            lblTotalRegistros.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            lblTotalRegistros.Location = new Point( 8, 466 );
+            lblTotalRegistros.Name = "lblTotalRegistros";
+            lblTotalRegistros.Size = new Size( 88, 17 );
+            lblTotalRegistros.TabIndex = 16;
+            lblTotalRegistros.Text = "Total: {} fincas";
+            // 
+            // btnNuevoLote
+            // 
+            btnNuevoLote.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNuevoLote.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnNuevoLote.Location = new Point( 716, 11 );
+            btnNuevoLote.Name = "btnNuevoLote";
+            btnNuevoLote.Size = new Size( 100, 32 );
+            btnNuevoLote.TabIndex = 15;
+            btnNuevoLote.Text = "Nuevo Lote";
+            btnNuevoLote.UseVisualStyleBackColor = true;
+            btnNuevoLote.Click += btnNuevoLote_Click;
             // 
             // btnEliminar
             // 
             btnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEliminar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEliminar.Location = new Point( 716, 147 );
+            btnEliminar.Location = new Point( 716, 161 );
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size( 100, 30 );
+            btnEliminar.Size = new Size( 100, 32 );
             btnEliminar.TabIndex = 14;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // btnEditar
             // 
             btnEditar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEditar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEditar.Location = new Point( 716, 100 );
+            btnEditar.Location = new Point( 716, 102 );
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size( 100, 30 );
+            btnEditar.Size = new Size( 100, 32 );
             btnEditar.TabIndex = 13;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
             // 
             // btnAgregar
             // 
@@ -204,10 +300,11 @@
             btnAgregar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             btnAgregar.Location = new Point( 716, 64 );
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size( 100, 30 );
+            btnAgregar.Size = new Size( 100, 32 );
             btnAgregar.TabIndex = 12;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // dgvFincas
             // 
@@ -220,14 +317,14 @@
             dgvFincas.BorderStyle = BorderStyle.None;
             dgvFincas.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvFincas.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font( "Segoe UI", 9F );
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvFincas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font( "Segoe UI", 9F );
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvFincas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvFincas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvFincas.EnableHeadersVisualStyles = false;
             dgvFincas.Location = new Point( 8, 64 );
@@ -238,7 +335,7 @@
             dgvFincas.RowHeadersWidth = 25;
             dgvFincas.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvFincas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvFincas.Size = new Size( 702, 419 );
+            dgvFincas.Size = new Size( 702, 393 );
             dgvFincas.TabIndex = 11;
             // 
             // label2
@@ -260,6 +357,7 @@
             txtBuscar.PlaceholderText = "Ingrese un nombre";
             txtBuscar.Size = new Size( 361, 25 );
             txtBuscar.TabIndex = 9;
+            txtBuscar.KeyDown += txtBuscar_KeyDown;
             // 
             // btnBuscar
             // 
@@ -272,6 +370,7 @@
             btnBuscar.TabIndex = 10;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
             // 
             // tbpDetalle
             // 
@@ -365,6 +464,7 @@
             cmbDepartamento.Name = "cmbDepartamento";
             cmbDepartamento.Size = new Size( 154, 25 );
             cmbDepartamento.TabIndex = 27;
+            cmbDepartamento.SelectedIndexChanged += cmbDepartamento_SelectedIndexChanged;
             // 
             // lblFincaID
             // 
@@ -442,6 +542,7 @@
             btnCancelar.TabIndex = 23;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // label13
             // 
@@ -462,6 +563,7 @@
             btnGuardar.TabIndex = 22;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // label14
             // 
@@ -489,16 +591,6 @@
             tbpListaLotes.TabIndex = 2;
             tbpListaLotes.Text = "Lista de Lotes";
             tbpListaLotes.UseVisualStyleBackColor = true;
-            // 
-            // tbpDetalleLote
-            // 
-            tbpDetalleLote.Location = new Point( 4, 24 );
-            tbpDetalleLote.Name = "tbpDetalleLote";
-            tbpDetalleLote.Padding = new Padding( 3 );
-            tbpDetalleLote.Size = new Size( 822, 502 );
-            tbpDetalleLote.TabIndex = 3;
-            tbpDetalleLote.Text = "Detalle de Lote";
-            tbpDetalleLote.UseVisualStyleBackColor = true;
             // 
             // btnEliminarLote
             // 
@@ -544,14 +636,14 @@
             dgvLotes.BorderStyle = BorderStyle.None;
             dgvLotes.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvLotes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font( "Segoe UI", 9F );
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvLotes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font( "Segoe UI", 9F );
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvLotes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvLotes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvLotes.EnableHeadersVisualStyles = false;
             dgvLotes.Location = new Point( 7, 68 );
@@ -596,6 +688,16 @@
             btnBuscarLote.TabIndex = 18;
             btnBuscarLote.Text = "Buscar";
             btnBuscarLote.UseVisualStyleBackColor = true;
+            // 
+            // tbpDetalleLote
+            // 
+            tbpDetalleLote.Location = new Point( 4, 24 );
+            tbpDetalleLote.Name = "tbpDetalleLote";
+            tbpDetalleLote.Padding = new Padding( 3 );
+            tbpDetalleLote.Size = new Size( 822, 502 );
+            tbpDetalleLote.TabIndex = 3;
+            tbpDetalleLote.Text = "Detalle de Lote";
+            tbpDetalleLote.UseVisualStyleBackColor = true;
             // 
             // FincasView
             // 
@@ -655,7 +757,7 @@
         private Label label13;
         private Button btnGuardar;
         private Label label14;
-        private Button button1;
+        private Button btnNuevoLote;
         private TabPage tbpListaLotes;
         private TabPage tbpDetalleLote;
         private Button btnEliminarLote;
@@ -665,5 +767,12 @@
         private Label label3;
         private TextBox txtBuscarLote;
         private Button btnBuscarLote;
+        private Label lblRecordsPerPage;
+        private ComboBox cmbRecordsPerPage;
+        private Label label6;
+        private Button btnSiguiente;
+        private Button btnAnterior;
+        private Label lblPaginas;
+        private Label lblTotalRegistros;
     }
 }

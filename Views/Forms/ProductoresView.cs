@@ -20,6 +20,9 @@ namespace ProyectoBD2.Views.Forms
         {
             InitializeComponent();
 
+            SetListBindingSource( "spGetAllProductores" );
+            CargarEstados();
+
             tabControl.TabPages.Remove( tbpDetalleProductor );
 
             cmbRecordsPerPage.SelectedIndex = 0;
@@ -37,7 +40,7 @@ namespace ProyectoBD2.Views.Forms
 
             _totalRecords = dgvProductores.Rows.Count;
             _totalPages = (int)Math.Ceiling( (double)_totalRecords / _pageSize );
-            DisplayPageRange();
+            DisplayPageInfo();
 
             if ( dgvProductores.Columns.Contains( "ProductorID" ) )
                 dgvProductores.Columns["ProductorID"].Visible = false;
@@ -45,7 +48,7 @@ namespace ProyectoBD2.Views.Forms
                 dgvProductores.Columns["EstadoID"].Visible = false;
         }
 
-        public void DisplayPageRange()
+        public void DisplayPageInfo()
         {
             lblTotalRegistros.Text = $"Total: {_totalRecords} productores";
             lblPaginas.Text = $"Página {_actualPage} de {_totalPages}";
@@ -56,7 +59,7 @@ namespace ProyectoBD2.Views.Forms
 
         public void CargarEstados()
         {
-            var estados = utils.ExecuteSPDataTable( "spGetProductorEstados" );
+            var estados = utils.ExecuteViewDataTable( "vGetProductorEstados" );
 
             cmbEstado.DataSource ??= estados.AsEnumerable().Select( row => new
             {
@@ -68,7 +71,7 @@ namespace ProyectoBD2.Views.Forms
             cmbEstado.ValueMember = "EstadoID";
         }
 
-        public void CleanFields()
+        public void ClearFields()
         {
             txtProductorID.Clear();
             txtNombre.Clear();
@@ -78,12 +81,6 @@ namespace ProyectoBD2.Views.Forms
             txtDocumento.Clear();
             txtRTN.Clear();
             cmbEstado.SelectedIndex = -1;
-        }
-
-        private void ProductoresView_Load( object sender, EventArgs e )
-        {
-            SetListBindingSource( "spGetAllProductores" );
-            CargarEstados();
         }
 
         private void btnBuscar_Click( object sender, EventArgs e )
@@ -107,6 +104,7 @@ namespace ProyectoBD2.Views.Forms
 
         private void btnAgregar_Click( object sender, EventArgs e )
         {
+            isEditing = false;
             lblProductorID.Visible = false;
             txtProductorID.Visible = false;
             btnGuardar.Text = "Guardar";
@@ -119,8 +117,8 @@ namespace ProyectoBD2.Views.Forms
 
         private void btnEditar_Click( object sender, EventArgs e )
         {
-            var selectedProductor = dgvProductores.CurrentRow.DataBoundItem as DataRowView;
-            if ( selectedProductor != null )
+            var selectedRow = dgvProductores.CurrentRow.DataBoundItem as DataRowView;
+            if ( selectedRow != null )
             {
                 isEditing = true;
                 lblProductorID.Visible = true;
@@ -134,13 +132,13 @@ namespace ProyectoBD2.Views.Forms
 
                 Dictionary<string, dynamic> parameters = new()
                 {
-                    { "@ID", Convert.ToInt32( selectedProductor["ProductorID"] ) }
+                    { "@ID", Convert.ToInt32( selectedRow["ProductorID"] ) }
                 };
                 var productorData = utils.ExecuteSPDataTable( "spGetProductorByID", parameters );
 
                 if ( productorData.Rows.Count > 0 ) // Ensure there is at least one row in the DataTable
                 {
-                    var row = productorData.Rows[0]; // Access the first row of the DataTable
+                    DataRow row = productorData.Rows[0]; // Access the first row of the DataTable
                     txtProductorID.Text = row["ProductorID"].ToString();
                     txtNombre.Text = row["Nombre"].ToString() ?? string.Empty;
                     txtApellido.Text = row["Apellido"].ToString() ?? string.Empty;
@@ -155,9 +153,9 @@ namespace ProyectoBD2.Views.Forms
 
         private void btnEliminar_Click( object sender, EventArgs e )
         {
-            var selectedProductor = dgvProductores.CurrentRow?.DataBoundItem as DataRowView;
+            var selectedRow = dgvProductores.CurrentRow?.DataBoundItem as DataRowView;
 
-            if ( selectedProductor != null )
+            if ( selectedRow != null )
             {
                 var result = MessageBox.Show( "Esta seguro de eliminar este productor?", "Advertencia",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning );
@@ -165,7 +163,7 @@ namespace ProyectoBD2.Views.Forms
                 {
                     Dictionary<string, dynamic> parameters = new()
                     {
-                        { "@ID", Convert.ToInt32( selectedProductor["ProductorID"] ) }
+                        { "@ID", Convert.ToInt32( selectedRow["ProductorID"] ) }
                     };
                     utils.ExecuteSPDataTable( "spDeleteProductor", parameters );
                     SetListBindingSource();
@@ -191,15 +189,13 @@ namespace ProyectoBD2.Views.Forms
                 { "@RTN", txtRTN.Text.Trim() },
 
             };
-            if ( isEditing )
-            {
-                productor.Add( "@ID", Convert.ToInt32( txtProductorID.Text.Trim() ) );
-                productor.Add( "@Estado", Convert.ToInt32( cmbEstado.SelectedValue ) );
-            }
 
             var result = new DataTable();
             if ( isEditing )
             {
+                productor.Add( "@ID", Convert.ToInt32( txtProductorID.Text.Trim() ) );
+                productor.Add( "@Estado", Convert.ToInt32( cmbEstado.SelectedValue ) );
+
                 result = utils.ExecuteSPDataTable( "spUpdateProductor", productor );
             }
             else
@@ -214,7 +210,7 @@ namespace ProyectoBD2.Views.Forms
                 tabControl.TabPages.Remove( tbpDetalleProductor );
                 tabControl.TabPages.Add( tbpLista );
                 tabControl.SelectedTab = tbpLista;
-                CleanFields();
+                ClearFields();
             }
 
             MessageBox.Show( result.Rows[0]["Mensaje"].ToString() );
@@ -230,27 +226,27 @@ namespace ProyectoBD2.Views.Forms
             tabControl.TabPages.Remove( tbpDetalleProductor );
             tabControl.TabPages.Add( tbpLista );
             tabControl.SelectedTab = tbpLista;
-            CleanFields();
+            ClearFields();
         }
 
         private void btnAnterior_Click( object sender, EventArgs e )
         {
             Dictionary<string, dynamic> parameters = new()
             {
-                { "@PageNumber", _actualPage - 1 },
+                { "@PageNumber", --_actualPage },
                 { "@PageSize", _pageSize }
             };
-            dgvProductores.DataSource = utils.ExecuteSPDataTable( "spGetAllProductores", parameters );
+            SetListBindingSource( "spGetAllProductores", parameters );
         }
 
         private void btnSiguiente_Click( object sender, EventArgs e )
         {
             Dictionary<string, dynamic> parameters = new()
             {
-                { "@PageNumber", _actualPage + 1 },
+                { "@PageNumber", ++_actualPage },
                 { "@PageSize", _pageSize }
             };
-            dgvProductores.DataSource = utils.ExecuteSPDataTable( "spGetAllProductores", parameters );
+            SetListBindingSource( "spGetAllProductores", parameters );
         }
 
         private void btnCerrar_Click( object sender, EventArgs e )

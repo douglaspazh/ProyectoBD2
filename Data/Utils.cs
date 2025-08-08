@@ -47,5 +47,31 @@ namespace ProyectoBD2.Data
                 throw;
             }
         }
+
+        public DataTable ExecuteViewDataTable( string viewName )
+        {
+            try
+            {
+                // Using a view to execute a command
+                var connectionString = _context.Database.GetConnectionString();
+                using var connection = new SqlConnection( connectionString );
+                using var command = new SqlCommand( $"SELECT * FROM {viewName}", connection )
+                {
+                    CommandType = CommandType.Text
+                };
+                
+                var dataTable = new DataTable();
+                connection.Open();
+                using var reader = command.ExecuteReader();
+                dataTable.Load( reader );
+                connection.Close();
+                return dataTable;
+            }
+            catch ( SqlException ex )
+            {
+                Debug.WriteLine( $"Error executing view {viewName}: {ex.Message}" );
+                throw;
+            }
+        }
     }
 }

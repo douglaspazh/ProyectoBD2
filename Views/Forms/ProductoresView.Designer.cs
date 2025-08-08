@@ -583,7 +583,6 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "ProductoresView";
             Text = "ProductoresForm";
-            Load += ProductoresView_Load;
             ((System.ComponentModel.ISupportInitialize)dgvProductores).EndInit();
             panelTop.ResumeLayout( false );
             panelTop.PerformLayout();

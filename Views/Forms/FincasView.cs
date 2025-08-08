@@ -1,182 +1,287 @@
-﻿using ProyectoBD2.Models;
-using ProyectoBD2.Presenters;
-using ProyectoBD2.Repositories.Implementations;
-using ProyectoBD2.Views.Interfaces;
+﻿using ProyectoBD2.Data;
+using System.Data;
 
 namespace ProyectoBD2.Views.Forms
 {
-    public partial class FincasView : Form, IFincaView
+    public partial class FincasView : Form
     {
         // Fields
-        private readonly FincaPresenter _presenter;
-        private bool isSuccessful;
+        private int _actualPage = 1;
+        private int _pageSize = 25;
+        private int _totalPages = 0;
+        private int _totalRecords = 0;
         private bool isEditing;
-        private string message;
+        private string message = string.Empty;
+        private readonly Utils utils = new();
 
         // Constructor
         public FincasView()
         {
             InitializeComponent();
-            AssociatedAndRaiseEvents();
-            tabControl.TabPages.Remove(tbpDetalle);
 
-            _presenter = new FincaPresenter(this, new FincasRepository());
+            SetListBindingSource();
+            SetComboBoxData();
 
-            // Hide unnecessary columns in the DataGridView
-            if ( dgvFincas.Columns.Contains("FincaID") )
-                dgvFincas.Columns["FincaID"].Visible = false;
-            if ( dgvFincas.Columns.Contains("ProductorID") )
-                dgvFincas.Columns["ProductorID"].Visible = false;
-            if ( dgvFincas.Columns.Contains("Productor") )
-                dgvFincas.Columns["Productor"].Visible = false;
-
-            btnCerrar.Click += ( s, e ) => this.Close();
+            tabControl.TabPages.Remove( tbpDetalle );
+            tabControl.TabPages.Remove( tbpDetalleLote );
         }
 
-        private void AssociatedAndRaiseEvents()
+        public void SetListBindingSource( string spName = "spGetAllFincas", Dictionary<string, dynamic>? parameters = null )
         {
-            btnBuscar.Click += ( s, e ) => SearchEvent?.Invoke(this, EventArgs.Empty);
-            txtBuscar.KeyDown += ( s, e ) =>
+            parameters ??= new()
             {
-                if ( e.KeyCode == Keys.Enter )
-                {
-                    SearchEvent?.Invoke(this, EventArgs.Empty);
-                    e.SuppressKeyPress = true; // Prevents the beep sound
-                }
+                { "@PageNumber", _actualPage },
+                { "@PageSize", _pageSize }
             };
+            dgvFincas.DataSource = utils.ExecuteSPDataTable( spName, parameters );
 
-            btnAgregar.Click += delegate
+            _totalRecords = dgvFincas.Rows.Count;
+            _totalPages = (int)Math.Ceiling( (double)_totalRecords / _pageSize );
+            DisplayPageInfo();
+
+            if ( dgvFincas.Columns.Contains( "FincaID" ) )
+                dgvFincas.Columns["FincaID"].Visible = false;
+            if ( dgvFincas.Columns.Contains( "ProductorID" ) )
+                dgvFincas.Columns["ProductorID"].Visible = false;
+
+        }
+
+        public void SetComboBoxData()
+        {
+            // Load data for Departamentos combo box
+            var departamentos = utils.ExecuteViewDataTable( "vGetDepartamentos" );
+            cmbDepartamento.DataSource = departamentos;
+            cmbDepartamento.DisplayMember = "Nombre";
+            cmbDepartamento.ValueMember = "DepartamentoID";
+
+            // Load data for Productores combo box
+            var productores = utils.ExecuteViewDataTable( "vGetProductores" );
+            cmbProductor.DataSource = productores;
+            cmbProductor.DisplayMember = "NombreCompleto";
+            cmbProductor.ValueMember = "ProductorID";
+        }
+
+        public void SetMunicipiosComboBox( int departamentoID )
+        {
+            // Load municipios based on selected departamento
+            Dictionary<string, dynamic> parameters = new()
             {
-                AddNewEvent?.Invoke(this, EventArgs.Empty);
+                { "@DepartamentoID", departamentoID }
+            };
+            cmbMunicipio.DataSource = utils.ExecuteSPDataTable( "spGetMunicipios", parameters );
+            cmbMunicipio.DisplayMember = "Nombre";
+            cmbMunicipio.ValueMember = "MunicipioID";
+        }
+
+        public void DisplayPageInfo()
+        {
+            lblTotalRegistros.Text = $"Total: {_totalRecords} fincas";
+            lblPaginas.Text = $"Página {_actualPage} de {_totalPages}";
+            lblRecordsPerPage.Text = $"Mostrando {_pageSize} registros por página";
+            btnSiguiente.Enabled = _actualPage < _totalPages;
+            btnAnterior.Enabled = _actualPage > 1;
+        }
+
+        public void ClearFields()
+        {
+            txtFincaID.Clear();
+            txtProductorID.Clear();
+            txtNombre.Clear();
+            cmbProductor.SelectedIndex = -1;
+            cmbDepartamento.SelectedIndex = -1;
+            cmbMunicipio.SelectedIndex = -1;
+            txtUbicacion.Clear();
+            txtExtensionTotal.Clear();
+        }
+
+        private void btnBuscar_Click( object sender, EventArgs e )
+        {
+            bool emptySearch = string.IsNullOrWhiteSpace( txtBuscar.Text.Trim() );
+            if ( !emptySearch )
+            {
+                Dictionary<string, dynamic> parameters = new()
+                {
+                    { "@Value", txtBuscar.Text.Trim() },
+                    { "@PageNumber", _actualPage },
+                    { "@PageSize", _pageSize }
+                };
+                SetListBindingSource( "spGetFincasByValue", parameters );
+            }
+            else
+            {
+                SetListBindingSource();
+            }
+        }
+
+        private void btnNuevoLote_Click( object sender, EventArgs e )
+        {
+            tabControl.TabPages.Remove( tbpLista );
+            tabControl.TabPages.Add( tbpDetalleLote );
+            tabControl.SelectedTab = tbpDetalleLote;
+            tbpDetalleLote.Text = "Nuevo Lote";
+        }
+
+        private void btnAgregar_Click( object sender, EventArgs e )
+        {
+            isEditing = false;
+
+            lblFincaID.Visible = false;
+            txtFincaID.Visible = false;
+            lblProductorID.Visible = false;
+            txtProductorID.Visible = false;
+            btnGuardar.Text = "Guardar";
+
+            tabControl.TabPages.Remove( tbpLista );
+            tabControl.TabPages.Add( tbpDetalle );
+            tabControl.SelectedTab = tbpDetalle;
+            tbpDetalle.Text = "Nueva Finca";
+        }
+
+        private void btnEditar_Click( object sender, EventArgs e )
+        {
+            var selectedRow = dgvFincas.CurrentRow.DataBoundItem as DataRowView;
+            if ( selectedRow != null )
+            {
+                isEditing = true;
+                lblFincaID.Visible = true;
+                txtFincaID.Visible = true;
+                lblProductorID.Visible = true;
+                txtProductorID.Visible = true;
+                btnGuardar.Text = "Actualizar";
+
                 tabControl.TabPages.Remove( tbpLista );
                 tabControl.TabPages.Add( tbpDetalle );
                 tabControl.SelectedTab = tbpDetalle;
-                tbpDetalle.Text = "Nueva Finca";
-            };
-
-            btnEditar.Click += delegate
-            {
-                EditEvent?.Invoke(this, EventArgs.Empty);
-                tabControl.TabPages.Remove(tbpLista);
-                tabControl.TabPages.Add(tbpDetalle);
-                tabControl.SelectedTab = tbpDetalle;
                 tbpDetalle.Text = "Editar Finca";
-            };
 
-            btnEliminar.Click += delegate
-            {
-                var result = MessageBox.Show("¿Está seguro de eliminar la finca seleccionada?", "Advertencia",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if ( result == DialogResult.Yes )
+                Dictionary<string, dynamic> parameters = new()
                 {
-                    DeleteEvent?.Invoke(this, EventArgs.Empty);
-                    MessageBox.Show( Message );
-                }
-            };
-
-            btnGuardar.Click += delegate
-            {
-                SaveEvent?.Invoke(this, EventArgs.Empty);
-                if ( IsSuccessful )
+                    { "@ID", Convert.ToInt32( selectedRow["FincaID"] ) }
+                };
+                DataTable fincaData = utils.ExecuteSPDataTable( "spGetFincaByID", parameters );
+                if ( fincaData.Rows.Count > 0 )
                 {
-                    tabControl.TabPages.Remove(tbpDetalle);
-                    tabControl.TabPages.Add(tbpLista);
-                    tabControl.SelectedTab = tbpLista;
-                    MessageBox.Show( Message, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                    DataRow row = fincaData.Rows[0];
+
+                    SetMunicipiosComboBox( Convert.ToInt32( row["DepartamentoID"] ) );
+
+                    // Populate fields with data from the selected finca
+                    txtFincaID.Text = row["FincaID"].ToString();
+                    txtProductorID.Text = row["ProductorID"].ToString();
+                    txtNombre.Text = row["Nombre"].ToString();
+                    cmbProductor.SelectedValue = Convert.ToInt32( row["ProductorID"] );
+                    cmbDepartamento.SelectedValue = Convert.ToInt32( row["DepartamentoID"] );
+                    cmbMunicipio.SelectedValue = Convert.ToInt32( row["MunicipioID"] );
+                    txtUbicacion.Text = row["Ubicacion"].ToString();
+                    txtExtensionTotal.Text = row["ExtencionTotal"].ToString();
                 }
-                else
-                {
-                    MessageBox.Show( Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-                }
-            };
-
-            btnCancelar.Click += delegate
-            {
-                CancelEvent?.Invoke(this, EventArgs.Empty);
-                tabControl.TabPages.Remove(tbpDetalle);
-                tabControl.TabPages.Add(tbpLista);
-                tabControl.SelectedTab = tbpLista;
-            };
-        }
-
-        public event EventHandler SearchEvent;
-        public event EventHandler AddNewEvent;
-        public event EventHandler EditEvent;
-        public event EventHandler DeleteEvent;
-        public event EventHandler SaveEvent;
-        public event EventHandler CancelEvent;
-
-        public void SetListBindingSource( BindingSource fincas )
-        {
-            dgvFincas.DataSource = fincas;
-        }
-
-        public int FincaID
-        {
-            get => Convert.ToInt32(txtFincaID.Text.Trim());
-            set => txtFincaID.Text = value.ToString();
-        }
-        public int ProductorID
-        {
-            get => Convert.ToInt32(txtProductorID.Text.Trim());
-            set => txtProductorID.Text = value.ToString();
-        }
-        public string Nombre
-        {
-            get => txtNombre.Text.Trim();
-            set => txtNombre.Text = value;
-        }
-        public int Productor
-        {   get => Convert.ToInt32( cmbProductor.SelectedValue );
-            set => cmbProductor.SelectedValue = value;
-        }
-        public int DepartamentoID
-        {
-            get => Convert.ToInt32(cmbDepartamento.SelectedValue);
-            set => cmbDepartamento.SelectedValue = value;
-        }
-        public int MunicipioID
-        {
-            get => Convert.ToInt32(cmbMunicipio.SelectedValue);
-            set => cmbMunicipio.SelectedValue = value;
-        }
-        public string Ubicacion
-        {
-            get => txtUbicacion.Text.Trim();
-            set => txtUbicacion.Text = value;
-        }
-        public decimal ExtensionTotal
-        {
-            get => Convert.ToDecimal( txtExtensionTotal.Text.Trim() );
-            set => txtExtensionTotal.Text = value.ToString();
-        }
-        public string SearchTerm
-        {
-            get => txtBuscar.Text.Trim();
-            set => txtBuscar.Text = value;
-        }
-        public bool IsEditing
-        {
-            get => isEditing;
-            set
-            {
-                isEditing = value;
-                lblFincaID.Visible = value;
-                txtFincaID.Visible = value;
-                lblProductorID.Visible = value;
-                txtProductorID.Visible = value;
-                btnGuardar.Text = value ? "Actualizar" : "Guardar";
             }
         }
-        public bool IsSuccessful
+
+        private void btnEliminar_Click( object sender, EventArgs e )
         {
-            get => isSuccessful;
-            set => isSuccessful = value;
+            var selectedRow = dgvFincas.CurrentRow.DataBoundItem as DataRowView;
+            if ( selectedRow != null )
+            {
+                var result = MessageBox.Show( "Esta seguro de eliminar este productor?", "Advertencia",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning );
+                if ( result == DialogResult.Yes )
+                {
+                    Dictionary<string, dynamic> parameters = new()
+                    {
+                        { "@ID", Convert.ToInt32( selectedRow["FincaID"] ) }
+                    };
+                    utils.ExecuteSPDataTable( "spDeleteFinca", parameters );
+                    MessageBox.Show( "Finca eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                    SetListBindingSource();
+                }
+            }
+            else
+            {
+                MessageBox.Show( "No se ha seleccionado ninguna finca para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
         }
-        public string Message
+
+        private void cmbDepartamento_SelectedIndexChanged( object sender, EventArgs e )
         {
-            get => message;
-            set => message = value;
+            if ( cmbDepartamento.SelectedValue == null )
+                return;
+
+            SetMunicipiosComboBox( Convert.ToInt32( cmbDepartamento.SelectedValue ) );
+        }
+
+        private void btnAnterior_Click( object sender, EventArgs e )
+        {
+            Dictionary<string, dynamic> parameters = new()
+            {
+                { "@PageNumber", --_actualPage },
+                { "@PageSize", _pageSize }
+            };
+            SetListBindingSource( "spGetAllFincas", parameters );
+        }
+
+        private void btnSiguiente_Click( object sender, EventArgs e )
+        {
+            Dictionary<string, dynamic> parameters = new()
+            {
+                { "@PageNumber", ++_actualPage },
+                { "@PageSize", _pageSize }
+            };
+            SetListBindingSource( "spGetAllFincas", parameters );
+        }
+
+        private void txtBuscar_KeyDown( object sender, KeyEventArgs e )
+        {
+            if ( e.KeyCode == Keys.Enter )
+            {
+                btnBuscar.PerformClick();
+                e.SuppressKeyPress = true; // Prevents the beep sound
+            }
+        }
+
+        private void btnGuardar_Click( object sender, EventArgs e )
+        {
+            Dictionary<string, dynamic> parameters = new()
+            {
+                { "@ProductorID", cmbProductor.SelectedValue },
+                { "@Nombre", txtNombre.Text.Trim() },
+                { "@MunicipioID", cmbMunicipio.SelectedValue },
+                { "@Ubicacion", txtUbicacion.Text.Trim() },
+                { "@ExtencionTotal", Convert.ToDecimal( txtExtensionTotal.Text ) }
+            };
+            if ( isEditing )
+            {
+                parameters.Add( "@ID", Convert.ToInt32( txtFincaID.Text ) );
+
+                utils.ExecuteSPDataTable( "spUpdateFinca", parameters );
+                message = "Finca actualizada correctamente.";
+            }
+            else
+            {
+                utils.ExecuteSPDataTable( "spInsertFinca", parameters );
+                message = "Finca creada correctamente.";
+            }
+
+            SetListBindingSource();
+            tabControl.TabPages.Remove( tbpDetalle );
+            tabControl.TabPages.Add( tbpLista );
+            tabControl.SelectedTab = tbpLista;
+            ClearFields();
+            
+            MessageBox.Show( message, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information );
+        }
+
+        private void btnCancelar_Click( object sender, EventArgs e )
+        {
+            tabControl.TabPages.Remove( tbpDetalle );
+            tabControl.TabPages.Add( tbpLista );
+            tabControl.SelectedTab = tbpLista;
+            ClearFields();
+        }
+
+        private void btnCerrar_Click( object sender, EventArgs e )
+        {
+            this.Close();
         }
     }
 }
