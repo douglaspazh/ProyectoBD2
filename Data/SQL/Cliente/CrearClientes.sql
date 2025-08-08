@@ -4,23 +4,25 @@ create or alter procedure spCrearCliente
 @Nombre varchar(26),
 @Apellido varchar(26),
 @Documento varchar(14),
-@Direccion varchar(151) =  null,
-@RTN varchar(15) = null,
-@Telefono varchar(9)=null,
-@Correo varchar(51) = null
+@Direccion varchar(151) = '',
+@RTN varchar(15) = '',
+@Telefono varchar(9)= '',
+@Correo varchar(51) = ''
 as
 	begin try
 		exec spValidarCampoVarchar 'Nombre', @Nombre, 0, 25;
 		exec spValidarCampoVarchar 'Apellido', @Apellido, 0, 25;
-		if @Direccion is not null
+		if @Direccion != ''
 			exec spValidarCampoVarchar 'Direccion', @Direccion, 0, 150;
-		if @Telefono is not null
+		if @Telefono != ''
 			exec spValidarCampoVarchar 'Telefono', @Telefono, 8, 8;
-		if @Correo is not null
+		if @Correo != ''
+		begin
 			exec spValidarCampoVarchar 'Correo', @Correo, 0, 50;
-		exec spValidarCorreo @Correo;
+			exec spValidarCorreo @Correo;
+		end
 		exec spValidarCampoVarchar 'Documento', @Documento, 0, 13;
-		if @RTN is not null
+		if @RTN != ''
 			exec spValidarCampoVarchar 'RTN', @RTN, 0, 14;
 		if (select COUNT(Documento) from Cliente where Documento = @Documento) > 1
 			THROW 50050, 'Ya existe este registro.', 1;			
@@ -29,7 +31,7 @@ as
 			select @ID = ISNULL(MAX(ClienteID), 0) + 1 from Cliente
 			insert into cliente (ClienteID,Nombre,Apellido,Direccion,Telefono,Correo,Documento, RTN) values 
 			(@ID,@Nombre, @Apellido, @Direccion, @Telefono, @Correo,@Documento,@RTN)
-			SELECT '10000' as Estado, 'Se creo correctamente el cliente' AS Mensaje;
+			SELECT 10000 as Estado, 'Se creo correctamente el cliente' AS Mensaje;
 		COMMIT TRANSACTION
 
 	end try
