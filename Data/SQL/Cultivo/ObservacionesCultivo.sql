@@ -1,18 +1,18 @@
 create or alter procedure spObservacionesCultivo 
 @CultivoID int,
-@Observaciones varchar(151) = null
+@Observaciones varchar(151) = ''
 as
 	begin try
 		if not exists(select @CultivoID from Cultivo where CultivoID=@CultivoID)
 			THROW 50051, 'No existe este cultivo', 1;		
 		BEGIN TRANSACTION
 
-		if  @Observaciones is not null 
+		if  @Observaciones != '' 
 		begin
 			exec spValidarCampoVarchar 'Observaciones', @CultivoID, 0, 150;
 			update Cultivo set Observaciones=@Observaciones where CultivoID=@CultivoID
 		end
-			SELECT '10000' as Estado, 'Se actualizo correctamente el cultivo' AS Mensaje;
+			SELECT 10000 as Estado, 'Se actualizo correctamente el cultivo' AS Mensaje;
 		COMMIT TRANSACTION
 	end try
 	begin catch
