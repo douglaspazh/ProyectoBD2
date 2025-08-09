@@ -30,7 +30,8 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            tbpDetalleProductor = new TabPage();
+            tbpGenerarCompra = new TabPage();
+            btnCancelar = new Button();
             LabelTotalValue = new Label();
             labelTotal = new Label();
             panel1 = new Panel();
@@ -54,7 +55,7 @@
             label4 = new Label();
             lblNombre = new Label();
             tabControl = new TabControl();
-            tabPage1 = new TabPage();
+            tbpComprasRegistradas = new TabPage();
             lblRecordsPerPage = new Label();
             cmbRecordsPerPage = new ComboBox();
             label6 = new Label();
@@ -65,45 +66,55 @@
             label3 = new Label();
             txtBuscar = new TextBox();
             btnBuscar = new Button();
-            dgvProductores = new DataGridView();
+            dgvProveedores = new DataGridView();
             btnAgregarCompra = new Button();
-            tabPage2 = new TabPage();
+            tbpDetallesCompra = new TabPage();
             iconButton1 = new FontAwesome.Sharp.IconButton();
             label7 = new Label();
             panelTop = new Panel();
             btnCerrar = new FontAwesome.Sharp.IconButton();
-            tbpDetalleProductor.SuspendLayout();
+            tbpGenerarCompra.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dvProductosCompra).BeginInit();
             groupBox1.SuspendLayout();
             tabControl.SuspendLayout();
-            tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvProductores).BeginInit();
+            tbpComprasRegistradas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProveedores).BeginInit();
             panelTop.SuspendLayout();
             SuspendLayout();
             // 
-            // tbpDetalleProductor
+            // tbpGenerarCompra
             // 
-            tbpDetalleProductor.Controls.Add(LabelTotalValue);
-            tbpDetalleProductor.Controls.Add(labelTotal);
-            tbpDetalleProductor.Controls.Add(panel1);
-            tbpDetalleProductor.Controls.Add(btnEliminar);
-            tbpDetalleProductor.Controls.Add(txtDescuento);
-            tbpDetalleProductor.Controls.Add(groupBox1);
-            tbpDetalleProductor.Controls.Add(txtImpuesto);
-            tbpDetalleProductor.Controls.Add(label10);
-            tbpDetalleProductor.Controls.Add(btnCrearCompra);
-            tbpDetalleProductor.Controls.Add(cmbProveedor);
-            tbpDetalleProductor.Controls.Add(label4);
-            tbpDetalleProductor.Controls.Add(lblNombre);
-            tbpDetalleProductor.Location = new Point(4, 24);
-            tbpDetalleProductor.Name = "tbpDetalleProductor";
-            tbpDetalleProductor.Padding = new Padding(3);
-            tbpDetalleProductor.Size = new Size(822, 526);
-            tbpDetalleProductor.TabIndex = 1;
-            tbpDetalleProductor.Text = "Generar Compra";
-            tbpDetalleProductor.UseVisualStyleBackColor = true;
-            tbpDetalleProductor.Click += tbpDetalleProductor_Click;
+            tbpGenerarCompra.Controls.Add(btnCancelar);
+            tbpGenerarCompra.Controls.Add(LabelTotalValue);
+            tbpGenerarCompra.Controls.Add(labelTotal);
+            tbpGenerarCompra.Controls.Add(panel1);
+            tbpGenerarCompra.Controls.Add(btnEliminar);
+            tbpGenerarCompra.Controls.Add(txtDescuento);
+            tbpGenerarCompra.Controls.Add(groupBox1);
+            tbpGenerarCompra.Controls.Add(txtImpuesto);
+            tbpGenerarCompra.Controls.Add(label10);
+            tbpGenerarCompra.Controls.Add(btnCrearCompra);
+            tbpGenerarCompra.Controls.Add(cmbProveedor);
+            tbpGenerarCompra.Controls.Add(label4);
+            tbpGenerarCompra.Controls.Add(lblNombre);
+            tbpGenerarCompra.Location = new Point(4, 24);
+            tbpGenerarCompra.Name = "tbpGenerarCompra";
+            tbpGenerarCompra.Padding = new Padding(3);
+            tbpGenerarCompra.Size = new Size(822, 526);
+            tbpGenerarCompra.TabIndex = 1;
+            tbpGenerarCompra.Text = "Generar Compra";
+            tbpGenerarCompra.UseVisualStyleBackColor = true;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.Location = new Point(328, 441);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(131, 33);
+            btnCancelar.TabIndex = 46;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // LabelTotalValue
             // 
@@ -358,37 +369,38 @@
             // tabControl
             // 
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabControl.Controls.Add(tbpDetalleProductor);
-            tabControl.Controls.Add(tabPage1);
-            tabControl.Controls.Add(tabPage2);
+            tabControl.Controls.Add(tbpGenerarCompra);
+            tabControl.Controls.Add(tbpComprasRegistradas);
+            tabControl.Controls.Add(tbpDetallesCompra);
             tabControl.Location = new Point(2, 51);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(830, 554);
             tabControl.TabIndex = 10;
+            tabControl.SelectedIndexChanged += tabControl_SelectedIndexChanged;
             // 
-            // tabPage1
+            // tbpComprasRegistradas
             // 
-            tabPage1.Controls.Add(lblRecordsPerPage);
-            tabPage1.Controls.Add(cmbRecordsPerPage);
-            tabPage1.Controls.Add(label6);
-            tabPage1.Controls.Add(btnSiguiente);
-            tabPage1.Controls.Add(btnAnterior);
-            tabPage1.Controls.Add(lblPaginas);
-            tabPage1.Controls.Add(lblTotalRegistros);
-            tabPage1.Controls.Add(label3);
-            tabPage1.Controls.Add(txtBuscar);
-            tabPage1.Controls.Add(btnBuscar);
-            tabPage1.Controls.Add(dgvProductores);
-            tabPage1.Controls.Add(btnAgregarCompra);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Margin = new Padding(3, 2, 3, 2);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3, 2, 3, 2);
-            tabPage1.Size = new Size(822, 526);
-            tabPage1.TabIndex = 2;
-            tabPage1.Text = "Compras registradas";
-            tabPage1.UseVisualStyleBackColor = true;
+            tbpComprasRegistradas.Controls.Add(lblRecordsPerPage);
+            tbpComprasRegistradas.Controls.Add(cmbRecordsPerPage);
+            tbpComprasRegistradas.Controls.Add(label6);
+            tbpComprasRegistradas.Controls.Add(btnSiguiente);
+            tbpComprasRegistradas.Controls.Add(btnAnterior);
+            tbpComprasRegistradas.Controls.Add(lblPaginas);
+            tbpComprasRegistradas.Controls.Add(lblTotalRegistros);
+            tbpComprasRegistradas.Controls.Add(label3);
+            tbpComprasRegistradas.Controls.Add(txtBuscar);
+            tbpComprasRegistradas.Controls.Add(btnBuscar);
+            tbpComprasRegistradas.Controls.Add(dgvProveedores);
+            tbpComprasRegistradas.Controls.Add(btnAgregarCompra);
+            tbpComprasRegistradas.Location = new Point(4, 24);
+            tbpComprasRegistradas.Margin = new Padding(3, 2, 3, 2);
+            tbpComprasRegistradas.Name = "tbpComprasRegistradas";
+            tbpComprasRegistradas.Padding = new Padding(3, 2, 3, 2);
+            tbpComprasRegistradas.Size = new Size(822, 526);
+            tbpComprasRegistradas.TabIndex = 2;
+            tbpComprasRegistradas.Text = "Compras registradas";
+            tbpComprasRegistradas.UseVisualStyleBackColor = true;
             // 
             // lblRecordsPerPage
             // 
@@ -396,9 +408,9 @@
             lblRecordsPerPage.AutoSize = true;
             lblRecordsPerPage.Location = new Point(274, 497);
             lblRecordsPerPage.Name = "lblRecordsPerPage";
-            lblRecordsPerPage.Size = new Size(150, 15);
+            lblRecordsPerPage.Size = new Size(134, 15);
             lblRecordsPerPage.TabIndex = 28;
-            lblRecordsPerPage.Text = "({}) Productores por página";
+            lblRecordsPerPage.Text = "({}) Compras por página";
             // 
             // cmbRecordsPerPage
             // 
@@ -462,9 +474,9 @@
             lblTotalRegistros.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTotalRegistros.Location = new Point(9, 496);
             lblTotalRegistros.Name = "lblTotalRegistros";
-            lblTotalRegistros.Size = new Size(127, 17);
+            lblTotalRegistros.Size = new Size(108, 17);
             lblTotalRegistros.TabIndex = 22;
-            lblTotalRegistros.Text = "Total: {} productores";
+            lblTotalRegistros.Text = "Total: {} Compras";
             // 
             // label3
             // 
@@ -498,17 +510,17 @@
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
             // 
-            // dgvProductores
+            // dgvProveedores
             // 
-            dgvProductores.AllowUserToAddRows = false;
-            dgvProductores.AllowUserToDeleteRows = false;
-            dgvProductores.AllowUserToResizeColumns = false;
-            dgvProductores.AllowUserToResizeRows = false;
-            dgvProductores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvProductores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvProductores.BorderStyle = BorderStyle.None;
-            dgvProductores.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dgvProductores.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvProveedores.AllowUserToAddRows = false;
+            dgvProveedores.AllowUserToDeleteRows = false;
+            dgvProveedores.AllowUserToResizeColumns = false;
+            dgvProveedores.AllowUserToResizeRows = false;
+            dgvProveedores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvProveedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvProveedores.BorderStyle = BorderStyle.None;
+            dgvProveedores.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            dgvProveedores.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Control;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -516,19 +528,19 @@
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvProductores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvProductores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProductores.EnableHeadersVisualStyles = false;
-            dgvProductores.Location = new Point(9, 66);
-            dgvProductores.MultiSelect = false;
-            dgvProductores.Name = "dgvProductores";
-            dgvProductores.ReadOnly = true;
-            dgvProductores.RowHeadersVisible = false;
-            dgvProductores.RowHeadersWidth = 25;
-            dgvProductores.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvProductores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProductores.Size = new Size(801, 422);
-            dgvProductores.TabIndex = 15;
+            dgvProveedores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvProveedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProveedores.EnableHeadersVisualStyles = false;
+            dgvProveedores.Location = new Point(9, 66);
+            dgvProveedores.MultiSelect = false;
+            dgvProveedores.Name = "dgvProveedores";
+            dgvProveedores.ReadOnly = true;
+            dgvProveedores.RowHeadersVisible = false;
+            dgvProveedores.RowHeadersWidth = 25;
+            dgvProveedores.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvProveedores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProveedores.Size = new Size(801, 422);
+            dgvProveedores.TabIndex = 15;
             // 
             // btnAgregarCompra
             // 
@@ -540,17 +552,18 @@
             btnAgregarCompra.TabIndex = 16;
             btnAgregarCompra.Text = "Crear compra";
             btnAgregarCompra.UseVisualStyleBackColor = true;
+            btnAgregarCompra.Click += btnAgregarCompra_Click;
             // 
-            // tabPage2
+            // tbpDetallesCompra
             // 
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Margin = new Padding(3, 2, 3, 2);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3, 2, 3, 2);
-            tabPage2.Size = new Size(822, 526);
-            tabPage2.TabIndex = 3;
-            tabPage2.Text = "Detalles de la compra";
-            tabPage2.UseVisualStyleBackColor = true;
+            tbpDetallesCompra.Location = new Point(4, 24);
+            tbpDetallesCompra.Margin = new Padding(3, 2, 3, 2);
+            tbpDetallesCompra.Name = "tbpDetallesCompra";
+            tbpDetallesCompra.Padding = new Padding(3, 2, 3, 2);
+            tbpDetallesCompra.Size = new Size(822, 526);
+            tbpDetallesCompra.TabIndex = 3;
+            tbpDetallesCompra.Text = "Detalles de la compra";
+            tbpDetallesCompra.UseVisualStyleBackColor = true;
             // 
             // iconButton1
             // 
@@ -616,16 +629,16 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "ComprasView";
             Text = "ComprasView";
-            tbpDetalleProductor.ResumeLayout(false);
-            tbpDetalleProductor.PerformLayout();
+            tbpGenerarCompra.ResumeLayout(false);
+            tbpGenerarCompra.PerformLayout();
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dvProductosCompra).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             tabControl.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvProductores).EndInit();
+            tbpComprasRegistradas.ResumeLayout(false);
+            tbpComprasRegistradas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProveedores).EndInit();
             panelTop.ResumeLayout(false);
             panelTop.PerformLayout();
             ResumeLayout(false);
@@ -633,7 +646,7 @@
 
         #endregion
 
-        private TabPage tbpDetalleProductor;
+        private TabPage tbpGenerarCompra;
         private TextBox txtApellido;
         private TextBox txtCantidad;
         private TextBox txtImpuesto;
@@ -655,8 +668,8 @@
         private TextBox txtDescuento;
         private TextBox txtPrecio;
         private Label label2;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private TabPage tbpComprasRegistradas;
+        private TabPage tbpDetallesCompra;
         private Label lblRecordsPerPage;
         private ComboBox cmbRecordsPerPage;
         private Label label6;
@@ -667,7 +680,7 @@
         private Label label3;
         private TextBox txtBuscar;
         private Button btnBuscar;
-        private DataGridView dgvProductores;
+        private DataGridView dgvProveedores;
         private Button btnAgregarCompra;
         private FontAwesome.Sharp.IconButton iconButton1;
         private Label label7;
@@ -676,5 +689,6 @@
         private Panel panel1;
         private Label LabelTotalValue;
         private Label labelTotal;
+        private Button btnCancelar;
     }
 }
