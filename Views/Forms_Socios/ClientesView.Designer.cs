@@ -63,41 +63,49 @@
             label5 = new Label();
             txtNombre = new TextBox();
             lblNombre = new Label();
+            iconButton1 = new FontAwesome.Sharp.IconButton();
+            label4 = new Label();
+            panelTop = new Panel();
+            btnCerrar = new FontAwesome.Sharp.IconButton();
             tabControl1.SuspendLayout();
             tbpLista.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             tbpDetallesCliente.SuspendLayout();
+            panelTop.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
             // 
-            tabControl1.Controls.Add(tbpLista);
-            tabControl1.Controls.Add(tbpDetallesCliente);
-            tabControl1.Location = new Point(-1, 53);
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Controls.Add( tbpLista );
+            tabControl1.Controls.Add( tbpDetallesCliente );
+            tabControl1.Location = new Point( 0, 49 );
+            tabControl1.Margin = new Padding( 3, 2, 3, 2 );
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1018, 794);
+            tabControl1.Size = new Size( 891, 588 );
             tabControl1.TabIndex = 2;
             // 
             // tbpLista
             // 
-            tbpLista.Controls.Add(dgvClientes);
-            tbpLista.Controls.Add(btnSiguiente);
-            tbpLista.Controls.Add(btnAnterior);
-            tbpLista.Controls.Add(label2);
-            tbpLista.Controls.Add(txtBuscar);
-            tbpLista.Controls.Add(btnBuscar);
-            tbpLista.Controls.Add(btnEditar);
-            tbpLista.Controls.Add(btnAgregar);
-            tbpLista.Controls.Add(lblRecordsPerPage);
-            tbpLista.Controls.Add(cmbRecordsPerPage);
-            tbpLista.Controls.Add(label6);
-            tbpLista.Controls.Add(lblPaginas);
-            tbpLista.Controls.Add(lblTotalRegistros);
-            tbpLista.Location = new Point(4, 29);
+            tbpLista.Controls.Add( dgvClientes );
+            tbpLista.Controls.Add( btnSiguiente );
+            tbpLista.Controls.Add( btnAnterior );
+            tbpLista.Controls.Add( label2 );
+            tbpLista.Controls.Add( txtBuscar );
+            tbpLista.Controls.Add( btnBuscar );
+            tbpLista.Controls.Add( btnEditar );
+            tbpLista.Controls.Add( btnAgregar );
+            tbpLista.Controls.Add( lblRecordsPerPage );
+            tbpLista.Controls.Add( cmbRecordsPerPage );
+            tbpLista.Controls.Add( label6 );
+            tbpLista.Controls.Add( lblPaginas );
+            tbpLista.Controls.Add( lblTotalRegistros );
+            tbpLista.Location = new Point( 4, 24 );
+            tbpLista.Margin = new Padding( 3, 2, 3, 2 );
             tbpLista.Name = "tbpLista";
-            tbpLista.Padding = new Padding(3);
-            tbpLista.Size = new Size(1010, 761);
+            tbpLista.Padding = new Padding( 3, 2, 3, 2 );
+            tbpLista.Size = new Size( 883, 560 );
             tbpLista.TabIndex = 0;
             tbpLista.Text = "Lista de Clientes";
             tbpLista.UseVisualStyleBackColor = true;
@@ -115,7 +123,7 @@
             dgvClientes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.Font = new Font( "Segoe UI", 9F );
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -123,8 +131,7 @@
             dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvClientes.EnableHeadersVisualStyles = false;
-            dgvClientes.Location = new Point(9, 90);
-            dgvClientes.Margin = new Padding(3, 4, 3, 4);
+            dgvClientes.Location = new Point( 8, 68 );
             dgvClientes.MultiSelect = false;
             dgvClientes.Name = "dgvClientes";
             dgvClientes.ReadOnly = true;
@@ -132,17 +139,16 @@
             dgvClientes.RowHeadersWidth = 25;
             dgvClientes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvClientes.Size = new Size(843, 617);
+            dgvClientes.Size = new Size( 749, 455 );
             dgvClientes.TabIndex = 28;
             // 
             // btnSiguiente
             // 
             btnSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSiguiente.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnSiguiente.Location = new Point(756, 715);
-            btnSiguiente.Margin = new Padding(3, 4, 3, 4);
+            btnSiguiente.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnSiguiente.Location = new Point( 662, 528 );
             btnSiguiente.Name = "btnSiguiente";
-            btnSiguiente.Size = new Size(109, 40);
+            btnSiguiente.Size = new Size( 95, 30 );
             btnSiguiente.TabIndex = 27;
             btnSiguiente.Text = "Siguiente";
             btnSiguiente.UseVisualStyleBackColor = true;
@@ -150,11 +156,10 @@
             // btnAnterior
             // 
             btnAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAnterior.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnAnterior.Location = new Point(641, 715);
-            btnAnterior.Margin = new Padding(3, 4, 3, 4);
+            btnAnterior.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnAnterior.Location = new Point( 561, 528 );
             btnAnterior.Name = "btnAnterior";
-            btnAnterior.Size = new Size(109, 40);
+            btnAnterior.Size = new Size( 95, 30 );
             btnAnterior.TabIndex = 26;
             btnAnterior.Text = "Anterior";
             btnAnterior.UseVisualStyleBackColor = true;
@@ -162,33 +167,31 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(10, 14);
+            label2.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label2.Location = new Point( 9, 10 );
             label2.Name = "label2";
-            label2.Size = new Size(119, 23);
+            label2.Size = new Size( 90, 17 );
             label2.TabIndex = 23;
             label2.Text = "Buscar cliente:";
             // 
             // txtBuscar
             // 
             txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBuscar.Location = new Point(10, 40);
-            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            txtBuscar.Location = new Point( 9, 30 );
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Ingrese un nombre o DNI";
-            txtBuscar.Size = new Size(533, 29);
+            txtBuscar.Size = new Size( 467, 25 );
             txtBuscar.TabIndex = 24;
             // 
             // btnBuscar
             // 
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.AutoSize = true;
-            btnBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnBuscar.Location = new Point(554, 38);
-            btnBuscar.Margin = new Padding(3, 4, 3, 4);
+            btnBuscar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnBuscar.Location = new Point( 485, 28 );
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(96, 44);
+            btnBuscar.Size = new Size( 84, 33 );
             btnBuscar.TabIndex = 25;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
@@ -197,11 +200,10 @@
             // btnEditar
             // 
             btnEditar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnEditar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnEditar.Location = new Point(871, 164);
-            btnEditar.Margin = new Padding(3, 4, 3, 4);
+            btnEditar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnEditar.Location = new Point( 763, 114 );
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(114, 43);
+            btnEditar.Size = new Size( 100, 32 );
             btnEditar.TabIndex = 21;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
@@ -210,11 +212,10 @@
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnAgregar.Location = new Point(871, 103);
-            btnAgregar.Margin = new Padding(3, 4, 3, 4);
+            btnAgregar.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            btnAgregar.Location = new Point( 763, 68 );
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(114, 43);
+            btnAgregar.Size = new Size( 100, 32 );
             btnAgregar.TabIndex = 20;
             btnAgregar.Text = "Nuevo";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -224,9 +225,9 @@
             // 
             lblRecordsPerPage.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblRecordsPerPage.AutoSize = true;
-            lblRecordsPerPage.Location = new Point(332, 729);
+            lblRecordsPerPage.Location = new Point( 290, 539 );
             lblRecordsPerPage.Name = "lblRecordsPerPage";
-            lblRecordsPerPage.Size = new Size(189, 20);
+            lblRecordsPerPage.Size = new Size( 150, 15 );
             lblRecordsPerPage.TabIndex = 19;
             lblRecordsPerPage.Text = "({}) Productores por página";
             // 
@@ -234,23 +235,22 @@
             // 
             cmbRecordsPerPage.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             cmbRecordsPerPage.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbRecordsPerPage.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbRecordsPerPage.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
             cmbRecordsPerPage.FormattingEnabled = true;
-            cmbRecordsPerPage.Items.AddRange(new object[] { "Auto", "10", "20", "30", "40", "50", "100" });
-            cmbRecordsPerPage.Location = new Point(252, 725);
-            cmbRecordsPerPage.Margin = new Padding(3, 4, 3, 4);
+            cmbRecordsPerPage.Items.AddRange( new object[] { "Auto", "10", "20", "30", "40", "50", "100" } );
+            cmbRecordsPerPage.Location = new Point( 220, 536 );
             cmbRecordsPerPage.Name = "cmbRecordsPerPage";
-            cmbRecordsPerPage.Size = new Size(74, 29);
+            cmbRecordsPerPage.Size = new Size( 65, 25 );
             cmbRecordsPerPage.TabIndex = 18;
             // 
             // label6
             // 
             label6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(177, 728);
+            label6.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label6.Location = new Point( 155, 538 );
             label6.Name = "label6";
-            label6.Size = new Size(69, 23);
+            label6.Size = new Size( 55, 17 );
             label6.TabIndex = 17;
             label6.Text = "Mostrar";
             // 
@@ -258,9 +258,9 @@
             // 
             lblPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblPaginas.AutoSize = true;
-            lblPaginas.Location = new Point(522, 731);
+            lblPaginas.Location = new Point( 457, 540 );
             lblPaginas.Name = "lblPaginas";
-            lblPaginas.Size = new Size(102, 20);
+            lblPaginas.Size = new Size( 81, 15 );
             lblPaginas.TabIndex = 16;
             lblPaginas.Text = "Página {} de {}";
             // 
@@ -268,37 +268,38 @@
             // 
             lblTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotalRegistros.AutoSize = true;
-            lblTotalRegistros.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTotalRegistros.Location = new Point(9, 725);
+            lblTotalRegistros.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            lblTotalRegistros.Location = new Point( 8, 536 );
             lblTotalRegistros.Name = "lblTotalRegistros";
-            lblTotalRegistros.Size = new Size(162, 23);
+            lblTotalRegistros.Size = new Size( 127, 17 );
             lblTotalRegistros.TabIndex = 15;
             lblTotalRegistros.Text = "Total: {} productores";
             // 
             // tbpDetallesCliente
             // 
-            tbpDetallesCliente.Controls.Add(label1);
-            tbpDetallesCliente.Controls.Add(txtDireccion);
-            tbpDetallesCliente.Controls.Add(txtApellido);
-            tbpDetallesCliente.Controls.Add(label10);
-            tbpDetallesCliente.Controls.Add(txtRTN);
-            tbpDetallesCliente.Controls.Add(label8);
-            tbpDetallesCliente.Controls.Add(txtDocumento);
-            tbpDetallesCliente.Controls.Add(label7);
-            tbpDetallesCliente.Controls.Add(txtClienteID);
-            tbpDetallesCliente.Controls.Add(lblClienteID);
-            tbpDetallesCliente.Controls.Add(btnCancelar);
-            tbpDetallesCliente.Controls.Add(btnGuardar);
-            tbpDetallesCliente.Controls.Add(txtEmail);
-            tbpDetallesCliente.Controls.Add(label3);
-            tbpDetallesCliente.Controls.Add(txtTelefono);
-            tbpDetallesCliente.Controls.Add(label5);
-            tbpDetallesCliente.Controls.Add(txtNombre);
-            tbpDetallesCliente.Controls.Add(lblNombre);
-            tbpDetallesCliente.Location = new Point(4, 29);
+            tbpDetallesCliente.Controls.Add( label1 );
+            tbpDetallesCliente.Controls.Add( txtDireccion );
+            tbpDetallesCliente.Controls.Add( txtApellido );
+            tbpDetallesCliente.Controls.Add( label10 );
+            tbpDetallesCliente.Controls.Add( txtRTN );
+            tbpDetallesCliente.Controls.Add( label8 );
+            tbpDetallesCliente.Controls.Add( txtDocumento );
+            tbpDetallesCliente.Controls.Add( label7 );
+            tbpDetallesCliente.Controls.Add( txtClienteID );
+            tbpDetallesCliente.Controls.Add( lblClienteID );
+            tbpDetallesCliente.Controls.Add( btnCancelar );
+            tbpDetallesCliente.Controls.Add( btnGuardar );
+            tbpDetallesCliente.Controls.Add( txtEmail );
+            tbpDetallesCliente.Controls.Add( label3 );
+            tbpDetallesCliente.Controls.Add( txtTelefono );
+            tbpDetallesCliente.Controls.Add( label5 );
+            tbpDetallesCliente.Controls.Add( txtNombre );
+            tbpDetallesCliente.Controls.Add( lblNombre );
+            tbpDetallesCliente.Location = new Point( 4, 24 );
+            tbpDetallesCliente.Margin = new Padding( 3, 2, 3, 2 );
             tbpDetallesCliente.Name = "tbpDetallesCliente";
-            tbpDetallesCliente.Padding = new Padding(3);
-            tbpDetallesCliente.Size = new Size(1010, 761);
+            tbpDetallesCliente.Padding = new Padding( 3, 2, 3, 2 );
+            tbpDetallesCliente.Size = new Size( 883, 568 );
             tbpDetallesCliente.TabIndex = 1;
             tbpDetallesCliente.Text = "Detalles del Cliente";
             tbpDetallesCliente.UseVisualStyleBackColor = true;
@@ -306,112 +307,106 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9.75F);
-            label1.Location = new Point(27, 293);
+            label1.Font = new Font( "Segoe UI", 9.75F );
+            label1.Location = new Point( 24, 220 );
             label1.Name = "label1";
-            label1.Size = new Size(85, 23);
+            label1.Size = new Size( 65, 17 );
             label1.TabIndex = 53;
             label1.Text = "Direccion:";
             // 
             // txtDireccion
             // 
-            txtDireccion.Font = new Font("Segoe UI", 9.75F);
-            txtDireccion.Location = new Point(26, 320);
-            txtDireccion.Margin = new Padding(3, 4, 3, 4);
+            txtDireccion.Font = new Font( "Segoe UI", 9.75F );
+            txtDireccion.Location = new Point( 23, 240 );
             txtDireccion.MaxLength = 50;
             txtDireccion.Multiline = true;
             txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size(496, 131);
+            txtDireccion.Size = new Size( 434, 99 );
             txtDireccion.TabIndex = 52;
             // 
             // txtApellido
             // 
-            txtApellido.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtApellido.Location = new Point(278, 69);
-            txtApellido.Margin = new Padding(3, 4, 3, 4);
+            txtApellido.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            txtApellido.Location = new Point( 243, 52 );
             txtApellido.MaxLength = 25;
             txtApellido.Name = "txtApellido";
-            txtApellido.Size = new Size(204, 29);
+            txtApellido.Size = new Size( 179, 25 );
             txtApellido.TabIndex = 50;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label10.Location = new Point(278, 42);
+            label10.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label10.Location = new Point( 243, 32 );
             label10.Name = "label10";
-            label10.Size = new Size(76, 23);
+            label10.Size = new Size( 59, 17 );
             label10.TabIndex = 49;
             label10.Text = "Apellido:";
             // 
             // txtRTN
             // 
-            txtRTN.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtRTN.Location = new Point(278, 154);
-            txtRTN.Margin = new Padding(3, 4, 3, 4);
+            txtRTN.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            txtRTN.Location = new Point( 243, 116 );
             txtRTN.MaxLength = 20;
             txtRTN.Name = "txtRTN";
-            txtRTN.Size = new Size(175, 29);
+            txtRTN.Size = new Size( 154, 25 );
             txtRTN.TabIndex = 48;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label8.Location = new Point(278, 128);
+            label8.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label8.Location = new Point( 243, 96 );
             label8.Name = "label8";
-            label8.Size = new Size(45, 23);
+            label8.Size = new Size( 35, 17 );
             label8.TabIndex = 47;
             label8.Text = "RTN:";
             // 
             // txtDocumento
             // 
-            txtDocumento.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtDocumento.Location = new Point(26, 154);
-            txtDocumento.Margin = new Padding(3, 4, 3, 4);
+            txtDocumento.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            txtDocumento.Location = new Point( 23, 116 );
             txtDocumento.MaxLength = 13;
             txtDocumento.Name = "txtDocumento";
-            txtDocumento.Size = new Size(175, 29);
+            txtDocumento.Size = new Size( 154, 25 );
             txtDocumento.TabIndex = 46;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(27, 128);
+            label7.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            label7.Location = new Point( 24, 96 );
             label7.Name = "label7";
-            label7.Size = new Size(104, 23);
+            label7.Size = new Size( 78, 17 );
             label7.TabIndex = 45;
             label7.Text = "Documento:";
             // 
             // txtClienteID
             // 
-            txtClienteID.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtClienteID.Location = new Point(549, 66);
-            txtClienteID.Margin = new Padding(3, 4, 3, 4);
+            txtClienteID.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            txtClienteID.Location = new Point( 480, 50 );
             txtClienteID.Name = "txtClienteID";
             txtClienteID.ReadOnly = true;
-            txtClienteID.Size = new Size(114, 29);
+            txtClienteID.Size = new Size( 100, 25 );
             txtClienteID.TabIndex = 44;
             txtClienteID.TabStop = false;
             // 
             // lblClienteID
             // 
             lblClienteID.AutoSize = true;
-            lblClienteID.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblClienteID.Location = new Point(549, 40);
+            lblClienteID.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
+            lblClienteID.Location = new Point( 480, 30 );
             lblClienteID.Name = "lblClienteID";
-            lblClienteID.Size = new Size(84, 23);
+            lblClienteID.Size = new Size( 62, 17 );
             lblClienteID.TabIndex = 43;
             lblClienteID.Text = "ClienteID:";
             // 
             // btnCancelar
             // 
-            btnCancelar.Font = new Font("Segoe UI", 9.75F);
-            btnCancelar.Location = new Point(451, 506);
-            btnCancelar.Margin = new Padding(3, 4, 3, 4);
+            btnCancelar.Font = new Font( "Segoe UI", 9.75F );
+            btnCancelar.Location = new Point( 395, 380 );
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(114, 40);
+            btnCancelar.Size = new Size( 100, 30 );
             btnCancelar.TabIndex = 42;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
@@ -419,11 +414,10 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.Font = new Font("Segoe UI", 9.75F);
-            btnGuardar.Location = new Point(278, 506);
-            btnGuardar.Margin = new Padding(3, 4, 3, 4);
+            btnGuardar.Font = new Font( "Segoe UI", 9.75F );
+            btnGuardar.Location = new Point( 243, 380 );
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(114, 40);
+            btnGuardar.Size = new Size( 100, 30 );
             btnGuardar.TabIndex = 41;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
@@ -431,79 +425,134 @@
             // 
             // txtEmail
             // 
-            txtEmail.Font = new Font("Segoe UI", 9.75F);
-            txtEmail.Location = new Point(27, 249);
-            txtEmail.Margin = new Padding(3, 4, 3, 4);
+            txtEmail.Font = new Font( "Segoe UI", 9.75F );
+            txtEmail.Location = new Point( 24, 187 );
             txtEmail.MaxLength = 50;
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(247, 29);
+            txtEmail.Size = new Size( 217, 25 );
             txtEmail.TabIndex = 40;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 9.75F);
-            label3.Location = new Point(26, 213);
+            label3.Font = new Font( "Segoe UI", 9.75F );
+            label3.Location = new Point( 23, 160 );
             label3.Name = "label3";
-            label3.Size = new Size(66, 23);
+            label3.Size = new Size( 52, 17 );
             label3.TabIndex = 39;
             label3.Text = "Correo:";
             // 
             // txtTelefono
             // 
-            txtTelefono.Font = new Font("Segoe UI", 9.75F);
-            txtTelefono.Location = new Point(549, 154);
-            txtTelefono.Margin = new Padding(3, 4, 3, 4);
+            txtTelefono.Font = new Font( "Segoe UI", 9.75F );
+            txtTelefono.Location = new Point( 480, 116 );
             txtTelefono.MaxLength = 8;
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.Size = new Size(216, 29);
+            txtTelefono.Size = new Size( 190, 25 );
             txtTelefono.TabIndex = 38;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 9.75F);
-            label5.Location = new Point(549, 127);
+            label5.Font = new Font( "Segoe UI", 9.75F );
+            label5.Location = new Point( 480, 95 );
             label5.Name = "label5";
-            label5.Size = new Size(78, 23);
+            label5.Size = new Size( 61, 17 );
             label5.TabIndex = 37;
             label5.Text = "Telefono:";
             // 
             // txtNombre
             // 
-            txtNombre.Font = new Font("Segoe UI", 9.75F);
-            txtNombre.Location = new Point(26, 66);
-            txtNombre.Margin = new Padding(3, 4, 3, 4);
+            txtNombre.Font = new Font( "Segoe UI", 9.75F );
+            txtNombre.Location = new Point( 23, 50 );
             txtNombre.MaxLength = 25;
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(205, 29);
+            txtNombre.Size = new Size( 180, 25 );
             txtNombre.TabIndex = 36;
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Font = new Font("Segoe UI", 9.75F);
-            lblNombre.Location = new Point(26, 40);
+            lblNombre.Font = new Font( "Segoe UI", 9.75F );
+            lblNombre.Location = new Point( 23, 30 );
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(77, 23);
+            lblNombre.Size = new Size( 60, 17 );
             lblNombre.TabIndex = 35;
             lblNombre.Text = "Nombre:";
             // 
+            // iconButton1
+            // 
+            iconButton1.AutoSize = true;
+            iconButton1.Enabled = false;
+            iconButton1.FlatAppearance.BorderSize = 0;
+            iconButton1.FlatStyle = FlatStyle.Flat;
+            iconButton1.IconChar = FontAwesome.Sharp.IconChar.UserTag;
+            iconButton1.IconColor = Color.Black;
+            iconButton1.IconFont = FontAwesome.Sharp.IconFont.Solid;
+            iconButton1.IconSize = 32;
+            iconButton1.Location = new Point( 12, 4 );
+            iconButton1.Name = "iconButton1";
+            iconButton1.Size = new Size( 40, 40 );
+            iconButton1.TabIndex = 6;
+            iconButton1.TabStop = false;
+            iconButton1.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font( "Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0 );
+            label4.Location = new Point( 48, 15 );
+            label4.Name = "label4";
+            label4.Size = new Size( 66, 17 );
+            label4.TabIndex = 4;
+            label4.Text = "CLIENTES";
+            // 
+            // panelTop
+            // 
+            panelTop.Controls.Add( btnCerrar );
+            panelTop.Controls.Add( iconButton1 );
+            panelTop.Controls.Add( label4 );
+            panelTop.Dock = DockStyle.Top;
+            panelTop.Location = new Point( 0, 0 );
+            panelTop.Name = "panelTop";
+            panelTop.Size = new Size( 900, 50 );
+            panelTop.TabIndex = 9;
+            // 
+            // btnCerrar
+            // 
+            btnCerrar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCerrar.AutoSize = true;
+            btnCerrar.FlatStyle = FlatStyle.Flat;
+            btnCerrar.IconChar = FontAwesome.Sharp.IconChar.Close;
+            btnCerrar.IconColor = Color.Black;
+            btnCerrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnCerrar.IconSize = 28;
+            btnCerrar.Location = new Point( 1482, 6 );
+            btnCerrar.Name = "btnCerrar";
+            btnCerrar.Size = new Size( 36, 36 );
+            btnCerrar.TabIndex = 7;
+            btnCerrar.UseVisualStyleBackColor = true;
+            // 
             // ClientesView
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF( 7F, 15F );
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1029, 859);
-            Controls.Add(tabControl1);
+            ClientSize = new Size( 900, 636 );
+            Controls.Add( panelTop );
+            Controls.Add( tabControl1 );
+            FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding( 3, 2, 3, 2 );
             Name = "ClientesView";
             Text = "ClientesView";
-            tabControl1.ResumeLayout(false);
-            tbpLista.ResumeLayout(false);
+            tabControl1.ResumeLayout( false );
+            tbpLista.ResumeLayout( false );
             tbpLista.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
-            tbpDetallesCliente.ResumeLayout(false);
+            tbpDetallesCliente.ResumeLayout( false );
             tbpDetallesCliente.PerformLayout();
-            ResumeLayout(false);
+            panelTop.ResumeLayout( false );
+            panelTop.PerformLayout();
+            ResumeLayout( false );
         }
 
         #endregion
@@ -543,5 +592,9 @@
         private Button btnSiguiente;
         private Button btnAnterior;
         private DataGridView dgvClientes;
+        private FontAwesome.Sharp.IconButton iconButton1;
+        private Label label4;
+        private Panel panelTop;
+        private FontAwesome.Sharp.IconButton btnCerrar;
     }
 }
