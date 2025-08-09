@@ -92,7 +92,7 @@ namespace ProyectoBD2.Views.Forms
             {
                 Nombre = row["Nombre"],
                 ProductoID = row["ProductoID"]
-            }).ToList();
+            }).ToList(); 
 
 
 

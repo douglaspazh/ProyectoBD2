@@ -16,7 +16,7 @@ AS
     select * from cliente where ClienteID=@ID
 GO
 
-CREATE OR ALTER PROCEDURE spObtenerNombreProducto
+CREATE OR ALTER PROCEDURE spObtenerVentas
 	@PageNumber INT,
 	@PageSize INT
 AS
@@ -78,6 +78,19 @@ AS
     FETCH NEXT @PageSize ROWS ONLY;
 GO
 
+CREATE OR ALTER PROCEDURE spObtenerBodega
+AS
+	select BodegaID  from bodega
+GO
+
+CREATE OR ALTER PROCEDURE spObtenerProducto
+AS
+	select Nombre,ProductoID  from producto
+GO
+CREATE OR ALTER PROCEDURE spObtenerProveedor
+AS
+	select ProveedorID,CONCAT(Nombre,' ',Apellido) as NombreProveedor from proveedor where EstadoID=10001
+GO
 CREATE OR ALTER PROCEDURE spObtenerCompras
 	@PageNumber INT,
 	@PageSize INT
@@ -87,8 +100,40 @@ AS
     OFFSET (@PageNumber - 1) * @PageSize ROWS
     FETCH NEXT @PageSize ROWS ONLY;
 GO
-select * from vComprasPendientes 
+select * from vStockActual
+select * from vGetProductorEstados
+select * from producto
 
+CREATE OR ALTER PROCEDURE spObtenerProductoDisponible
+AS
+	select p.ProductoID,p.Nombre from producto p
+	inner join vStockActual vsa on vsa.ProductoID=p.ProductoID
+	group by  p.ProductoID,p.Nombre
+GO
+select * from vStockActual
+CREATE OR ALTER PROCEDURE spObtenerBodegaCantidadStock
+@ProductoID int
+AS
+	select ProductoID,BodegaID,Cantidad from vStockActual where ProductoID=@ProductoID
+GO
+
+CREATE OR ALTER PROCEDURE spObtenerBodegaCantidadStockBodega
+@ProductoID int,
+@BodegaID varchar(2)
+AS
+	select ProductoID,BodegaID,Cantidad from vStockActual where ProductoID=@ProductoID and BodegaID=@BodegaID
+GO
+
+CREATE OR ALTER PROCEDURE spObtenerStock
+	@PageNumber INT,
+	@PageSize INT
+AS
+	select dbo.ObtenerNombreProducto(ProductoID) NombreProducto,BodegaID as Bodega, Cantidad from vStockActual
+	order by NombreProducto
+    OFFSET (@PageNumber - 1) * @PageSize ROWS
+    FETCH NEXT @PageSize ROWS ONLY;
+GO
+select * from SolicitudInsumos
 CREATE OR ALTER PROCEDURE spObtenerComprasPendientes
 	@PageNumber INT,
 	@PageSize INT

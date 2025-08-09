@@ -216,7 +216,7 @@
             // button3
             // 
             button3.Font = new Font("Segoe UI", 9.75F);
-            button3.Location = new Point(668, 104);
+            button3.Location = new Point(668, 93);
             button3.Margin = new Padding(3, 4, 3, 4);
             button3.Name = "button3";
             button3.Size = new Size(167, 40);
