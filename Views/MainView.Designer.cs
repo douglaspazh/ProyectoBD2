@@ -91,10 +91,10 @@
             // 
             btnSalidas.FlatStyle = FlatStyle.Flat;
             btnSalidas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnSalidas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnSalidas.IconChar = FontAwesome.Sharp.IconChar.RightToBracket;
             btnSalidas.IconColor = Color.Black;
             btnSalidas.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnSalidas.IconSize = 32;
+            btnSalidas.IconSize = 28;
             btnSalidas.ImageAlign = ContentAlignment.MiddleLeft;
             btnSalidas.Location = new Point( 0, 417 );
             btnSalidas.Name = "btnSalidas";
@@ -109,10 +109,10 @@
             // 
             btnEntregas.FlatStyle = FlatStyle.Flat;
             btnEntregas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnEntregas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnEntregas.IconChar = FontAwesome.Sharp.IconChar.ArrowsUpToLine;
             btnEntregas.IconColor = Color.Black;
             btnEntregas.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnEntregas.IconSize = 32;
+            btnEntregas.IconSize = 28;
             btnEntregas.ImageAlign = ContentAlignment.MiddleLeft;
             btnEntregas.Location = new Point( 0, 383 );
             btnEntregas.Name = "btnEntregas";
@@ -127,10 +127,10 @@
             // 
             btnCosechas.FlatStyle = FlatStyle.Flat;
             btnCosechas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnCosechas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnCosechas.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
             btnCosechas.IconColor = Color.Black;
             btnCosechas.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnCosechas.IconSize = 32;
+            btnCosechas.IconSize = 28;
             btnCosechas.ImageAlign = ContentAlignment.MiddleLeft;
             btnCosechas.Location = new Point( 0, 575 );
             btnCosechas.Name = "btnCosechas";
@@ -145,10 +145,10 @@
             // 
             btnVentas.FlatStyle = FlatStyle.Flat;
             btnVentas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnVentas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnVentas.IconChar = FontAwesome.Sharp.IconChar.Tags;
             btnVentas.IconColor = Color.Black;
             btnVentas.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnVentas.IconSize = 32;
+            btnVentas.IconSize = 30;
             btnVentas.ImageAlign = ContentAlignment.MiddleLeft;
             btnVentas.Location = new Point( 0, 245 );
             btnVentas.Name = "btnVentas";
@@ -181,10 +181,10 @@
             // 
             btnBodegas.FlatStyle = FlatStyle.Flat;
             btnBodegas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnBodegas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnBodegas.IconChar = FontAwesome.Sharp.IconChar.Warehouse;
             btnBodegas.IconColor = Color.Black;
             btnBodegas.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnBodegas.IconSize = 32;
+            btnBodegas.IconSize = 28;
             btnBodegas.ImageAlign = ContentAlignment.MiddleLeft;
             btnBodegas.Location = new Point( 0, 507 );
             btnBodegas.Name = "btnBodegas";
@@ -199,9 +199,11 @@
             // 
             btnRecibos.FlatStyle = FlatStyle.Flat;
             btnRecibos.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnRecibos.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnRecibos.IconChar = FontAwesome.Sharp.IconChar.Receipt;
             btnRecibos.IconColor = Color.Black;
             btnRecibos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnRecibos.IconSize = 28;
+            btnRecibos.ImageAlign = ContentAlignment.MiddleLeft;
             btnRecibos.Location = new Point( 0, 347 );
             btnRecibos.Name = "btnRecibos";
             btnRecibos.Padding = new Padding( 5, 0, 0, 0 );
@@ -296,10 +298,10 @@
             // 
             btnFacturas.FlatStyle = FlatStyle.Flat;
             btnFacturas.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnFacturas.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnFacturas.IconChar = FontAwesome.Sharp.IconChar.FileInvoiceDollar;
             btnFacturas.IconColor = Color.Black;
             btnFacturas.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnFacturas.IconSize = 32;
+            btnFacturas.IconSize = 28;
             btnFacturas.ImageAlign = ContentAlignment.MiddleLeft;
             btnFacturas.Location = new Point( 0, 313 );
             btnFacturas.Name = "btnFacturas";
@@ -382,10 +384,10 @@
             // 
             btnCompras.FlatStyle = FlatStyle.Flat;
             btnCompras.Font = new Font( "Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0 );
-            btnCompras.IconChar = FontAwesome.Sharp.IconChar.None;
+            btnCompras.IconChar = FontAwesome.Sharp.IconChar.CartShopping;
             btnCompras.IconColor = Color.Black;
             btnCompras.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnCompras.IconSize = 32;
+            btnCompras.IconSize = 30;
             btnCompras.ImageAlign = ContentAlignment.MiddleLeft;
             btnCompras.Location = new Point( 0, 279 );
             btnCompras.Name = "btnCompras";
