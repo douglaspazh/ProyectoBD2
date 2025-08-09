@@ -59,7 +59,6 @@
             label11 = new Label();
             txtperiododepago = new TextBox();
             label10 = new Label();
-            cmbDireccion = new ComboBox();
             label9 = new Label();
             txtRTN = new TextBox();
             label8 = new Label();
@@ -77,6 +76,7 @@
             label5 = new Label();
             txtNombre = new TextBox();
             lblNombre = new Label();
+            txtDireccion = new TextBox();
             panelTop.SuspendLayout();
             tabControl1.SuspendLayout();
             tabListaProveedores.SuspendLayout();
@@ -385,6 +385,7 @@
             // 
             // tbpDetalleProveedores
             // 
+            tbpDetalleProveedores.Controls.Add(txtDireccion);
             tbpDetalleProveedores.Controls.Add(txtProveedorID);
             tbpDetalleProveedores.Controls.Add(lblProveedorID);
             tbpDetalleProveedores.Controls.Add(btnEliminar2);
@@ -393,7 +394,6 @@
             tbpDetalleProveedores.Controls.Add(label11);
             tbpDetalleProveedores.Controls.Add(txtperiododepago);
             tbpDetalleProveedores.Controls.Add(label10);
-            tbpDetalleProveedores.Controls.Add(cmbDireccion);
             tbpDetalleProveedores.Controls.Add(label9);
             tbpDetalleProveedores.Controls.Add(txtRTN);
             tbpDetalleProveedores.Controls.Add(label8);
@@ -503,14 +503,6 @@
             label10.Size = new Size(139, 23);
             label10.TabIndex = 46;
             label10.Text = "Periodo de Pago:";
-            // 
-            // cmbDireccion
-            // 
-            cmbDireccion.FormattingEnabled = true;
-            cmbDireccion.Location = new Point(478, 228);
-            cmbDireccion.Name = "cmbDireccion";
-            cmbDireccion.Size = new Size(205, 28);
-            cmbDireccion.TabIndex = 45;
             // 
             // label9
             // 
@@ -685,6 +677,16 @@
             lblNombre.TabIndex = 28;
             lblNombre.Text = "Nombre:";
             // 
+            // txtDireccion
+            // 
+            txtDireccion.Font = new Font("Segoe UI", 9.75F);
+            txtDireccion.Location = new Point(478, 227);
+            txtDireccion.Margin = new Padding(3, 4, 3, 4);
+            txtDireccion.MaxLength = 25;
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.Size = new Size(205, 29);
+            txtDireccion.TabIndex = 54;
+            // 
             // ProveedoresView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -739,7 +741,6 @@
         private TextBox txtApellido;
         private Label label6;
         private Label label10;
-        private ComboBox cmbDireccion;
         private Label label9;
         private TextBox txtRTN;
         private Label label8;
@@ -757,5 +758,6 @@
         private Label lblPaginas;
         private TextBox txtProveedorID;
         private Label lblProveedorID;
+        private TextBox txtDireccion;
     }
 }

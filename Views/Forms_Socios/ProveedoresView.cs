@@ -56,7 +56,8 @@ namespace ProyectoBD2.Views.Forms
 
         public void CargarEstados()
         {
-            var estados = utils.ExecuteViewDataTable("vGetProductorEstados");
+            var estados = utils.ExecuteSPDataTable("spGetProveedorEstados");
+
 
             cmbEstado.DataSource ??= estados.AsEnumerable().Select(row => new
             {
@@ -79,7 +80,7 @@ namespace ProyectoBD2.Views.Forms
             txtRTN.Clear();
             txtperiododepago.Clear();
             txtTasadeinteres.Clear();
-            cmbDireccion.SelectedIndex = -1;
+            txtDireccion.Clear();
             cmbEstado.SelectedIndex = -1;
 
         }
@@ -146,10 +147,11 @@ namespace ProyectoBD2.Views.Forms
                     txtTelefono.Text = row["Telefono"].ToString() ?? string.Empty;
                     txtEmail.Text = row["Correo"].ToString() ?? string.Empty;
                     txtDocumento.Text = row["Documento"].ToString() ?? string.Empty;
-                    txtTasadeinteres.Text = row["Tasa de interes"].ToString() ?? string.Empty;
+                    txtTasadeinteres.Text = row["TasaInteres"].ToString() ?? string.Empty;
+                    txtperiododepago.Text = row["PeriodoDePagoDias"].ToString() ?? string.Empty;
                     txtRTN.Text = row["RTN"].ToString() ?? string.Empty;
                     cmbEstado.SelectedValue = Convert.ToInt32(row["EstadoID"]);
-                    cmbDireccion.SelectedValue = Convert.ToInt32(row["Direccion"]);
+                    txtDireccion.Text = row["Direccion"].ToString() ?? string.Empty;
                 }
             }
         }
@@ -183,11 +185,7 @@ namespace ProyectoBD2.Views.Forms
         private void btnGuardar_Click(object sender, EventArgs e)
         {
 
-            if (cmbDireccion.SelectedValue == null)
-            {
-                MessageBox.Show("Por favor selecciona una dirección.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+
             Dictionary<string, dynamic> productor = new()
             {
                 { "@Nombre", txtNombre.Text.Trim() },
@@ -196,9 +194,9 @@ namespace ProyectoBD2.Views.Forms
                 { "@Correo", txtEmail.Text.Trim() },
                 { "@Documento", txtDocumento.Text.Trim() },
                 { "@RTN", txtRTN.Text.Trim() },
-                { "Tasa de Interes" , txtTasadeinteres.Text.Trim() },
-                { "Periodo de Pago Dias" , txtperiododepago.Text.Trim() },
-                { "@Direccion", cmbDireccion.SelectedValue },
+                { "TasaInteres" , txtTasadeinteres.Text.Trim() },
+                { "PeriododePagoDias" , txtperiododepago.Text.Trim() },
+                { "@Direccion", txtDireccion.Text.Trim() },
 
             };
 
@@ -269,7 +267,7 @@ namespace ProyectoBD2.Views.Forms
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-          
+
         }
     }
 }

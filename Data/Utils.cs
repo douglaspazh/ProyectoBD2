@@ -153,7 +153,14 @@ namespace ProyectoBD2.Data
             }
             catch ( SqlException ex )
             {
+<<<<<<< HEAD
                 Debug.WriteLine($"Error executing view {viewName}: {ex.Message}");
+=======
+                foreach ( SqlError error in ex.Errors )
+                {
+                    MessageBox.Show( $"Error: {error.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
+>>>>>>> 7fd34a7ec829ade1aa3de8eb07023d5e41de465f
                 throw;
             }
         }
