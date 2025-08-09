@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace ProyectoBD2.Views.Forms
 {
@@ -34,6 +35,11 @@ namespace ProyectoBD2.Views.Forms
             InitializeComponent();
             SetComboBoxData();
             setTablaProductoComprasSource();
+            setTablaComprasSource();
+
+            tabControl.TabPages.Remove(tbpGenerarCompra);
+            tabControl.TabPages.Remove(tbpDetallesCompra);
+
         }
 
         public void setTablaProductoComprasSource()
@@ -57,6 +63,22 @@ namespace ProyectoBD2.Views.Forms
             dvProductosCompra.Columns["ProductoID"].Visible = false;
             dvProductosCompra.Columns["BodegaID"].Visible = false;
         }
+        public void setTablaComprasSource(string spName = "spGetAllCompras", Dictionary<string, dynamic>? parameters = null)
+        {
+            parameters ??= new()
+            {
+                { "@PageNumber", _actualPage },
+                { "@PageSize", _pageSize }
+            };
+
+            var data = utils.ExecuteSPDataTable(spName, parameters);
+            dgvProveedores.DataSource = data;
+
+            _totalRecords = data.Rows.Count;
+            _totalPages = (int)Math.Ceiling((double)_totalRecords / _pageSize);
+            DisplayPageInfo();
+
+        }
         public void SetComboBoxData()
         {
             // Load data for Productores combo box
@@ -76,6 +98,16 @@ namespace ProyectoBD2.Views.Forms
             cmbBodega.DisplayMember = "BodegaID";
             cmbBodega.ValueMember = "BodegaID";
         }
+
+        public void DisplayPageInfo()
+        {
+            lblTotalRegistros.Text = $"Total: {_totalRecords} Proveedores";
+            lblPaginas.Text = $"Página {_actualPage} de {_totalPages}";
+            lblRecordsPerPage.Text = $"Mostrando {_pageSize} registros por página";
+            btnSiguiente.Enabled = _actualPage < _totalPages;
+            btnAnterior.Enabled = _actualPage > 1;
+        }
+
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -151,15 +183,15 @@ namespace ProyectoBD2.Views.Forms
             }
             else
             {
- 
+
                 _TablaProductoCompras.Rows.Add(
-                    productoID,         
-                    bodegaID,           
-                    nombreProducto,    
-                    nombreBodega,       
-                    precio,             
-                    cantidad,           
-                    total               
+                    productoID,
+                    bodegaID,
+                    nombreProducto,
+                    nombreBodega,
+                    precio,
+                    cantidad,
+                    total
                 );
             }
 
@@ -250,7 +282,7 @@ namespace ProyectoBD2.Views.Forms
                 tvpTable.Columns.Add("ProductoID", typeof(string));
                 tvpTable.Columns.Add("BodegaID", typeof(string));
                 tvpTable.Columns.Add("Cantidad", typeof(int));
-                tvpTable.Columns.Add("Precio", typeof(string)); 
+                tvpTable.Columns.Add("Precio", typeof(string));
 
                 foreach (DataRow row in _TablaProductoCompras.Rows)
                 {
@@ -285,6 +317,26 @@ namespace ProyectoBD2.Views.Forms
                 MessageBox.Show("Error al registrar la compra: " + ex.Message, "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregarCompra_Click(object sender, EventArgs e)
+        {
+            tabControl.TabPages.Add(tbpGenerarCompra);
+            tabControl.TabPages.Remove(tbpComprasRegistradas);
+
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            tabControl.TabPages.Add(tbpComprasRegistradas);
+            _TablaProductoCompras.Clear();
+            tabControl.TabPages.Remove(tbpGenerarCompra);
+            
         }
     }
 }
