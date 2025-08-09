@@ -157,6 +157,7 @@ namespace ProyectoBD2.Data
                 {
                     MessageBox.Show( $"Error: {error.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
+                throw;
             }
         }
     }
