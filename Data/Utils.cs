@@ -16,14 +16,14 @@ namespace ProyectoBD2.Data
         }
 
         // Method to execute a stored procedure and return a DataTable
-        public DataTable ExecuteSPDataTable( string storedProcedure, Dictionary<string, dynamic> parameters = null )
+        public DataTable ExecuteSPDataTable( string spName, Dictionary<string, dynamic>? parameters = null )
         {
             try
             {
                 // Using a stored procedure to execute a command
                 var connectionString = _context.Database.GetConnectionString();
                 using var connection = new SqlConnection( connectionString );
-                using var command = new SqlCommand( storedProcedure, connection )
+                using var command = new SqlCommand( spName, connection )
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -43,11 +43,55 @@ namespace ProyectoBD2.Data
             }
             catch ( SqlException ex )
             {
-                Debug.WriteLine( $"Error executing stored procedure {storedProcedure}: {ex.Message}" );
+                foreach ( SqlError error in ex.Errors )
+                {
+                    MessageBox.Show( $"Error: {error.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
                 throw;
             }
         }
+        
+        // Para usar tabla como parametro en un procedimiento almacenado
+        public DataTable ExcuteSPDataTable( string spName, string nameParam, string nameTypeTable, DataTable table, Dictionary<string, dynamic>? parameters = null)
+        {
+            try
+            {
+                // Using a stored procedure to execute a command
+                var connectionString = _context.Database.GetConnectionString();
+                using var connection = new SqlConnection(connectionString);
+                using var command = new SqlCommand(spName, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlParameter type = command.Parameters.AddWithValue( nameParam, table );
+                type.SqlDbType = SqlDbType.Structured;
+                type.TypeName = nameTypeTable;
 
+                if (parameters != null)
+                {
+                    foreach (var param in parameters)
+                    {
+                        command.Parameters.AddWithValue(param.Key, param.Value);
+                    }
+                }
+                
+                var dataTable = new DataTable();
+                connection.Open();
+                using var reader = command.ExecuteReader();
+                dataTable.Load(reader);
+                connection.Close();
+
+                return dataTable;
+            }
+            catch (SqlException ex)
+            {
+                foreach (SqlError error in ex.Errors)
+                {
+                    MessageBox.Show($"Error: {error.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);    
+                }
+                throw;
+            }
+        }
         public DataTable ExecuteSPDataTableTypeName(string storedProcedure, Dictionary<string, dynamic> parameters = null, Dictionary<string, dynamic> tabletype = null)
         {
             try
@@ -88,7 +132,6 @@ namespace ProyectoBD2.Data
             }
         }
 
-
         public DataTable ExecuteViewDataTable( string viewName )
         {
             try
@@ -110,8 +153,10 @@ namespace ProyectoBD2.Data
             }
             catch ( SqlException ex )
             {
-                Debug.WriteLine( $"Error executing view {viewName}: {ex.Message}" );
-                throw;
+                foreach ( SqlError error in ex.Errors )
+                {
+                    MessageBox.Show( $"Error: {error.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
             }
         }
     }
