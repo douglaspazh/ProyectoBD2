@@ -1,4 +1,5 @@
 ﻿using ProyectoBD2.Data;
+using ProyectoBD2.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,13 +20,18 @@ namespace ProyectoBD2.Views.Forms
         private int _totalPages = 0;
         private int _totalRecords = 0;
         private readonly Utils utils = new();
-        private string ConsultaActual = "";
 
         public VentasView()
         {
             InitializeComponent();
-            SetListBindingSource("spObtenerVentas");
+            //SetListBindingSource("spObtenerVentas");
+            dvProductosCompra.Columns.Add("ProductoID", "ProductoID");
+            dvProductosCompra.Columns.Add("BodegaID", "BodegaID");
+            dvProductosCompra.Columns.Add("Cantidad", "Cantidad");
+            dvProductosCompra.Columns.Add("Precio", "Precio");
             CargarProductores();
+            CargarProductos();
+            CargarBodegas();
         }
 
         public void SetListBindingSource(string spName = "spObtenerVentas", Dictionary<string, dynamic>? parameters = null)
@@ -80,7 +86,7 @@ namespace ProyectoBD2.Views.Forms
 
         public void CargarProductos()
         {
-            var estados = utils.ExecuteSPDataTable("spObtenerProducto");
+            var estados = utils.ExecuteSPDataTable("spObtenerProductoDisponible");
 
             cmbProducto.DataSource ??= estados.AsEnumerable().Select(row => new
             {
@@ -88,20 +94,54 @@ namespace ProyectoBD2.Views.Forms
                 ProductoID = row["ProductoID"]
             }).ToList();
 
+
+
             cmbProducto.DisplayMember = "Nombre";
             cmbProducto.ValueMember = "ProductoID";
         }
-        public void CargarBodegas()
+        private void cmbProducto_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var estados = utils.ExecuteSPDataTable("spObtenerBodega");
+            ActualizarCantidad();
+        }
+        private void ActualizarCantidad()
+        {
+            Dictionary<string, dynamic> producto = new()
+            {
+                { "ProductoID",cmbProducto.SelectedValue },
+                { "BodegaID",cmbBodega.SelectedValue }
+            };
+
+            var estados = utils.ExecuteSPDataTable("spObtenerBodegaCantidadStockBodega", producto);
+
+            foreach (DataRow row in estados.Rows)
+            {
+                lblCantidadProducto.Text = row["Cantidad"].ToString();
+
+            }
+        }
+        public void CargarBodegas()
+
+
+        {
+            Dictionary<string, dynamic> producto = new()
+            {
+                { "ProductoID",cmbProducto.SelectedValue }
+                
+            };
+            var estados = utils.ExecuteSPDataTable("spObtenerBodegaCantidadStock", producto);
+            
+
 
             cmbBodega.DataSource ??= estados.AsEnumerable().Select(row => new
             {
                 Nombre = row["BodegaID"],
+                Cantidad = row["Cantidad"]
+
             }).ToList();
 
             cmbBodega.DisplayMember = "Nombre";
             cmbBodega.ValueMember = "Nombre";
+            ActualizarCantidad();
         }
         public void CargarFacturas(string spName = "spGetAllFacturas", Dictionary<string, dynamic>? parameters = null)
         {
@@ -169,10 +209,7 @@ namespace ProyectoBD2.Views.Forms
         {
             if (tboSolicitudInsumos.SelectedTab == tboRegistrarSolicitud)
             {
-                dvProductosCompra.Columns.Add("ProductoID", "ProductoID");
-                dvProductosCompra.Columns.Add("BodegaID", "BodegaID");
-                dvProductosCompra.Columns.Add("Cantidad", "Cantidad");
-                dvProductosCompra.Columns.Add("Precio", "Precio");
+
                 CargarProductores();
                 CargarProductos();
                 CargarBodegas();
@@ -195,26 +232,23 @@ namespace ProyectoBD2.Views.Forms
         {
             Dictionary<string, dynamic> productor = new()
             {
-                { "@ProveedorID",cmbProductor.SelectedValue }
+                { "ProductorID",cmbProductor.SelectedValue }
             };
-            Dictionary<string, dynamic> productos = new()
-            {
-                {"@ProductosTable", dvProductosCompra }
-            };
+
             var result = new DataTable();
 
-            result = utils.ExecuteSPDataTableTypeName("spCrearSolicitudInsumos", productor, productos);
-           
-
-
-            //if ((int)result.Rows[0]["Estado"] == 10000)
-            //{
-            //    SetListBindingSource();
-            //    tabControl.TabPages.Remove(tbpDetalleProductor);
-            //    tabControl.TabPages.Add(tbpLista);
-            //    tabControl.SelectedTab = tbpLista;
-            //    ClearFields();
-            //}
+            DataTable res = new DataTable();
+            res.Columns.Add("ProductoID");
+            res.Columns.Add("BodegaID");
+            res.Columns.Add("Cantidad");
+            res.Columns.Add("Precio");
+            // Obtener datos específicos
+            foreach (DataGridViewRow row in dvProductosCompra.Rows)
+            {
+                res.Rows.Add(row.Cells[0].Value.ToString(),
+                    row.Cells[1].Value.ToString(), row.Cells[2].Value.ToString(), row.Cells[3].Value.ToString());
+            }
+            result = utils.ExcuteSPDataTable("spCrearSolicitudInsumos", "ProductosTable", "dbo.InsumoSolicitud", res, productor);
 
             MessageBox.Show(result.Rows[0]["Mensaje"].ToString());
         }
@@ -222,6 +256,26 @@ namespace ProyectoBD2.Views.Forms
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbBodega_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbProducto_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            ActualizarCantidad();
+        }
+
+        private void cmbBodega_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            ActualizarCantidad();
         }
     }
 }

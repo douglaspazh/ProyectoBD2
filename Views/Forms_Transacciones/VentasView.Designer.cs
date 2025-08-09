@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             dgvStock = new DataGridView();
             lblRecordsPerPage = new Label();
             cmbRecordsPerPage = new ComboBox();
@@ -43,6 +43,8 @@
             button3 = new Button();
             dvProductosCompra = new DataGridView();
             groupBox1 = new GroupBox();
+            lblCantidadProducto = new Label();
+            label1 = new Label();
             txtPrecio = new TextBox();
             label5 = new Label();
             txtCantidad = new TextBox();
@@ -79,14 +81,14 @@
             dgvStock.BorderStyle = BorderStyle.None;
             dgvStock.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvStock.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvStock.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvStock.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvStock.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvStock.EnableHeadersVisualStyles = false;
             dgvStock.Location = new Point(22, 107);
@@ -233,14 +235,14 @@
             dvProductosCompra.BorderStyle = BorderStyle.None;
             dvProductosCompra.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dvProductosCompra.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Control;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dvProductosCompra.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dvProductosCompra.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dvProductosCompra.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dvProductosCompra.EnableHeadersVisualStyles = false;
             dvProductosCompra.Location = new Point(22, 93);
@@ -257,6 +259,8 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(lblCantidadProducto);
+            groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(txtPrecio);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(txtCantidad);
@@ -268,15 +272,34 @@
             groupBox1.Controls.Add(btnAgregarProducto);
             groupBox1.Location = new Point(668, 163);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(250, 414);
+            groupBox1.Size = new Size(326, 443);
             groupBox1.TabIndex = 49;
             groupBox1.TabStop = false;
             groupBox1.Text = "Agrega Producto";
             // 
+            // lblCantidadProducto
+            // 
+            lblCantidadProducto.AutoSize = true;
+            lblCantidadProducto.Location = new Point(186, 42);
+            lblCantidadProducto.Name = "lblCantidadProducto";
+            lblCantidadProducto.Size = new Size(17, 20);
+            lblCantidadProducto.TabIndex = 41;
+            lblCantidadProducto.Text = "0";
+            lblCantidadProducto.Click += label2_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(32, 42);
+            label1.Name = "label1";
+            label1.Size = new Size(148, 20);
+            label1.TabIndex = 40;
+            label1.Text = "Cantidad Disponible:";
+            // 
             // txtPrecio
             // 
             txtPrecio.Font = new Font("Segoe UI", 9.75F);
-            txtPrecio.Location = new Point(30, 223);
+            txtPrecio.Location = new Point(28, 255);
             txtPrecio.Margin = new Padding(3, 4, 3, 4);
             txtPrecio.MaxLength = 8;
             txtPrecio.Name = "txtPrecio";
@@ -287,7 +310,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 9.75F);
-            label5.Location = new Point(30, 196);
+            label5.Location = new Point(28, 228);
             label5.Name = "label5";
             label5.Size = new Size(61, 23);
             label5.TabIndex = 38;
@@ -296,7 +319,7 @@
             // txtCantidad
             // 
             txtCantidad.Font = new Font("Segoe UI", 9.75F);
-            txtCantidad.Location = new Point(30, 295);
+            txtCantidad.Location = new Point(28, 327);
             txtCantidad.Margin = new Padding(3, 4, 3, 4);
             txtCantidad.MaxLength = 8;
             txtCantidad.Name = "txtCantidad";
@@ -308,17 +331,19 @@
             cmbBodega.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbBodega.Font = new Font("Segoe UI", 9.75F);
             cmbBodega.FormattingEnabled = true;
-            cmbBodega.Location = new Point(34, 150);
+            cmbBodega.Location = new Point(32, 182);
             cmbBodega.Margin = new Padding(3, 4, 3, 4);
             cmbBodega.Name = "cmbBodega";
             cmbBodega.Size = new Size(171, 29);
             cmbBodega.TabIndex = 37;
+            cmbBodega.SelectedIndexChanged += cmbBodega_SelectedIndexChanged;
+            cmbBodega.SelectionChangeCommitted += cmbBodega_SelectionChangeCommitted;
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 9.75F);
-            label7.Location = new Point(30, 268);
+            label7.Location = new Point(28, 300);
             label7.Name = "label7";
             label7.Size = new Size(83, 23);
             label7.TabIndex = 13;
@@ -328,7 +353,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 9.75F);
-            label8.Location = new Point(34, 46);
+            label8.Location = new Point(32, 78);
             label8.Name = "label8";
             label8.Size = new Size(84, 23);
             label8.TabIndex = 36;
@@ -339,17 +364,19 @@
             cmbProducto.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProducto.Font = new Font("Segoe UI", 9.75F);
             cmbProducto.FormattingEnabled = true;
-            cmbProducto.Location = new Point(34, 73);
+            cmbProducto.Location = new Point(32, 105);
             cmbProducto.Margin = new Padding(3, 4, 3, 4);
             cmbProducto.Name = "cmbProducto";
             cmbProducto.Size = new Size(171, 29);
             cmbProducto.TabIndex = 35;
+            cmbProducto.SelectedIndexChanged += label2_Click;
+            cmbProducto.SelectionChangeCommitted += cmbProducto_SelectionChangeCommitted;
             // 
             // label9
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label9.Location = new Point(30, 123);
+            label9.Location = new Point(28, 155);
             label9.Name = "label9";
             label9.Size = new Size(72, 23);
             label9.TabIndex = 28;
@@ -358,7 +385,7 @@
             // btnAgregarProducto
             // 
             btnAgregarProducto.Font = new Font("Segoe UI", 9.75F);
-            btnAgregarProducto.Location = new Point(30, 352);
+            btnAgregarProducto.Location = new Point(28, 384);
             btnAgregarProducto.Margin = new Padding(3, 4, 3, 4);
             btnAgregarProducto.Name = "btnAgregarProducto";
             btnAgregarProducto.Size = new Size(175, 40);
@@ -520,5 +547,7 @@
         private Button button1;
         private Button button4;
         private TabPage tabPage2;
+        private Label lblCantidadProducto;
+        private Label label1;
     }
 }
