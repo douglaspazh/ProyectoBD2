@@ -16,5 +16,10 @@ namespace ProyectoBD2.Views.Forms_Transacciones
         {
             InitializeComponent();
         }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
