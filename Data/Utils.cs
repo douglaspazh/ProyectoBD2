@@ -48,6 +48,47 @@ namespace ProyectoBD2.Data
             }
         }
 
+        public DataTable ExecuteSPDataTableTypeName(string storedProcedure, Dictionary<string, dynamic> parameters = null, Dictionary<string, dynamic> tabletype = null)
+        {
+            try
+            {
+                // Using a stored procedure to execute a command
+                var connectionString = _context.Database.GetConnectionString();
+                using var connection = new SqlConnection(connectionString);
+                using var command = new SqlCommand(storedProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                if (parameters != null)
+                {
+                    foreach (var param in parameters)
+                    {
+
+                        command.Parameters.AddWithValue(param.Key, param.Value);
+                        
+                    }
+                    foreach (var tt in tabletype)
+                    {
+
+                        SqlParameter type = command.Parameters.AddWithValue(tt.Key, tt.Value);
+                        type.TypeName = "dbo.InsumoSolicitud";
+                    }
+                }
+                var dataTable = new DataTable();
+                connection.Open();
+                using var reader = command.ExecuteReader();
+                dataTable.Load(reader);
+                connection.Close();
+                return dataTable;
+            }
+            catch (SqlException ex)
+            {
+                Debug.WriteLine($"Error executing stored procedure {storedProcedure}: {ex.Message}");
+                throw;
+            }
+        }
+
+
         public DataTable ExecuteViewDataTable( string viewName )
         {
             try

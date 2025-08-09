@@ -195,7 +195,7 @@ namespace ProyectoBD2.Views.Forms
             {
                 productor.Add( "@ID", Convert.ToInt32( txtProductorID.Text.Trim() ) );
                 productor.Add( "@Estado", Convert.ToInt32( cmbEstado.SelectedValue ) );
-
+                
                 result = utils.ExecuteSPDataTable( "spUpdateProductor", productor );
             }
             else
